@@ -1,0 +1,47 @@
+.signupbox {
+    text-align: center;
+}
+
+.cart {
+  background-color: blue;
+}
+h1{
+  font-size: 3em;
+  text-align: center;
+}
+body{
+  background-color: green;
+}
+input[type=text] {
+  float: center;
+  padding: 6px;
+  border: none;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 17px;
+}
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+.menu {
+  float: right;
+  margin-top: 8px;
+}
+.menu li {
+  display: inline;
+}
+.menu li + li {
+  margin-left: 35px;
+}
+.menu li a {
+  color: #444;
+  text-decoration: none;
+}
+header {
+  background-color: #DFB887;
+  height: 35px;
+  width: 100%;
+  opacity: .9;
+  margin-bottom: 10px;
+}
