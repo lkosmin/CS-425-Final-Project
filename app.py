@@ -57,18 +57,19 @@ def login():
    query = "SELECT * FROM user WHERE username = \"{}\" AND userpass = \"{}\"".format(username, password)
    cursor.execute(query)
 
-   #data = tup2dict(cursor.fetchone(),'user')
-   #if data:
-   #    global user
-   #    if data['role'] == 'customer':
+   data = tup2dict(cursor.fetchone(),'user')
+   if data:
+       #global user
+       if data['role'] == 'customer':
+           query = "SELECT * FROM customer WHERE id = {}".format(data['id'])
+           cursor.execute(query)
+           user = tup2dict(cursor.fetchone(),'customer')
+           return render_template('customer.html', user=user)
 
 
-   return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
+   #return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
 
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
