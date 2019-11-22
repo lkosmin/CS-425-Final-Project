@@ -65,6 +65,11 @@ def login():
            cursor.execute(query)
            user = tup2dict(cursor.fetchone(),'customer')
            return render_template('customer.html', user=user)
+       if data['role'] == 'staff':
+            query = "SELECT * FROM staff WHERE id = {}".format(data['id'])
+            cursor.execute(query)
+            user = tup2dict(cursor.fetchone(),'staff')
+            return render_template('staff.html', user=user)
 
 
    #return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
