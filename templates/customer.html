@@ -5,23 +5,26 @@
     <title> Shopping Page </title>
   </head>
   <body>
-    <h1> Shopping </h1>
     <header>
       <div class="container">
-        <nav>
-                <ul class="menu">
-                   <li><a href="{{ url_for('login') }}">Home</a></li>
-                   <li><a href="{{ url_for('login') }}">Account</a></li>
-                   <li><a href="{{ url_for('login') }}">Shopping Cart</a></li>
-                </ul>
-        </nav>
+        <h1 class="logo">Shopping</h1>
+        <strong><nav>
+          <ul class="menu"> <!-- need to change nav urls -->
+            <li><a href="{{ url_for('login') }}">Home</a></li>
+            <li><a href="{{ url_for('login') }}">Account</a></li>
+             <li><a href="{{ url_for('login') }}">Shopping Cart</a></li>
+          </ul>
+        </nav></strong>
       </div>
     </header>
+    <h1> Shopping </h1>
       <h1>{{user}}</h1>
-      <button class="cart" type="button">
+      <!-- <button class="cart" type="button">
         Shopping cart</button>
       <button class="account" type="button">
-        Account</button>
+        Account</button> -->
       <input type="text" placeholder="Search product..">
+      <p> display by default: all products in customer's delivery address state. Filters needed: food/beverage, by search </p>
+
   </body>
   </html>

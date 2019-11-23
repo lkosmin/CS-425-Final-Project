@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title> Account Information </title>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1 class="logo">Account Information</h1>
+        <strong><nav>
+          <ul class="menu">
+            <li><a href="{{ url_for('login') }}">Home</a></li>
+             <li><a href="{{ url_for('login') }}">Shopping Cart</a></li>
+          </ul>
+        </nav></strong>
+      </div>
+    </header>
+
+      <h1> Account Information </h1>
+      <h3> need attributes from customer, delivery, and credit card </h3>
+      <button class="editCard" type="button">
+        Edit Card</button>
+      <button class="editAddress" type="button">
+        Edit Address</button>
+
+  </body>
+
+</html>

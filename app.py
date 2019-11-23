@@ -75,6 +75,17 @@ def login():
    #return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
 
 
+#test, http://localhost:5000/account/
+@app.route('/account/')
+def account():
+    #query = "SELECT * from customer join delivery USING(id) join credit_card USING(id)"....
+    return render_template('account.html', user=user)
+
+#http://localhost:5000/cart
+@app.route('/cart/')
+def cart():
+    return render_template('cart.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
