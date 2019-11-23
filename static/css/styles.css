@@ -71,10 +71,17 @@ h3 {
 
 /* customer search css*/
 
-/** {
+* {
   box-sizing: border-box;
-}*/
-form.searchProd input[type=text] {
+}
+form.searchProd{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+}
+form.searchProd input {
   padding: 10px;
   font-size: 17px;
   border: 1px solid grey;
