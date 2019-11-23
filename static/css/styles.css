@@ -13,9 +13,6 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: olive;
 }
-th, td{
-  border: 1px solid black;
-}
 
 header {
   background-color: darkolivegreen;
@@ -101,4 +98,7 @@ form.searchProd::after {
   content: "";
   clear: both;
   display: table;
+}
+.cart th, td{
+  border: 1px solid black;
 }
