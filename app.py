@@ -48,6 +48,10 @@ def tup2dict(tup,schema): #assumes right arguments
 @app.context_processor
 def sqlcommands():
     class allmethods:
+        def getState(id):
+            query = "select state from customer where customer.id = id"
+
+
         def getprice():
             query = ""
 
