@@ -65,7 +65,7 @@ def login():
            cursor.execute(query)
            user = tup2dict(cursor.fetchone(),'customer')
           # return render_template('customer.html', user=user)
-           return redirect(url_for('customer'))
+           return redirect(url_for('customer', user=user))
        if data['role'] == 'staff':
             query = "SELECT * FROM staff WHERE id = {}".format(data['id'])
             cursor.execute(query)
@@ -100,6 +100,14 @@ def account():
 def cart():
     return render_template('cart.html')
 
+#test
+@app.route('/staff/', methods = ['GET'])
+def staff():
+    return render_template('staff.html')
+
+@app.route('/warehouse/', methods = ['GET'])
+def warehouse():
+    return render_template('warehouse.html')
 
 
 if __name__ == '__main__':
