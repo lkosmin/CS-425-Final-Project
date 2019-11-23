@@ -1,0 +1,95 @@
+<!doctype html>
+<!--This page is supposed to:
+                            display cart
+                            display quantity
+                            delivery current address and current card info
+                                update order information buttons
+                                Edit quantity buttons
+                                Submit order button
+                                Continue shopping -> back to shopping page button
+                                Go to account
+-->
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <title>CSProject</title>
+  </head>
+  <body>
+          <p>
+                <span>Order</span>
+            </p>
+
+          <p>
+                <span>Shopping Cart</span><br>
+                <span>This is where the shopping cart items are /// this is how much of it is in your cart</span><br>
+                <!-- this needs a list -->
+                <form method="POST">
+                    <div class="form-group">
+                        <input type="quantity" class="form-control" name="new_quantity" placeholder="Edit quantity">
+                    </div>
+                    <!--python function that checks that it is a quantity-->
+                    <button>Submit</button>
+                </form>
+
+
+
+                <!--Select Delivery Address for Order-->
+
+                
+
+                <select>
+                    <!--python fucntion and sql query call that shows every delivery address on file
+                    
+                        the select tags is a drop down menu-->
+                        <option value="address1">Address 1</option>
+                        <option value="address2">Address 2</option>
+                </select>
+                <form method="POST">
+                    <div class="form-group">
+                        <input type="street_num" class="form-control" name="new_address" placeholder="Enter Street Number">
+                        <input type="stree_name" class="form-control" name="new_address" placeholder="Enter Street Name">
+                        <input type="city" class="form-control" name="new_address" placeholder="Enter City">
+                        <input type="state" class="form-control" name="new_address" placeholder="Enter State">
+                        <input type="zip_code" class="form-control" name="new_address" placeholder="Enter Zip code">
+                    </div>
+                    <button>add new delivery address</button>
+                        <!-- idk ? should refresh the page so that the drop down also has the added delivery address-->
+                </form>
+
+
+
+                <!--Select Card for Order-->
+
+
+
+                <select>
+                    <!--python fucntion and sql query call that shows every card on file
+                    
+                        the select tags is a drop down menu-->
+                        <option value="card1">Card 1</option>
+                        <option value="card2">Card 2</option>
+                </select>
+                <form method="POST">
+                    <div class="form-group">
+                        <input type="card" class="form-control" name="new_card" placeholder="Enter Card Number">
+                        <input type="street_num" class="form-control" name="new_card" placeholder="Enter Street Number">
+                        <input type="stree_name" class="form-control" name="new_card" placeholder="Enter Street Name">
+                        <input type="city" class="form-control" name="new_card" placeholder="Enter City">
+                        <input type="state" class="form-control" name="new_card" placeholder="Enter State">
+                        <input type="zip_code" class="form-control" name="new_card" placeholder="Enter Zip code">
+                    </div>
+                    <button>add new card</button>
+                </form> 
+                
+                <button>submit order</button>
+                
+          </p>
+
+          <button>back to store catalog</button>
+          <button>Go to Account</button>
+  </body>
+</html>
