@@ -58,10 +58,19 @@ def sqlcommands():
         return
 
     def shoppingcart(id):
-        query = "SELECT pid AS Product_ID, name AS Name, quantity AS Quantity, price AS Cost FROM orders JOIN products JOIN price where orders.pid = products.id AND orders.cid = \"{}\"".format(id)
+        query = "SELECT pid, name, quantity, price FROM orders JOIN products JOIN price where orders.pid = products.id AND orders.cid = \"{}\"".format(id)
         cursor.execute(query)
         cartitem = ['pid','name','quantity','cost']
         return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
+
+    def getproducts(id):
+        state = getstate(id)
+        query = "SELECT id, name, nutrition_facts, price FROM products JOIN price products.id = price.pid AND state = \"{}\"".format(state)
+        cursor.execute(query)
+        product = ['id', 'name', 'nutrition_facts', 'cost']
+        return [tup2dict(tup, product) for tup in cursor.fetchall()]
+
+
     return dict(getstate=getstate)
 
 ###
@@ -98,7 +107,7 @@ def login():
 
 @app.route('/customer', methods = ['GET', 'POST'])
 def customer():
-    if request.method == "POST":
+    '''if request.method == "POST":
         product = request.form['product']
         # search by product name or type
         cursor.execute("SELECT name, type from products WHERE name LIKE %s OR type LIKE %s", (product, product))
@@ -109,7 +118,12 @@ def customer():
             cursor.execute("SELECT name, type from products")
             conn.commit()
             data = cursor.fetchall()
-        return render_template('customer.html', data=data)
+        return render_template('customer.html', data=data)'''
+    query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
+    cursor.execute(query)
+    state = schemas['state']
+    query = "SELECT id, name, nutrition_facts, price FROM products JOIN price products.id = price.pid AND state = \"{}\"".format(state)
+    cursor.execute(query)
     return render_template('customer.html')
 
 @app.route('/account/', methods = ['GET'])

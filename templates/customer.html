@@ -22,6 +22,41 @@
       </div>
     </header>
         <h1><center>Products</center></h1>
+
+        <!-- this is the products list -->
+
+        <table>
+            <thead>
+              <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Nutrition Information</th>
+                <th>Cost</th>
+                <th>Add to Cart</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- python function that iterates through every single product in product list-->
+              {% for product in getproducts(user['id']) %}
+              <tr>
+                <th>{{ product['id'] }}</th>
+                <th>{{ product['name'] }}</th>
+                <th>{{ product['nutrition_facts'] }}</th>
+                <th>{{ product['price'] }}</th>
+                <form method="POST">
+                    <div class="form-group">
+                        <input type="quantity" class="form-control" name="new_quantity" placeholder="Enter Quantity to add to cart">
+                    </div>
+                    <!--python function that checks that it is a quantity-->
+                    <button>Submit</button>
+                </form>
+              </tr>
+             {% endfor %}
+            </tbody>
+          </table>
+
+
+
         {{user}}
         <form class="searchProd" method="post" action=""
          style="margin:auto;max-width:600px">
