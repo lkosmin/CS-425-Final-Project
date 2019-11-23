@@ -47,11 +47,11 @@ def tup2dict(tup,schema): #assumes right arguments
 
 @app.context_processor
 def sqlcommands():
-#def getstate(userid):
-  #  query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(userid)
-  #  cursor.execute(query)
-  #  state = schemas['state']
-  #  return [tup2dict(tup, state) for tup in cursor.fetchone()] 
+    def getstate(id):
+        query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
+        cursor.execute(query)
+        state = ['state']
+        return [tup2dict(tup, state) for tup in cursor.fetchall()] 
 
     def shoppingcart(id):
         query = "SELECT pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND orders.cid = \"{}\"".format(id)
@@ -59,14 +59,15 @@ def sqlcommands():
         cartitem = ['pid','name','quantity','cost']
         return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
 
-    def getproducts():
-        query = "SELECT price.id, name, nutrition_facts, price.price  FROM products JOIN price WHERE products.id = price.pid"
+    def getproducts(id):
+        state = getstate(id)
+        query = "SELECT price.id, name, nutrition_facts, price.price  FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\"".format(state)
         cursor.execute(query)
         product = ['price.pid', 'name', 'nutrition_facts', 'price.price']
         return [tup2dict(tup, product) for tup in cursor.fetchall()]
 
 
-    return dict(shoppingcart=shoppingcart,getproducts=getproducts)
+    return dict(getstate=getstate, shoppingcart=shoppingcart,getproducts=getproducts)
 
 
 ###

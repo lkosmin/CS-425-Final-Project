@@ -24,7 +24,9 @@
         <h1><center>Products</center></h1>
 
         <!-- this is the products list -->
-
+        {% for state in getstate(user['id']) %}
+          {{state['state']}}
+        {% endfor %}
         <table>
             <thead>
               <tr>
@@ -37,7 +39,7 @@
             </thead>
             <tbody>
               <!-- python function that iterates through every single product in product list-->
-              {% for product in getproducts() %}
+              {% for product in getproducts(user['id']) %}
               <tr>
                 <th>{{ product['price.pid'] }}</th>
                 <th>{{ product['name'] }}</th>
