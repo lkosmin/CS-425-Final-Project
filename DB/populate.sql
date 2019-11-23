@@ -106,6 +106,7 @@ INSERT INTO beverage (pid,nutrition_facts) VALUES (15, 'Calories:27, Total Fat:7
 INSERT INTO beverage (pid,nutrition_facts) VALUES (16, 'Calories:500, Total Fat:0.3g, Polyunsaturated fat:7g, Total Carbohydrate:10g');
 */
 
+
 /* Populate Orders */
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (1,1,1,16,2,'2016-11-24','recieved');
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (1,1,1,7,3,'2016-11-24','recieved');

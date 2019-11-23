@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS store;
 USE store;
 
+
 create table user
 	(username varchar(20) NOT NULL,
 	 userpass varchar(20) NOT NULL,
