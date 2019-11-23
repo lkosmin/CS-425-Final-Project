@@ -47,22 +47,22 @@ def tup2dict(tup,schema): #assumes right arguments
 
 @app.context_processor
 def sqlcommands():
-    class allmethods:
-        def getstate(id):
-            query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
-            cursor.execute(query)
-            state = schemas['state']
-            return [tup2dict(tup,'state')]  
+    def getstate(id):
+        query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
+        cursor.execute(query)
+        state = schemas['state']
+        return [tup2dict(tup,'state')]  
 
-        def getprice():
-            query = ""
+    def getprice():
+        query = ""
+        return
 
-        def shoppingcart(id):
-            query = "SELECT pid AS Product_ID, name AS Name, quantity AS Quantity, price AS Cost FROM orders JOIN products JOIN price where orders.pid = products.id AND orders.cid = \"{}\"".format(id)
-            cursor.execute(query)
-            cartitem = ['pid','name','quantity','cost']
-            return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
-
+    def shoppingcart(id):
+        query = "SELECT pid AS Product_ID, name AS Name, quantity AS Quantity, price AS Cost FROM orders JOIN products JOIN price where orders.pid = products.id AND orders.cid = \"{}\"".format(id)
+        cursor.execute(query)
+        cartitem = ['pid','name','quantity','cost']
+        return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
+    return dict(getstate=getstate)
 
 ###
 
@@ -72,7 +72,7 @@ def sqlcommands():
 def index():
     return render_template('login.html')
 
-@app.route('/login',methods = ['POST'])
+@app.route('/home',methods = ['POST'])
 def login():
    username = request.form['username']
    password = request.form['password']
@@ -117,9 +117,9 @@ def account():
     #query = "SELECT * from customer join delivery USING(id) join credit_card USING(id)"....
     return render_template('account.html', user=user)
 
-@app.route('/cart/', methods = ['GET'])
-def cart():
-    return render_template('cart.html')
+@app.route('/orders/', methods = ['GET'])
+def orders():
+    return render_template('orders.html')
 
 #test
 @app.route('/staff/', methods = ['GET'])
