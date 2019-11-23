@@ -1,0 +1,104 @@
+/*.signupbox {
+    text-align: center;
+}*/
+
+h1{
+  font-size: 3em;
+  text-align: center;
+}
+
+body {
+  margin: 10px;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: olive;
+}
+th, td{
+  border: 1px solid black;
+}
+
+header {
+  background-color: darkolivegreen;
+  margin-right: 20px;
+  height: 35px;
+  width: 100%;
+  opacity: .9;
+  margin-bottom: 10px;
+}
+header h1.logo {
+  margin: 0;
+  font-size: 1.7em;
+  color: #fff;
+  text-transform: uppercase;
+  float: left;
+}
+header h1.logo:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.container {
+  width: auto;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 3em;
+  margin-top: 40px;
+  text-align: center;
+  letter-spacing: -2px;
+}
+h3 {
+  font-size: 1.7em;
+  font-weight: 100;
+  margin-top: 30px;
+  text-align: center;
+  letter-spacing: -1px;
+  color: #999;
+}
+.menu {
+  float: right;
+  margin-top: 8px;
+  margin-right: 20px;
+}
+.menu li {
+  display: inline;
+}
+.menu li + li {
+  margin-left: 35px;
+}
+.menu li a {
+  color: #444;
+  text-decoration: none;
+}
+
+/* customer search css*/
+
+* {
+  box-sizing: border-box;
+}
+form.searchProd{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+}
+form.searchProd input {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+
+form.searchProd button:hover {
+  background: #0b7dda;
+}
+form.searchProd::after {
+  content: "";
+  clear: both;
+  display: table;
+}

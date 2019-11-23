@@ -57,18 +57,50 @@ def login():
    query = "SELECT * FROM user WHERE username = \"{}\" AND userpass = \"{}\"".format(username, password)
    cursor.execute(query)
 
-   #data = tup2dict(cursor.fetchone(),'user')
-   #if data:
-   #    global user
-   #    if data['role'] == 'customer':
+   data = tup2dict(cursor.fetchone(),'user')
+   if data:
+       #global user
+       if data['role'] == 'customer':
+           query = "SELECT * FROM customer WHERE id = {}".format(data['id'])
+           cursor.execute(query)
+           user = tup2dict(cursor.fetchone(),'customer')
+          # return render_template('customer.html', user=user)
+           return redirect(url_for('customer'))
+       if data['role'] == 'staff':
+            query = "SELECT * FROM staff WHERE id = {}".format(data['id'])
+            cursor.execute(query)
+            user = tup2dict(cursor.fetchone(),'staff')
+            return render_template('staff.html', user=user)
 
 
-   return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
+   #return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
+
+@app.route('/customer', methods = ['GET', 'POST'])
+def customer():
+    if request.method == "POST":
+        product = request.form['product']
+        # search by product name or type
+        cursor.execute("SELECT name, type from products WHERE name LIKE %s OR type LIKE %s", (product, product))
+        conn.commit()
+        data = cursor.fetchall()
+        # all in the search box will return all the tuples
+        if len(data) == 0 and product == 'all':
+            cursor.execute("SELECT name, type from products")
+            conn.commit()
+            data = cursor.fetchall()
+        return render_template('customer.html', data=data)
+    return render_template('customer.html')
+
+@app.route('/account/', methods = ['GET'])
+def account():
+    #query = "SELECT * from customer join delivery USING(id) join credit_card USING(id)"....
+    return render_template('account.html', user=user)
+
+@app.route('/cart/', methods = ['GET'])
+def cart():
+    return render_template('cart.html')
 
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-

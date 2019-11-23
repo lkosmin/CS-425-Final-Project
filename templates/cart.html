@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title> Account Information </title>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1 class="logo">My Cart</h1>
+        <strong><nav>
+          <ul class="menu">
+            <li><a href="{{ url_for('customer') }}">Home</a></li>
+            <li><a href="{{ url_for('account') }}">Account</a></li>
+            <li><a href="{{ url_for('cart') }}">Shopping Cart</a></li>
+          </ul>
+        </nav></strong>
+      </div>
+    </header>
+    <h1> this is the cart page </h1>
+    <table> <!-- loop items through here somehow -->
+      <caption> My Cart </caption>
+      <tr>
+        <th scope="col"> Item </th>
+        <th scope="col"> Quantity </th>
+        <th scope="col"> Price </th>
+      </tr>
+      <tr>
+        <td>1 </td>
+        <td>2 </td>
+        <td>3 </td>
+      </tr>
+      <tr>
+        <td>1 </td>
+        <td>2 </td>
+        <td>3 </td>
+      </tr>
+      <th class="empty"></th>
+      <th class="empty"></th>
+      <th class="empty"></th>
+      <th scope="row"> Total Price: </th>
+    </tr>
+
+    </table>
+    <button class="checkout" type="button">
+     Checkout</button> <!-- go to orders page -->
+   <button class="continue" type="button">
+     Continue Shopping</button> <!-- bring to shoppping page -->
+  </body>
+</html>
