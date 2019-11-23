@@ -48,9 +48,11 @@ def tup2dict(tup,schema): #assumes right arguments
 @app.context_processor
 def sqlcommands():
     class allmethods:
-        def getState(id):
-            query = "select state from customer where customer.id = id"
-
+        def getstate(id):
+            query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
+            cursor.execute(query)
+            state = schemas['state']
+            return [tup2dict(tup,'state')]  
 
         def getprice():
             query = ""
