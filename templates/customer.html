@@ -37,42 +37,23 @@
             </thead>
             <tbody>
               <!-- python function that iterates through every single product in product list-->
-              {% for product in getproducts(user['id']) %}
+              {% for product in getproducts() %}
               <tr>
-                <th>{{ product['id'] }}</th>
+                <th>{{ product['price.pid'] }}</th>
                 <th>{{ product['name'] }}</th>
                 <th>{{ product['nutrition_facts'] }}</th>
-                <th>{{ product['price'] }}</th>
-                <form method="POST">
+                <th>{{ product['price.price'] }}</th>
+                <!-- <form method="POST">
                     <div class="form-group">
                         <input type="quantity" class="form-control" name="new_quantity" placeholder="Enter Quantity to add to cart">
                     </div>
-                    <!--python function that checks that it is a quantity-->
-                    <button>Submit</button>
+                    python function that checks that it is a quantity
+                    <button>Submit</button> -->
                 </form>
               </tr>
              {% endfor %}
             </tbody>
           </table>
-
-
-
-        {{user}}
-        <form class="searchProd" method="post" action=""
-         style="margin:auto;max-width:600px">
-            <input type="text" placeholder="Search by product name or type (ex: 'food', 'beverage', 'tomato', 'all')" name="product" style="height:9px; width:500px">
-            <button type="submit" style="height:30px">Search
-            </button>
-        </form>
-        <p></p>
-        <left>
-        {% for item in data %}
-             <tr>
-                <td> {{item[0]}} <br></td>
-
-            </tr>
-        {% endfor %}
-        </left>
 
   </body>
   </html>

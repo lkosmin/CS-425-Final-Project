@@ -47,31 +47,27 @@ def tup2dict(tup,schema): #assumes right arguments
 
 @app.context_processor
 def sqlcommands():
-    def getstate(id):
-        query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
-        cursor.execute(query)
-        state = schemas['state']
-        return [tup2dict(tup,'state')]  
-
-    def getprice():
-        query = ""
-        return
+#def getstate(userid):
+  #  query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(userid)
+  #  cursor.execute(query)
+  #  state = schemas['state']
+  #  return [tup2dict(tup, state) for tup in cursor.fetchone()] 
 
     def shoppingcart(id):
-        query = "SELECT pid, name, quantity, price FROM orders JOIN products JOIN price where orders.pid = products.id AND orders.cid = \"{}\"".format(id)
+        query = "SELECT pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND orders.cid = \"{}\"".format(id)
         cursor.execute(query)
         cartitem = ['pid','name','quantity','cost']
         return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
 
-    def getproducts(id):
-        state = getstate(id)
-        query = "SELECT id, name, nutrition_facts, price FROM products JOIN price products.id = price.pid AND state = \"{}\"".format(state)
+    def getproducts():
+        query = "SELECT price.id, name, nutrition_facts, price.price  FROM products JOIN price WHERE products.id = price.pid"
         cursor.execute(query)
-        product = ['id', 'name', 'nutrition_facts', 'cost']
+        product = ['price.pid', 'name', 'nutrition_facts', 'price.price']
         return [tup2dict(tup, product) for tup in cursor.fetchall()]
 
 
-    return dict(getstate=getstate)
+    return dict(shoppingcart=shoppingcart,getproducts=getproducts)
+
 
 ###
 
@@ -119,11 +115,7 @@ def customer():
             conn.commit()
             data = cursor.fetchall()
         return render_template('customer.html', data=data)'''
-    query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
-    cursor.execute(query)
-    state = schemas['state']
-    query = "SELECT id, name, nutrition_facts, price FROM products JOIN price products.id = price.pid AND state = \"{}\"".format(state)
-    cursor.execute(query)
+
     return render_template('customer.html')
 
 @app.route('/account/', methods = ['GET'])
