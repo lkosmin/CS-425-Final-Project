@@ -86,8 +86,7 @@ def login():
            query = "SELECT * FROM customer WHERE id = {}".format(data['id'])
            cursor.execute(query)
            user = tup2dict(cursor.fetchone(),'customer')
-          # return render_template('customer.html', user=user)
-           return redirect(url_for('customer', user=user))
+           return render_template('customer.html', user=user)
        if data['role'] == 'staff':
             query = "SELECT * FROM staff WHERE id = {}".format(data['id'])
             cursor.execute(query)
