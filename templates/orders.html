@@ -15,11 +15,22 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>CSProject</title>
   </head>
   <body>
+    <header>
+      <div class="container">
+        <h1 class="logo">Orders</h1>
+        <strong><nav>
+          <ul class="menu">
+            <li><a href="{{ url_for('customer') }}">Home</a></li>
+            <li><a href="{{ url_for('account') }}">Account</a></li>
+             <li><a href="{{ url_for('orders') }}">Shopping Cart</a></li>
+          </ul>
+        </nav></strong>
+      </div>
+    </header>
             <p>
                 <span>Order</span>
             </p>
@@ -58,11 +69,11 @@
 
                 <!--Select Delivery Address for Order-->
 
-                
+
 
                 <select>
                     <!--python fucntion and sql query call that shows every delivery address on file
-                    
+
                         the select tags is a drop down menu-->
                         <option value="address1">Address 1</option>
                         <option value="address2">Address 2</option>
@@ -87,7 +98,7 @@
 
                 <select>
                     <!--python fucntion and sql query call that shows every card on file
-                    
+
                         the select tags is a drop down menu-->
                         <option value="card1">Card 1</option>
                         <option value="card2">Card 2</option>
@@ -102,10 +113,10 @@
                         <input type="zip_code" class="form-control" name="new_card" placeholder="Enter Zip code">
                     </div>
                     <button>add new card</button>
-                </form> 
-                
+                </form>
+
                 <button>submit order</button>
-                
+
           </p>
 
           <button>back to store catalog</button>
