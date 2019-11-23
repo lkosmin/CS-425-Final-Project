@@ -36,6 +36,7 @@ schemas = {'user': ['username', 'userpass', 'role', 'id'],
            'stock':['wid','pid','quantity']
            }
 
+
 # Take tuple, create dictionary:
 def tup2dict(tup,schema): #assumes right arguments
     if isinstance(schema,str): #allows you to give the name of one of the default schemas
@@ -43,6 +44,14 @@ def tup2dict(tup,schema): #assumes right arguments
     if not tup or len(tup) != len(schema): #no tuple, or mismatch with schema
         return None
     return {schema[i]:tup[i] for i in range(len(schema))}
+
+@app.context_processor
+def sqlcommands():
+    class allmethods:
+        def getprice():
+            query = ""
+
+###
 
 
 
