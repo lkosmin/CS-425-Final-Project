@@ -74,15 +74,19 @@ def login():
 
    #return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
 
+#http://localhost:5000/customer/
+@app.route('/customer', methods = ['GET'])
+def customer():
+        return render_template('customer.html')
 
 #test, http://localhost:5000/account/
-@app.route('/account/')
+@app.route('/account/', methods = ['GET'])
 def account():
     #query = "SELECT * from customer join delivery USING(id) join credit_card USING(id)"....
     return render_template('account.html', user=user)
 
 #http://localhost:5000/cart
-@app.route('/cart/')
+@app.route('/cart/', methods = ['GET'])
 def cart():
     return render_template('cart.html')
 
