@@ -13,7 +13,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: olive;
 }
-table, th, td{
+th, td{
   border: 1px solid black;
 }
 
