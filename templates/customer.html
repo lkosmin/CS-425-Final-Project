@@ -17,14 +17,27 @@
         </nav></strong>
       </div>
     </header>
-    <h1> Shopping </h1>
       <h1>{{user}}</h1>
       <!-- <button class="cart" type="button">
         Shopping cart</button>
       <button class="account" type="button">
         Account</button> -->
-      <input type="text" placeholder="Search product..">
-      <p> display by default: all products in customer's delivery address state. Filters needed: food/beverage, by search </p>
+        <h1><center>Products</center></h1>
+        <form class="searchProd" method="post" action=""
+         style="margin:auto;max-width:600px">
+            <input type="text" placeholder="Search by product name or type (ex: 'food', 'beverage', 'tomato', 'all')" name="product" style="height:30px; width:500px">
+            <button type="submit" style="height:30px">Search
+            </button>
+        </form>
+        <p></p>
+        <left>
+        {% for item in data %}
+             <tr>
+                <td> {{item[0]}} <br></td>
+
+            </tr>
+        {% endfor %}
+        </left>
 
   </body>
   </html>

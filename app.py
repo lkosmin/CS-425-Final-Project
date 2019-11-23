@@ -74,21 +74,31 @@ def login():
 
    #return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
 
-#http://localhost:5000/customer/
-@app.route('/customer', methods = ['GET'])
+@app.route('/customer', methods = ['GET', 'POST'])
 def customer():
-        return render_template('customer.html')
+    if request.method == "POST":
+        product = request.form['product']
+        # search by product name or type
+        cursor.execute("SELECT name, type from products WHERE name LIKE %s OR type LIKE %s", (product, product))
+        conn.commit()
+        data = cursor.fetchall()
+        # all in the search box will return all the tuples
+        if len(data) == 0 and product == 'all':
+            cursor.execute("SELECT name, type from products")
+            conn.commit()
+            data = cursor.fetchall()
+        return render_template('customer.html', data=data)
+    return render_template('customer.html')
 
-#test, http://localhost:5000/account/
 @app.route('/account/', methods = ['GET'])
 def account():
     #query = "SELECT * from customer join delivery USING(id) join credit_card USING(id)"....
     return render_template('account.html', user=user)
 
-#http://localhost:5000/cart
 @app.route('/cart/', methods = ['GET'])
 def cart():
     return render_template('cart.html')
+
 
 
 if __name__ == '__main__':

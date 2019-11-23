@@ -6,16 +6,9 @@ h1{
   font-size: 3em;
   text-align: center;
 }
-input[type=text] {
-  float: center;
-  padding: 6px;
-  border: none;
-  margin-top: 8px;
-  margin-right: 16px;
-  font-size: 17px;
-}
+
 body {
-  margin: 0;
+  margin: 10px;
   padding: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: olive;
@@ -74,4 +67,28 @@ h3 {
 .menu li a {
   color: #444;
   text-decoration: none;
+}
+
+/* customer search css*/
+
+/** {
+  box-sizing: border-box;
+}*/
+form.searchProd input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+
+form.searchProd button:hover {
+  background: #0b7dda;
+}
+form.searchProd::after {
+  content: "";
+  clear: both;
+  display: table;
 }
