@@ -1,3 +1,4 @@
+
 <!doctype html>
 <!--This page is supposed to:
                             display cart
@@ -19,14 +20,32 @@
     <title>CSProject</title>
   </head>
   <body>
-          <p>
+            <p>
                 <span>Order</span>
             </p>
 
           <p>
                 <span>Shopping Cart</span><br>
-                <span>This is where the shopping cart items are /// this is how much of it is in your cart</span><br>
-                <!-- this needs a list -->
+                <table>
+                    <thead>
+                      <tr>
+                        <th>Product ID</th>
+                        <th>Name</th>
+                        <th>Quantity Available</th>
+                        <th>Cost</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for cartitem in shoppingcart(user['id']) %}
+                      <tr>
+                        <th>{{ cartitem['pid'] }}</th>
+                        <th>{{ cartitem['name'] }}</th>
+                        <th>{{ cartitem['quantity'] }}</th>
+                        <th>{{ cartitem['price'] }}</th>
+                      </tr>
+                     {% endfor %}
+                    </tbody>
+                  </table>
                 <form method="POST">
                     <div class="form-group">
                         <input type="quantity" class="form-control" name="new_quantity" placeholder="Edit quantity">
