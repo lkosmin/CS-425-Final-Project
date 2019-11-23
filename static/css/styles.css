@@ -13,6 +13,9 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: olive;
 }
+table, th, td{
+  border: 1px solid black;
+}
 
 header {
   background-color: darkolivegreen;
