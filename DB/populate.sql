@@ -164,6 +164,8 @@ INSERT INTO price (id,pid,state,price) VALUES (40, 15, 'FL', 3.34);
 INSERT INTO price (id,pid,state,price) VALUES (41, 16, 'ME', 1.75);
 INSERT INTO price (id,pid,state,price) VALUES (42, 16, 'ID', 3.60);
 INSERT INTO price (id,pid,state,price) VALUES (43, 16, 'CT', 2.50);
+INSERT INTO price (id,pid,state,price) VALUES (44, 4, 'NY', 5.00);
+
 
 /*Populate warehouse*/
 INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (1, 7924, 'Wintergreen Rd.', 'Medford', 'MA', 02155, 560);

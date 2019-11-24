@@ -54,15 +54,14 @@ def sqlcommands():
         return [tup2dict(tup, state) for tup in cursor.fetchall()]
 
     def shoppingcart(id):
-        #NEED TO FIX THIS QUERY
-        query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND orders.cid = \"{}\"".format(id)
+        state = getstate(id)
+        query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND products.id = price.pid AND orders.cid = \"{}\" AND price.state = \"{}\"".format(id, 'NY')
         cursor.execute(query)
         cartitem = ['price.pid','name','quantity','price.cost']
         return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
 
     def getproducts(id, type):
         state = getstate(id)
-        query = ""
         if type == 0:
             query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\" AND products.type = 'food'".format(state[0]['state'])
         elif type == 1:
@@ -110,10 +109,6 @@ def login():
 
 
    #return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
-
-@app.route('/customer', methods = ['GET', 'POST'])
-def customer():
-    return render_template('customer.html')
 
 
 @app.route("/request_filtered_list", methods = ['GET', 'POST'])
