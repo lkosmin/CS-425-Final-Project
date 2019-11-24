@@ -61,9 +61,9 @@ def sqlcommands():
 
     def getproducts(id):
         state = getstate(id)
-        query = "SELECT price.id, name, nutrition_facts, price.price  FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\"".format(state)
+        query = "SELECT products.id, name, nutrition_facts, price.price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\"".format(state[0]['state'])
         cursor.execute(query)
-        product = ['price.pid', 'name', 'nutrition_facts', 'price.price']
+        product = ['products.id', 'name', 'nutrition_facts', 'price.price']
         return [tup2dict(tup, product) for tup in cursor.fetchall()]
 
 
