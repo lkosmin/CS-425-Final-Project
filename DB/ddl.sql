@@ -125,10 +125,12 @@ create table orders
 	);
 	
 create table cart
-	(pid INT NOT NULL,
+	(cid INT NOT NULL,
+     pid INT NOT NULL,
      quantity numeric(7,0),
-	 primary key (pid),
-     foreign key (pid) references products (id)
+	 primary key (pid, cid),
+     foreign key (pid) references products (id),
+     foreign key (cid) references customer(id)
      );
 
 
