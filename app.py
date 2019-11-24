@@ -78,6 +78,7 @@ def sqlcommands():
 
     def getcart(id):
         query = "SELECT * from cart"
+        #query = "SELECT * from cart JOIN products where products.id = cart.pid AND cart.cid = \"{}\"".format(id)
         #query = "select pid,quantity from cart where cart.cid = \"{}\"".format(id)
         cursor.execute(query)
         cart = ['cid', 'pid', 'quantity']

@@ -31,7 +31,26 @@
             </p>
 
           <p>
-                <span>Shopping Cart</span><br>
+            <span>Shopping Cart</span><br>
+            <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Cost</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for cart in getcart(user['id']) %}
+                  <tr>
+                    <th>{{ cart['cid'] }}</th>
+                    <th>{{ cart['quantity'] }}</th>
+                    <th>{{ cart['pid'] }}</th>
+                  </tr>
+                 {% endfor %}
+                </tbody>
+              </table>
+                <!--<span>Shopping Cart</span><br>
                 <table>
                     <thead>
                       <tr>
@@ -51,7 +70,7 @@
                       </tr>
                      {% endfor %}
                     </tbody>
-                  </table>
+                  </table>-->
                 <form method="POST">
                     <div class="form-group">
                         <input type="quantity" class="form-control" name="new_quantity" placeholder="Edit quantity">
