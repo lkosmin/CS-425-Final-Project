@@ -54,6 +54,7 @@ def sqlcommands():
         return [tup2dict(tup, state) for tup in cursor.fetchall()]
 
     def shoppingcart(id):
+        #NEED TO FIX THIS QUERY
         query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND orders.cid = \"{}\"".format(id)
         cursor.execute(query)
         cartitem = ['price.pid','name','quantity','price.cost']
