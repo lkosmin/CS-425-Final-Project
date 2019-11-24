@@ -59,9 +59,14 @@ def sqlcommands():
         cartitem = ['pid','name','quantity','cost']
         return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
 
-    def getproducts(id):
+    def getproducts(id, type):
         state = getstate(id)
-        query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\"".format(state[0]['state'])
+        if type == 0:
+            query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\" AND products.type = 'food'".format(state[0]['state'])
+        if type == 1:
+            query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\" AND products.type = 'beverage'".format(state[0]['state'])
+        if type == 2:
+            query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\"".format(state[0]['state'])
         cursor.execute(query)
         product = ['products.id', 'name', 'nutrition_facts', 'price']
         return [tup2dict(tup, product) for tup in cursor.fetchall()]
@@ -107,6 +112,19 @@ def login():
 @app.route('/customer', methods = ['GET', 'POST'])
 def customer():
     return render_template('customer.html')
+
+
+@app.route("/request_filtered_list", methods = ['GET', 'POST'])
+def request_filtered_list():
+    food = request.form.get('food')
+    beverages = request.form.get('beverages')
+    if food and beverages:
+        return render_template('customer.html', user=user, type=2)
+    if food and not beverages:
+        return render_template('customer.html', user=user, type=0)
+    else:
+        return render_template('customer.html', user=user, type=1)
+
 
 @app.route('/account/', methods = ['GET'])
 def account():
