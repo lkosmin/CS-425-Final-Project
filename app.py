@@ -33,12 +33,13 @@ schemas = {'user': ['username', 'userpass', 'role', 'id'],
            'orders':['ccid','cid','oid','pid','quantity','date','status'],
            'price':['id','pid','state','price'],
            'warehouse':['id','street_num','street_name','city','state','zip','storage_capacity'],
-           'stock':['wid','pid','quantity']
+           'stock':['wid','pid','quantity'],
+           'cart':['cid','pid','quantity']
            }
 
 
 # Take tuple, create dictionary:
-def tup2dict(tup,schema): #assumes right arguments
+def todict(tup,schema): #assumes right arguments
     if isinstance(schema,str): #allows you to give the name of one of the default schemas
         schema = schemas[schema]    #else, we will just use the schema list that you give us!
     if not tup or len(tup) != len(schema): #no tuple, or mismatch with schema
@@ -51,14 +52,14 @@ def sqlcommands():
         query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
         cursor.execute(query)
         state = ['state']
-        return [tup2dict(tup, state) for tup in cursor.fetchall()]
+        return [todict(tup, state) for tup in cursor.fetchall()]
 
     def shoppingcart(id):
         state = getstate(id)
         query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND products.id = price.pid AND orders.cid = \"{}\" AND price.state = \"{}\"".format(id, state[0]['state'])
         cursor.execute(query)
         cartitem = ['price.pid','name','quantity','price.cost']
-        return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
+        return [todict(tup, cartitem) for tup in cursor.fetchall()]
 
     def getproducts(id, type):
         state = getstate(id)
@@ -70,7 +71,7 @@ def sqlcommands():
             query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\"".format(state[0]['state'])
         cursor.execute(query)
         product = ['products.id', 'name', 'nutrition_facts', 'price']
-        return [tup2dict(tup, product) for tup in cursor.fetchall()]
+        return [todict(tup, product) for tup in cursor.fetchall()]
 
     #def getaddress
 
@@ -93,18 +94,18 @@ def login():
    query = "SELECT * FROM user WHERE username = \"{}\" AND userpass = \"{}\"".format(username, password)
    cursor.execute(query)
 
-   data = tup2dict(cursor.fetchone(),'user')
+   data = todict(cursor.fetchone(),'user')
    if data:
        global user
        if data['role'] == 'customer':
            query = "SELECT * FROM customer WHERE id = {}".format(data['id'])
            cursor.execute(query)
-           user = tup2dict(cursor.fetchone(),'customer')
+           user = todict(cursor.fetchone(),'customer')
            return render_template('customer.html', user=user)
        if data['role'] == 'staff':
             query = "SELECT * FROM staff WHERE id = {}".format(data['id'])
             cursor.execute(query)
-            user = tup2dict(cursor.fetchone(),'staff')
+            user = todict(cursor.fetchone(),'staff')
             return render_template('staff.html', user=user)
 
 
@@ -131,6 +132,10 @@ def account():
 def orders():
     product_id = request.args.get("product_id",0)
     product_quantity = request.args.get("product_quantity", 0)
+    user_id = user["id"]
+    query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
+    cursor.execute(query)
+    conn.commit()
     return render_template('orders.html', pid = product_id, quantity=product_quantity)
 
 #test
