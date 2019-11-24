@@ -55,7 +55,7 @@ def sqlcommands():
 
     def shoppingcart(id):
         state = getstate(id)
-        query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND products.id = price.pid AND orders.cid = \"{}\" AND price.state = \"{}\"".format(id, 'NY')
+        query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND products.id = price.pid AND orders.cid = \"{}\" AND price.state = \"{}\"".format(id, state[0]['state'])
         cursor.execute(query)
         cartitem = ['price.pid','name','quantity','price.cost']
         return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
@@ -129,7 +129,9 @@ def account():
 
 @app.route('/orders/', methods = ['GET'])
 def orders():
-    return render_template('orders.html', user=user)
+    product_id = request.args.get("product_id",0)
+    quantity = request.args.get("product_quantity", 0)
+    return render_template('orders.html', product_id, product_quantity)
 
 #test
 @app.route('/staff/', methods = ['GET'])
