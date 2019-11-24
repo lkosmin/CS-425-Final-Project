@@ -129,7 +129,9 @@ def account():
 
 @app.route('/orders/', methods = ['GET'])
 def orders():
-    return render_template('orders.html', user=user)
+    product_id = request.args.get("product_id",0)
+    quantity = request.args.get("product_quantity", 0)
+    return render_template('orders.html', product_id, product_quantity)
 
 #test
 @app.route('/staff/', methods = ['GET'])
