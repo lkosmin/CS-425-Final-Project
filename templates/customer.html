@@ -3,7 +3,6 @@
 
 <!--This page is supposed to:
                             display product list
-                            delivery current address and current card info
                                 Filter by state
                                 add to cart button
                                 filter by name field
@@ -24,6 +23,21 @@
         <h1><center>Products</center></h1>
 
         <!-- this is the products list -->
+        <div class="form-group">
+        <INPUT TYPE="Checkbox" Name="Type" Value ="Food">Food
+        <INPUT TYPE="Checkbox" Name="Type" Value ="Beverage">Beverage
+        <button>Submit</button>
+        </div>
+      
+        <form method="POST">
+            <p>Search for item by name:</p>
+            <div class="form-group">
+                <input type="name" class="form-control" name="product_name" placeholder="Enter item name">
+            </div>
+            <button>Submit</button>
+        </form>
+      </br>
+      </br>
         <table>
             <thead>
               <tr>

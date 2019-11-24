@@ -65,6 +65,8 @@ def sqlcommands():
         cursor.execute(query)
         product = ['products.id', 'name', 'nutrition_facts', 'price']
         return [tup2dict(tup, product) for tup in cursor.fetchall()]
+    
+    #def getaddress
 
 
     return dict(getstate=getstate, shoppingcart=shoppingcart,getproducts=getproducts)
@@ -104,24 +106,10 @@ def login():
 
 @app.route('/customer', methods = ['GET', 'POST'])
 def customer():
-    '''if request.method == "POST":
-        product = request.form['product']
-        # search by product name or type
-        cursor.execute("SELECT name, type from products WHERE name LIKE %s OR type LIKE %s", (product, product))
-        conn.commit()
-        data = cursor.fetchall()
-        # all in the search box will return all the tuples
-        if len(data) == 0 and product == 'all':
-            cursor.execute("SELECT name, type from products")
-            conn.commit()
-            data = cursor.fetchall()
-        return render_template('customer.html', data=data)'''
-
     return render_template('customer.html')
 
 @app.route('/account/', methods = ['GET'])
 def account():
-    #query = "SELECT * from customer join delivery USING(id) join credit_card USING(id)"....
     return render_template('account.html', user=user)
 
 @app.route('/orders/', methods = ['GET'])
