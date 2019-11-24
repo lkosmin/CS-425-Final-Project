@@ -76,6 +76,11 @@ def sqlcommands():
         product = ['products.id', 'name', 'nutrition_facts', 'price']
         return [todict(tup, product) for tup in cursor.fetchall()]
 
+    def getproductbyname(id, pid):
+        #user is able to search for an item by name
+        state = getstate(id)
+        query = "select products.id, name, nutrition_facts, price from products join stock join warehouse join price where products.id = stock.pid and stock.pid = price.pid and stock.wid = warehouse.id and price.state = warehouse.state and price.state = \"{}\" and products.id = \"{}\"".format(state[0]['state'],pid)
+
     def getcart(id):
         query = "select pid,quantity from cart where cart.cid = \"{}\"".format(id)
         cursor.execute(query)
@@ -84,7 +89,7 @@ def sqlcommands():
     #def getaddress
 
 
-    return dict(getstate=getstate, shoppingcart=shoppingcart,getproducts=getproducts, getcart=getcart)
+    return dict(getstate=getstate, shoppingcart=shoppingcart,getproducts=getproducts, getcart=getcart,getproductbyname=getproductbyname)
 
 
 ###
@@ -118,6 +123,12 @@ def login():
 
 
    #return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
+
+@app.route("/request_filter_by_name", methods = ['GET', 'POST'])
+def request_filter_by_name():
+    if request.method == 'POST':
+        item = request.form.get('product_name')
+        return render_template('customer.html', user=user, item=item)
 
 
 @app.route("/request_filtered_list", methods = ['GET', 'POST'])
