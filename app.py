@@ -80,6 +80,9 @@ def sqlcommands():
         #user is able to search for an item by name
         state = getstate(id)
         query = "select products.id, name, nutrition_facts, price from products join stock join warehouse join price where products.id = stock.pid and stock.pid = price.pid and stock.wid = warehouse.id and price.state = warehouse.state and price.state = \"{}\" and products.id = \"{}\"".format(state[0]['state'],pid)
+        cursor.execute(query)
+        product = ['products.id', 'name', 'nutrition_facts', 'price']
+        return [todict(tup, product) for tup in cursor.fetchall()]
 
     def getcart(id):
         query = "select pid,quantity from cart where cart.cid = \"{}\"".format(id)
