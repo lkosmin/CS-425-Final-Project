@@ -133,14 +133,13 @@ def account():
 
 @app.route('/orders/', methods = ['GET'])
 def orders():
-    product_id = request.args.get("product_id",0)
-    product_quantity = request.args.get("product_quantity", 0)
-    user_id = 2
-    query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
-    #cursor.execute(query)
-    #conn.commit()
-    #return render_template('orders.html', pid = product_id, quantity=product_quantity)
-    return "p_id and p_q and c_id" + product_id + product_quantity
+    if request.method == 'GET':
+        #if request.form.get('submit') == 'submit':
+            product_id = request.args.get("product_id",0)
+            product_quantity = request.args.get("product_quantity", 0)
+            user_id=user['id']
+            query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
+    return render_template('orders.html', user=user, product_id=product_id, product_quantity=product_quantity )
 
 #test
 @app.route('/staff/', methods = ['GET'])

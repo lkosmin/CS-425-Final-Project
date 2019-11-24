@@ -57,7 +57,7 @@
                 <th>{{ product['nutrition_facts'] }}</th>
                 <th>{{ product['price'] }}</th>
                 <th><form method="GET" action="/orders">
-						        <input type="hidden" class="form-control" name="product_id" value="{{ product['product.id'] }}" >
+						        <input type="hidden" class="form-control" name="product_id" value="{{ product['products.id'] }}" >
                     <input type="number" class="form-control" name="product_quantity" placeholder="Enter Quantity to add to cart" min ="0">
                     <input type = "submit" value = "submit" />
                 </form></th>
