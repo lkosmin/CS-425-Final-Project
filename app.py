@@ -61,11 +61,12 @@ def sqlcommands():
 
     def getproducts(id, type):
         state = getstate(id)
+        query = ""
         if type == 0:
             query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\" AND products.type = 'food'".format(state[0]['state'])
-        if type == 1:
+        elif type == 1:
             query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\" AND products.type = 'beverage'".format(state[0]['state'])
-        if type == 2:
+        else:
             query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\"".format(state[0]['state'])
         cursor.execute(query)
         product = ['products.id', 'name', 'nutrition_facts', 'price']
