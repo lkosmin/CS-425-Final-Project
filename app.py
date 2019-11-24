@@ -113,8 +113,8 @@ def login():
 
 @app.route("/request_filtered_list", methods = ['GET', 'POST'])
 def request_filtered_list():
-    food = request.form.get('food')
-    beverages = request.form.get('beverages')
+    food = request.form.get('food', 0)
+    beverages = request.form.get('beverages', 0)
     if food and beverages:
         return render_template('customer.html', user=user, type=2)
     if food and not beverages:
