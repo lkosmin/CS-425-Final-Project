@@ -76,10 +76,15 @@ def sqlcommands():
         product = ['products.id', 'name', 'nutrition_facts', 'price']
         return [todict(tup, product) for tup in cursor.fetchall()]
 
+    def getcart(id):
+        query = "select pid,quantity from cart where cart.cid = \"{}\"".format(id)
+        cursor.execute(query)
+        return [todict(tup, 'cart') for tup in cursor.fetchall()]
+
     #def getaddress
 
 
-    return dict(getstate=getstate, shoppingcart=shoppingcart,getproducts=getproducts)
+    return dict(getstate=getstate, shoppingcart=shoppingcart,getproducts=getproducts, getcart=getcart)
 
 
 ###
@@ -139,6 +144,7 @@ def orders():
             product_quantity = request.args.get("product_quantity", 0)
             user_id=user['id']
             query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
+            cursor.execute(query)
     return render_template('orders.html', user=user, product_id=product_id, product_quantity=product_quantity )
 
 #test
