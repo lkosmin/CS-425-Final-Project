@@ -76,23 +76,17 @@ def sqlcommands():
         product = ['products.id', 'name', 'nutrition_facts', 'price']
         return [todict(tup, product) for tup in cursor.fetchall()]
 
-    def getproductbyname(id, pid):
-        #user is able to search for an item by name
-        state = getstate(id)
-        query = "select products.id, name, nutrition_facts, price from products join stock join warehouse join price where products.id = stock.pid and stock.pid = price.pid and stock.wid = warehouse.id and price.state = warehouse.state and price.state = \"{}\" and products.id = \"{}\"".format(state[0]['state'],pid)
-        cursor.execute(query)
-        product = ['products.id', 'name', 'nutrition_facts', 'price']
-        return [todict(tup, product) for tup in cursor.fetchall()]
-
     def getcart(id):
-        query = "select pid,quantity from cart where cart.cid = \"{}\"".format(id)
+        query = "SELECT * from cart"
+        #query = "select pid,quantity from cart where cart.cid = \"{}\"".format(id)
         cursor.execute(query)
-        return [todict(tup, 'cart') for tup in cursor.fetchall()]
+        cart = ['cid', 'pid', 'quantity']
+        return [todict(tup, cart) for tup in cursor.fetchall()]
 
     #def getaddress
 
 
-    return dict(getstate=getstate, shoppingcart=shoppingcart,getproducts=getproducts, getcart=getcart,getproductbyname=getproductbyname)
+    return dict(getstate=getstate, shoppingcart=shoppingcart,getproducts=getproducts, getcart=getcart)
 
 
 ###
@@ -127,12 +121,6 @@ def login():
 
    #return "<h1>User:<\h1><\br>{}".format(cursor.fetchone())
 
-@app.route("/request_filter_by_name", methods = ['GET', 'POST'])
-def request_filter_by_name():
-    if request.method == 'POST':
-        item = request.form.get('product_name')
-        return render_template('customer.html', user=user, item=item)
-
 
 @app.route("/request_filtered_list", methods = ['GET', 'POST'])
 def request_filtered_list():
@@ -157,8 +145,10 @@ def orders():
             product_id = request.args.get("product_id",0)
             product_quantity = request.args.get("product_quantity", 0)
             user_id=user['id']
+            #query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
             query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
             cursor.execute(query)
+
     return render_template('orders.html', user=user, product_id=product_id, product_quantity=product_quantity )
 
 #test
