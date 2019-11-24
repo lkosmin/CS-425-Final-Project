@@ -42,10 +42,10 @@
                     <tbody>
                       {% for cartitem in shoppingcart(user['id']) %}
                       <tr>
-                        <th>{{ cartitem['pid'] }}</th>
+                        <th>{{ cartitem['price.pid'] }}</th>
                         <th>{{ cartitem['name'] }}</th>
                         <th>{{ cartitem['quantity'] }}</th>
-                        <th>{{ cartitem['price'] }}</th>
+                        <th>{{ cartitem['price.cost'] }}</th>
                       </tr>
                      {% endfor %}
                     </tbody>

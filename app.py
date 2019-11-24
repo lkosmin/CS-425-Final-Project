@@ -51,12 +51,12 @@ def sqlcommands():
         query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
         cursor.execute(query)
         state = ['state']
-        return [tup2dict(tup, state) for tup in cursor.fetchall()] 
+        return [tup2dict(tup, state) for tup in cursor.fetchall()]
 
     def shoppingcart(id):
-        query = "SELECT pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND orders.cid = \"{}\"".format(id)
+        query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND orders.cid = \"{}\"".format(id)
         cursor.execute(query)
-        cartitem = ['pid','name','quantity','cost']
+        cartitem = ['price.pid','name','quantity','price.cost']
         return [tup2dict(tup, cartitem) for tup in cursor.fetchall()]
 
     def getproducts(id):
@@ -65,7 +65,7 @@ def sqlcommands():
         cursor.execute(query)
         product = ['products.id', 'name', 'nutrition_facts', 'price']
         return [tup2dict(tup, product) for tup in cursor.fetchall()]
-    
+
     #def getaddress
 
 
@@ -89,7 +89,7 @@ def login():
 
    data = tup2dict(cursor.fetchone(),'user')
    if data:
-       #global user
+       global user
        if data['role'] == 'customer':
            query = "SELECT * FROM customer WHERE id = {}".format(data['id'])
            cursor.execute(query)
@@ -114,7 +114,7 @@ def account():
 
 @app.route('/orders/', methods = ['GET'])
 def orders():
-    return render_template('orders.html')
+    return render_template('orders.html', user=user)
 
 #test
 @app.route('/staff/', methods = ['GET'])
@@ -124,6 +124,16 @@ def staff():
 @app.route('/warehouse/', methods = ['GET'])
 def warehouse():
     return render_template('warehouse.html')
+
+@app.route('/nav', methods = ['GET', 'POST'])
+def nav():
+    if request.method == 'POST':
+        if request.form.get('submit_button') == 'Go To Account':
+            return render_template('account.html')
+        elif request.form.get('submit_button') == 'Go To Cart':
+            return render_template('orders.html', user=user)
+    return render_template('account.html')
+
 
 
 if __name__ == '__main__':
