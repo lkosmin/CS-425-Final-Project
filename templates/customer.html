@@ -41,13 +41,12 @@
                 <th>{{ product['products.id'] }}</th>
                 <th>{{ product['name'] }}</th>
                 <th>{{ product['nutrition_facts'] }}</th>
-                <th>{{ product['price.price'] }}</th>
-                <!-- <form method="POST">
+                <th>{{ product['price'] }}</th>
+                <form method="POST">
                     <div class="form-group">
                         <input type="quantity" class="form-control" name="new_quantity" placeholder="Enter Quantity to add to cart">
                     </div>
-                    python function that checks that it is a quantity
-                    <button>Submit</button> -->
+                    <button>Submit</button>
                 </form>
               </tr>
              {% endfor %}
