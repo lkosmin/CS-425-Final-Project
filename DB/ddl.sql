@@ -123,6 +123,13 @@ create table orders
      foreign key (ccid) references credit_card(id),
 	 foreign key (pid) references products (id)
 	);
+	
+create table cart
+	(pid INT NOT NULL,
+     quantity numeric(7,0),
+	 primary key (pid),
+     foreign key (pid) references products (id)
+     );
 
 
 

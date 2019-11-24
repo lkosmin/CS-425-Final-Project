@@ -1,6 +1,6 @@
 USE store;
 
-
+DROP TABLE IF EXISTS cart;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS price;
 DROP TABLE IF EXISTS products;
