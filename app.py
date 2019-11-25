@@ -207,6 +207,8 @@ def nav():
             return render_template('account.html')
         elif request.form.get('submit_button') == 'Go To Cart':
             return render_template('orders.html', user=user)
+        elif request.form.get('submit_button') == 'Go To Store':
+            return render_template('customer.html', user=user)
     return render_template('account.html')
 
 
