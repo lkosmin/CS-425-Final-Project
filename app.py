@@ -90,11 +90,16 @@ def sqlcommands():
         cursor.execute(query)
         cart = ['cid', 'pid', 'quantity']
         return [todict(tup, cart) for tup in cursor.fetchall()]
+    def getcartitem(id):
+        query = "select products.name, cart.quantity, price.price from cart join products join price where products.id = cart.pid and products.id = price.id AND cart.cid = \"{}\"".format(id)
+        cursor.execute(query)
+        cartitem = ['products.name', 'cart.quantity', 'price.price']
+        return [todict(tup, cartitem) for tup in cursor.fetchall()]
 
     #def getaddress
 
 
-    return dict(getstate=getstate, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart)
+    return dict(getstate=getstate, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem)
 
 
 ###
@@ -203,4 +208,3 @@ def nav():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
