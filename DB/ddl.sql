@@ -17,7 +17,7 @@ create table customer
     balance  numeric(10,2),
     primary key(id)
   );
-  
+
   create table delivery
   ( id INT NOT NULL,
 	cid INT NOT NULL,
@@ -72,7 +72,7 @@ create table stock
 	 primary key (wid, pid),
      foreign key (wid) references warehouse(id)
 	);
-    
+
 
 create table products
 	(id INT NOT NULL,
@@ -82,7 +82,7 @@ create table products
      size numeric(7,2),
 	 primary key (id)
 	);
-    
+
 create table price
 	(id INT NOT NULL,
      pid INT NOT NULL,
@@ -105,7 +105,7 @@ create table orders
      foreign key (ccid) references credit_card(id),
 	 foreign key (pid) references products (id)
 	);
-	
+
 create table cart
 	(cid INT NOT NULL,
      pid INT NOT NULL,
@@ -114,6 +114,3 @@ create table cart
      foreign key (pid) references products (id),
      foreign key (cid) references customer(id)
      );
-
-
-

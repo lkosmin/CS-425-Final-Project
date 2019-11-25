@@ -68,15 +68,17 @@
                     <option value="{{ address }}">{{ address }}</option>
                     {% endfor %}
                 </select>
-                <form method="POST">
+                <form method="POST" action="/add_addr/{{user['id']}}">
                     <div class="form-group">
-                        <input type="street_num" class="form-control" name="new_address" placeholder="Enter Street Number">
-                        <input type="stree_name" class="form-control" name="new_address" placeholder="Enter Street Name">
-                        <input type="city" class="form-control" name="new_address" placeholder="Enter City">
-                        <input type="state" class="form-control" name="new_address" placeholder="Enter State">
-                        <input type="zip_code" class="form-control" name="new_address" placeholder="Enter Zip code">
+                        <input type="street_num" class="form-control" name="street_num" placeholder="Enter Street Number">
+                        <input type="street_name" class="form-control" name="street_name" placeholder="Enter Street Name">
+                        <input type="city" class="form-control" name="city" placeholder="Enter City">
+                        <input type="state" class="form-control" name="state" placeholder="Enter State">
+                        <input type="zip_code" class="form-control" name="zip_code" placeholder="Enter Zip code">
                     </div>
-                    <button>add new delivery address</button>
+                    <!--<button>add new delivery address</button>-->
+
+                      <input type="submit" name="add_addr" value="Add delivery address">
                 </form>
 
 
@@ -106,7 +108,9 @@
                 </form>
 
                 <br>
-                <button>submit order</button>
+                <form method="POST" action="/submit_order">
+                  <input type="submit" name="submit_order" value="Submit Order">
+                </form>
 
           </p>
 

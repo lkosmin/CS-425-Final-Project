@@ -208,6 +208,7 @@ def delete_from_cart(cartitem_id, user_id, product_quantity):
     query = "delete from cart where cart.pid = \"{}\"".format(cartitem_id)
     cursor.execute(query)
     conn.commit()
+    #we don't need the next 2 queries if we only update when submitting order
     #retrieve id from warehouse
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
     cursor.execute(query)
@@ -248,6 +249,25 @@ def editaddress(delivery_id):
 def editcard(card_id):
     delivery_id = 0
     return render_template('edit.html', user=user,delivery_id=delivery_id, card_id=card_id)
+
+@app.route('/add_addr/<user_id>', methods = ['GET', 'POST'])
+def add_addr(user_id):
+    street_num = request.form.get('street_num')
+    street_name = request.form.get('street_name')
+    city = request.form.get('city')
+    state = request.form.get('state')
+    zip_code = request.form.get('zip_code')
+    #zip_code = 89993;
+    #incrementing the delivery id
+    query = "select count(*) from delivery"
+    cursor.execute(query)
+    conn.commit()
+    delivery_id = (cursor.fetchone()[0]) + 1
+    #insert new delivery address
+    query = "insert into delivery(id, cid, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(delivery_id,user['id'], street_num, street_name, city, state, zip_code)
+    cursor.execute(query)
+    conn.commit()
+    return render_template('orders.html', user=user)
 
 
 if __name__ == '__main__':
