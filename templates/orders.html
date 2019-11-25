@@ -26,8 +26,6 @@
     </header>
             <p>
                 <span>Order</span>
-                <h1> {{user['id'],product_id, product_quantity}} </h1>
-                <h1> {{getcart(user['id'])}} </h1>
             </p>
 
           <p>
@@ -48,25 +46,30 @@
                     <th>{{ cartitem['products.name'] }}</th>
                     <th>{{ cartitem['cart.quantity'] }}</th>
                     <th>{{ cartitem['price.price'] }}</th>
+                    <th>
+                      <form method="GET" action="/delete_from_cart">
+                        <input type = "submit" value = "Remove" />
+                      </form>
+                    </th>
                   </tr>
                  {% endfor %}
                 </tbody>
               </table>
 
-                <form method="POST">
+                <!--<form method="POST">
                     <div class="form-group">
                         <input type="quantity" class="form-control" name="new_quantity" placeholder="Edit quantity">
                     </div>
-                    <!--python function that checks that it is a quantity-->
+                    python function that checks that it is a quantity
                     <button>Submit</button>
-                </form>
+                </form>-->
 
 
 
                 <!--Select Delivery Address for Order-->
 
 
-
+                <h4> Deliver To: </h4> 
                 <select>
                     <!--python fucntion and sql query call that shows every delivery address on file
 
@@ -90,7 +93,7 @@
 
                 <!--Select Card for Order-->
 
-
+                <h4> Pay With: </h4>
 
                 <select>
                     <!--python fucntion and sql query call that shows every card on file

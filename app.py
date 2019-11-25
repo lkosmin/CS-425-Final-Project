@@ -91,9 +91,9 @@ def sqlcommands():
         cart = ['cid', 'pid', 'quantity']
         return [todict(tup, cart) for tup in cursor.fetchall()]
     def getcartitem(id):
-        query = "select products.name, cart.quantity, price.price from cart join products join price where products.id = cart.pid and products.id = price.id AND cart.cid = \"{}\"".format(id)
+        query = "select products.id, products.name, cart.quantity, price.price from cart join products join price where products.id = cart.pid and products.id = price.id AND cart.cid = \"{}\"".format(id)
         cursor.execute(query)
-        cartitem = ['products.name', 'cart.quantity', 'price.price']
+        cartitem = ['products.id', 'products.name', 'cart.quantity', 'price.price']
         return [todict(tup, cartitem) for tup in cursor.fetchall()]
 
     #def getaddress
@@ -168,6 +168,11 @@ def update_cart(product_id):
     conn.commit()
     #go to orders.html
     return render_template('orders.html', user = user)
+
+#delete product from shopping cart, insert product back into warehouse
+@app.route('/delete_from_cart', methods = ['GET'])
+def delete_from_cart():
+    return render_template('orders.html', user=user)
 
 @app.route('/account/', methods = ['GET'])
 def account():
