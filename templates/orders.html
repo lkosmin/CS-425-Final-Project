@@ -62,24 +62,14 @@
 
 
                   <h4> Deliver To: </h4>
+                  <form method="POST" action="/submit_order">
                   <select name="selected_address" class="selectpicker form-control">
                       <!--python fucntion and sql query call that shows every delivery address on file-->
                       {% for address in get_customer_addresses_tostr(user['id']) %}
                       <option value="{{ address }}">{{ address }}</option>
                       {% endfor %}
                   </select>
-                  <form method="POST" action="/add_addr/{{user['id']}}">
-                      <div class="form-group">
-                          <input type="street_num" class="form-control" name="street_num" placeholder="Enter Street Number">
-                          <input type="street_name" class="form-control" name="street_name" placeholder="Enter Street Name">
-                          <input type="city" class="form-control" name="city" placeholder="Enter City">
-                          <input type="state" class="form-control" name="state" placeholder="Enter State">
-                          <input type="zip_code" class="form-control" name="zip_code" placeholder="Enter Zip code">
-                      </div>
-                      <!--<button>add new delivery address</button>-->
 
-                        <input type="submit" name="add_addr" value="Add delivery address">
-                  </form>
 
 
 
@@ -89,28 +79,17 @@
 
                   <select name="selected_card" class="selectpicker form-control">
                       <!--python fucntion and sql query call that shows every card on file
-
                           the select tags is a drop down menu-->
                           {% for card in get_customer_cards_tostr(user['id']) %}
                           <option value="{{ card }}">{{ card }}</option>
                           {% endfor %}
                   </select>
-                  <form method="POST" action="/add_card/{{user['id']}}">
-                      <div class="form-group">
-                          <input type="card" class="form-control" name="card" placeholder="Enter Card Number">
-                          <input type="street_num" class="form-control" name="street_num" placeholder="Enter Street Number">
-                          <input type="street_name" class="form-control" name="street_name" placeholder="Enter Street Name">
-                          <input type="city" class="form-control" name="city" placeholder="Enter City">
-                          <input type="state" class="form-control" name="state" placeholder="Enter State">
-                          <input type="zip_code" class="form-control" name="zip_code" placeholder="Enter Zip code">
-                      </div>
-                      <input type="submit" name="add_card" value="Add card">
-                  </form>
+
 
                   <br>
                   <!--Submit button: redirect to order succesful page, add order to customer order's table,
                   drop cart items, update warehouse stock -->
-                <form method="POST" action="/submit_order">
+
                     <input type="submit" name="submit_order" value="Submit Order">
                 </form>
 

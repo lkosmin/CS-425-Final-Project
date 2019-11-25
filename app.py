@@ -77,9 +77,9 @@ def sqlcommands():
         return [todict(tup, 'delivery') for tup in cursor.fetchall()]
 
     def get_customer_cards_tostr(id):
-        query = "SELECT card_num, street_num, street_name, city, state, zip FROM credit_card WHERE cid = \"{}\"".format(id)
+        query = "SELECT card_num FROM credit_card WHERE cid = \"{}\"".format(id)
         cursor.execute(query)
-        card = ['card_num','street_num', 'street_name', 'city', 'state', 'zip']
+        card = ['card_num']
         return [tostr(tup, card) for tup in cursor.fetchall()]
 
     def get_customer_cards_todict(id):
@@ -270,7 +270,7 @@ def add_addr(user_id):
     query = "insert into delivery(id, cid, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(delivery_id,user['id'], street_num, street_name, city, state, zip_code)
     cursor.execute(query)
     conn.commit()
-    return render_template('orders.html', user=user)
+    return render_template('account.html', user=user)
 
 @app.route('/add_card/<user_id>', methods = ['GET', 'POST'])
 def add_card(user_id):
@@ -289,10 +289,13 @@ def add_card(user_id):
     query = "insert into credit_card(id, cid, card_num, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(card_id,user['id'], card, street_num, street_name, city, state, zip_code)
     cursor.execute(query)
     conn.commit()
-    return render_template('orders.html', user=user)
+    return render_template('account.html', user=user)
 
-@app.route('/submit_order/<cartitem_id>/<user_id>/<product_quantity>', methods = ['GET'])
-def submit_order(cartitem_id, user_id, product_quantity):
+@app.route('/submit_order', methods = ['POST'])
+def submit_order():
+    selected_address = request.form.get('selected_address')
+    selected_card = request.form.get('selected_card')
+
     # find the warehouse holding the stock
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user_id)
     cursor.execute(query)
@@ -311,11 +314,10 @@ def submit_order(cartitem_id, user_id, product_quantity):
     #datetime = datetime.date.today()
     #query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(1, 1, 2, 1, 5, '2019-11-25', 'recieved')"
 
-
     # need query to delete items from cart
 
     conn.commit()
     return render_template('order_successful.html', user=user)
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
