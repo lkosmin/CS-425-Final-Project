@@ -291,8 +291,24 @@ def add_card(user_id):
     conn.commit()
     return render_template('orders.html', user=user)
 
-@app.route('/submit_order', methods = ['POST'])
-def submit_order():
+@app.route('/submit_order/<cartitem_id>/<user_id>/<product_quantity>', methods = ['GET'])
+def submit_order(cartitem_id, user_id, product_quantity):
+    # find the warehouse holding the stock
+    query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user_id)
+    cursor.execute(query)
+    customer_wid = cursor.fetchone()[0]
+
+    # update stock
+    query = "update stock set quantity = quantity + \"{}\" where wid = \"{}\" and pid= \"{}\"".format(product_quantity,customer_wid,cartitem_id)
+    cursor.execute(query)
+
+    # update orders table
+    #datetime = datetime.date.today()
+    #query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(1, 1, 2, 1, 5, '2019-11-25', 'recieved')"
+
+    # need query to delete items from cart
+
+    conn.commit()
     return render_template('order_successful.html', user=user)
     
 if __name__ == '__main__':
