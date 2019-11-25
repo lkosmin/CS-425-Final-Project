@@ -31,107 +31,88 @@
           <p>
 
 
-            <span>Shopping Cart</span><br>
-            <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Cost</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for cartitem in getcartitem(user['id']) %}
-                  <tr>
-                    <th>{{ cartitem['products.name'] }}</th>
-                    <th>{{ cartitem['cart.quantity'] }}</th>
-                    <th>{{ cartitem['price.price'] }}</th>
-                    <th>
-                      <form method="GET" action="/delete_from_cart/{{ cartitem['products.id'] }}/{{user['id']}}/ {{cartitem['cart.quantity']}} ">
-                        <input type = "submit" value = "Remove" />
-                      </form>
-                    </th>
-                  </tr>
-                 {% endfor %}
-                </tbody>
-              </table>
+              <span>Shopping Cart</span><br>
+              <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Quantity</th>
+                      <th>Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for cartitem in getcartitem(user['id']) %}
+                    <tr>
+                      <th>{{ cartitem['products.name'] }}</th>
+                      <th>{{ cartitem['cart.quantity'] }}</th>
+                      <th>{{ cartitem['price.price'] }}</th>
+                      <th>
+                        <form method="GET" action="/delete_from_cart/{{ cartitem['products.id'] }}/{{user['id']}}/ {{cartitem['cart.quantity']}} ">
+                          <input type = "submit" value = "Remove" />
+                        </form>
+                      </th>
+                    </tr>
+                   {% endfor %}
+                  </tbody>
+                </table>
 
 
 
-                <!--Select Delivery Address for Order-->
+                  <!--Select Delivery Address for Order-->
 
 
-                <h4> Deliver To: </h4>
-                <select>
-                    <!--python fucntion and sql query call that shows every delivery address on file-->
-                    {% for address in get_customer_addresses_tostr(user['id']) %}
-                    <option value="{{ address }}">{{ address }}</option>
-					
-					
-                    {% endfor %}
-                </select>
-                <form method="POST" action="/add_addr/{{user['id']}}">
-                    <div class="form-group">
-                        <input type="street_num" class="form-control" name="street_num" placeholder="Enter Street Number">
-                        <input type="street_name" class="form-control" name="street_name" placeholder="Enter Street Name">
-                        <input type="city" class="form-control" name="city" placeholder="Enter City">
-                        <input type="state" class="form-control" name="state" placeholder="Enter State">
-                        <input type="zip_code" class="form-control" name="zip_code" placeholder="Enter Zip code">
-                    </div>
-                    <!--<button>add new delivery address</button>-->
+                  <h4> Deliver To: </h4>
+                  <select name="selected_address" class="selectpicker form-control">
+                      <!--python fucntion and sql query call that shows every delivery address on file-->
+                      {% for address in get_customer_addresses_tostr(user['id']) %}
+                      <option value="{{ address }}">{{ address }}</option>
+                      {% endfor %}
+                  </select>
+                  <form method="POST" action="/add_addr/{{user['id']}}">
+                      <div class="form-group">
+                          <input type="street_num" class="form-control" name="street_num" placeholder="Enter Street Number">
+                          <input type="street_name" class="form-control" name="street_name" placeholder="Enter Street Name">
+                          <input type="city" class="form-control" name="city" placeholder="Enter City">
+                          <input type="state" class="form-control" name="state" placeholder="Enter State">
+                          <input type="zip_code" class="form-control" name="zip_code" placeholder="Enter Zip code">
+                      </div>
+                      <!--<button>add new delivery address</button>-->
 
-                      <input type="submit" name="add_addr" value="Add delivery address">
+                        <input type="submit" name="add_addr" value="Add delivery address">
+                  </form>
+
+
+
+                  <!--Select Card for Order-->
+
+                  <h4> Pay With: </h4>
+
+                  <select name="selected_card" class="selectpicker form-control">
+                      <!--python fucntion and sql query call that shows every card on file
+
+                          the select tags is a drop down menu-->
+                          {% for card in get_customer_cards_tostr(user['id']) %}
+                          <option value="{{ card }}">{{ card }}</option>
+                          {% endfor %}
+                  </select>
+                  <form method="POST" action="/add_card/{{user['id']}}">
+                      <div class="form-group">
+                          <input type="card" class="form-control" name="card" placeholder="Enter Card Number">
+                          <input type="street_num" class="form-control" name="street_num" placeholder="Enter Street Number">
+                          <input type="street_name" class="form-control" name="street_name" placeholder="Enter Street Name">
+                          <input type="city" class="form-control" name="city" placeholder="Enter City">
+                          <input type="state" class="form-control" name="state" placeholder="Enter State">
+                          <input type="zip_code" class="form-control" name="zip_code" placeholder="Enter Zip code">
+                      </div>
+                      <input type="submit" name="add_card" value="Add card">
+                  </form>
+
+                  <br>
+                  <!--Submit button: redirect to order succesful page, add order to customer order's table,
+                  drop cart items, update warehouse stock -->
+                <form method="POST" action="/submit_order">
+                    <input type="submit" name="submit_order" value="Submit Order">
                 </form>
-
-
-
-                <!--Select Card for Order-->
-
-                <h4> Pay With: </h4>
-
-                <select>
-                    <!--python fucntion and sql query call that shows every card on file
-
-                        the select tags is a drop down menu-->
-                        {% for card in get_customer_cards_tostr(user['id']) %}
-                        <option value="{{ card }}">{{ card }}</option>
-						
-						
-						
-                        {% endfor %}
-						<!--confirm card-->
-                </select>
-                <form method="POST" action="/add_card/{{user['id']}}">
-                    <div class="form-group">
-                        <input type="card" class="form-control" name="card" placeholder="Enter Card Number">
-                        <input type="street_num" class="form-control" name="street_num" placeholder="Enter Street Number">
-                        <input type="street_name" class="form-control" name="street_name" placeholder="Enter Street Name">
-                        <input type="city" class="form-control" name="city" placeholder="Enter City">
-                        <input type="state" class="form-control" name="state" placeholder="Enter State">
-                        <input type="zip_code" class="form-control" name="zip_code" placeholder="Enter Zip code">
-                    </div>
-                    <input type="submit" name="add_card" value="Add card">
-                </form>
-
-                <br>
-                <!--Submit button: redirect to order succesful page, add order to customer order's table, 
-                drop cart items, update warehouse stock -->
-                <!--<form method="POST" action="/submit_order">
-                  <input type="submit" name="submit_order" value="Submit Order">
-                </form>-->
-				{% for cartitem in getcartitem(user['id']) %}
-                  <tr>
-                 <!--   <th>{{ cartitem['products.name'] }}</th>
-					<th>{{ cartitem['products.id'] }}</th>
-                    <th>{{ cartitem['cart.quantity'] }}</th>
-                    <th>{{ cartitem['price.price'] }}</th>
-                    <th> for debugging-->
-                      <form method="GET" action="/submit_order/{{ cartitem['products.id'] }}/{{user['id']}}/ {{cartitem['cart.quantity']}} ">
-                        <input type = "submit" value = "submit order" />
-                      </form>
-                    </th>
-                  </tr>
-                 {% endfor %}
 
           </p>
 
