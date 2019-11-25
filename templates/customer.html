@@ -29,7 +29,7 @@
           <input type = "submit" value = "submit"/>
         </form>
 
-        <form method="POST">
+        <form action="/request_product" method="POST">
             <p>Search for item by name:</p>
             <input type="text" class="form-control" name="product_name" placeholder="Enter item name">
             <input type = "submit" value = "submit" />
@@ -45,31 +45,66 @@
                 <th>Name</th>
                 <th>Nutrition Information</th>
                 <th>Cost</th>
+                <th>State</th>
                 <th>Add to Cart</th>
               </tr>
             </thead>
             <tbody>
-              <!-- python function that iterates through every single product in product list-->
-              {% for product in getproducts(user['id'], type) %}
+              {% if not name %}
+              
+              <!-- python function that iterates through every single product in product list for your state-->
+              
+              {% for product in get_state_products(user['id'], type) %}
               <tr>
                 <th>{{ product['products.id'] }}</th>
                 <th>{{ product['name'] }}</th>
                 <th>{{ product['nutrition_facts'] }}</th>
                 <th>{{ product['price'] }}</th>
-                <th><form method="GET" action="/orders">
-						        <input type="hidden" class="form-control" name="product_id" value="{{ product['products.id'] }}" >
-                    <input type="number" class="form-control" name="product_quantity" placeholder="Enter Quantity to add to cart" min ="0">
+                <th>{{ getstate(user['id'])[0]['state'] }}</th>
+                <th>
+                  <form method="GET" action="/update_cart/{{ product['products.id'] }}">
+                    <input type="number" class="form-control" name="product_quantity" placeholder="Enter Quantity to add to cart" min ="1">
                     <input type = "submit" value = "submit" />
-                </form></th>
+                  </form>
+                </th>
+                
               </tr>
              {% endfor %}
+             {% endif %}
+
+
+             If the request includes a name
+             {% if name %}
+
+             {% for product in getproduct(user['id'], name) %}
+             <tr>
+              <th>{{ product['products.id'] }}</th>
+              <th>{{ product['name'] }}</th>
+              <th>{{ product['nutrition_facts'] }}</th>
+              <th>{{ product['price'] }}</th>
+              <th>{{ getstate(user['id'])[0]['state'] }}</th>
+              <th>
+                <form method="GET" action="/update_cart/{{ product['products.id'] }}">
+                  <input type="number" class="form-control" name="product_quantity" placeholder="Enter Quantity to add to cart" min ="1">
+                  <input type = "submit" value = "submit" />
+                </form>
+              </th>
+              
+            </tr>
+
+            {% endfor %}
+
+            {% endif %}
+
+
             </tbody>
           </table>
-          <!--<button method="GET">Go to Account </button>
-          <button method="GET">Go to Cart</button>-->
+
+          <!--Navigation to Account and Cart-->
           <form method="POST" action="/nav">
             <input type="submit" name="submit_button" value="Go To Account">
-            <input type="submit" name="submit_button" value="Go To Cart"></form>
+            <input type="submit" name="submit_button" value="Go To Cart">
+          </form>
 
   </body>
   </html>

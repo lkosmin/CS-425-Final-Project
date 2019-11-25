@@ -49,19 +49,19 @@ def todict(tup,schema): #assumes right arguments
 @app.context_processor
 def sqlcommands():
     def getstate(id):
-        query = "SELECT STATE FROM CUSTOMER NATURAL JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
+        query = "SELECT STATE FROM CUSTOMER JOIN DELIVERY WHERE CUSTOMER.ID = DELIVERY.CID AND CUSTOMER.ID = \"{}\"".format(id)
         cursor.execute(query)
         state = ['state']
         return [todict(tup, state) for tup in cursor.fetchall()]
 
-    def shoppingcart(id):
-        state = getstate(id)
-        query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND products.id = price.pid AND orders.cid = \"{}\" AND price.state = \"{}\"".format(id, state[0]['state'])
-        cursor.execute(query)
-        cartitem = ['price.pid','name','quantity','price.cost']
-        return [todict(tup, cartitem) for tup in cursor.fetchall()]
+    # def shoppingcart(id):
+    #     state = getstate(id)
+    #     query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND products.id = price.pid AND orders.cid = \"{}\" AND price.state = \"{}\"".format(id, state[0]['state'])
+    #     cursor.execute(query)
+    #     cartitem = ['price.pid','name','quantity','price.cost']
+    #     return [todict(tup, cartitem) for tup in cursor.fetchall()]
 
-    def getproducts(id, type):
+    def get_state_products(id, type):
         state = getstate(id)
         if type == 0:
             query = "select products.id, name, nutrition_facts, price from products join stock join warehouse join price where products.id = stock.pid and stock.pid = price.pid and stock.wid = warehouse.id and price.state = warehouse.state and price.state = \"{}\" and products.type = 'food'".format(state[0]['state'])
@@ -72,6 +72,13 @@ def sqlcommands():
         else:
             query = "select products.id, name, nutrition_facts, price from products join stock join warehouse join price where products.id = stock.pid and stock.pid = price.pid and stock.wid = warehouse.id and price.state = warehouse.state and price.state = \"{}\"".format(state[0]['state'])
             #query = "SELECT products.id, name, nutrition_facts, price FROM products JOIN price WHERE products.id = price.pid AND price.state = \"{}\"".format(state[0]['state'])
+        cursor.execute(query)
+        product = ['products.id', 'name', 'nutrition_facts', 'price']
+        return [todict(tup, product) for tup in cursor.fetchall()]
+
+    def getproduct(id, name):
+        state = getstate(id)
+        query = "select products.id, name, nutrition_facts, price from products join stock join warehouse join price where products.id = stock.pid and stock.pid = price.pid and stock.wid = warehouse.id and price.state = warehouse.state and price.state = \"{}\" and products.name = \"{}\"".format(state[0]['state'], name)
         cursor.execute(query)
         product = ['products.id', 'name', 'nutrition_facts', 'price']
         return [todict(tup, product) for tup in cursor.fetchall()]
@@ -87,7 +94,7 @@ def sqlcommands():
     #def getaddress
 
 
-    return dict(getstate=getstate, shoppingcart=shoppingcart,getproducts=getproducts, getcart=getcart)
+    return dict(getstate=getstate, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart)
 
 
 ###
@@ -134,23 +141,45 @@ def request_filtered_list():
     else:
         return render_template('customer.html', user=user, type=1)
 
+@app.route("/request_product", methods = ['GET', 'POST'])
+def request_product():
+    name = request.form.get('product_name', 0)
+    return render_template('customer.html', user=user, name=name)
+
+@app.route('/update_cart/<product_id>', methods = ['GET'])
+def update_cart(product_id):
+    product_quantity = request.args.get("product_quantity", 0)
+    #insert to cart
+    query = "insert into cart(cid, pid, quantity) values (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user['id'], product_id, product_quantity, product_quantity)
+    cursor.execute(query)
+    conn.commit()
+    #retrieve warehouse id
+    query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
+    cursor.execute(query)
+    customer_wid = cursor.fetchone()[0]
+    #delete from stock
+    query = "delete from stock where stock.pid = \"{}\" and stock.wid = \"{}\"".format(product_id, customer_wid)
+    cursor.execute(query)
+    conn.commit()
+    #go to orders.html
+    return render_template('orders.html', user = user)
 
 @app.route('/account/', methods = ['GET'])
 def account():
     return render_template('account.html', user=user)
 
-@app.route('/orders/', methods = ['GET'])
-def orders():
-    if request.method == 'GET':
-        #if request.form.get('submit') == 'submit':
-            product_id = request.args.get("product_id",0)
-            product_quantity = request.args.get("product_quantity", 0)
-            user_id=user['id']
-            #query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
-            query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
-            cursor.execute(query)
+# @app.route('/orders/', methods = ['GET'])
+# def orders():
+#     if request.method == 'GET':
+#         #if request.form.get('submit') == 'submit':
+#             product_id = request.args.get("product_id",0)
+#             product_quantity = request.args.get("product_quantity", 0)
+#             user_id=user['id']
+#             #query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
+#             query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
+#             cursor.execute(query)
 
-    return render_template('orders.html', user=user, product_id=product_id, product_quantity=product_quantity )
+#     return render_template('orders.html', user=user, product_id=product_id, product_quantity=product_quantity )
 
 #test
 @app.route('/staff/', methods = ['GET'])
@@ -174,3 +203,4 @@ def nav():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

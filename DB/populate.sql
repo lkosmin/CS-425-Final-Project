@@ -83,29 +83,6 @@ INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (14,'vitamin wa
 INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (15,'beer','beverage', 'Calories:27, Total Fat:7.2g, Polyunsaturated fat:2.3g, Total Carbohydrate:9g',54);
 INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (16,'craberry juice','beverage', 'Calories:500, Total Fat:0.3g, Polyunsaturated fat:7g, Total Carbohydrate:10g',6);
 
-/* Populate Food */
-/*
-INSERT INTO food (pid,nutrition_facts) VALUES (1, 'Calories:100, Total Fat:0.4g, Polyunsaturated fat: 0.1g');
-INSERT INTO food (pid,nutrition_facts) VALUES (2, 'Calories:130, Total Fat:0.7g, Polyunsaturated fat: 0.8g');
-INSERT INTO food (pid,nutrition_facts) VALUES (3, 'Calories:400, Total Fat:1.2g, Polyunsaturated fat: 1.4g');
-INSERT INTO food (pid,nutrition_facts) VALUES (4, 'Calories:255, Total Fat:4.5, Polyunsaturated fat: 0.8g');
-INSERT INTO food (pid,nutrition_facts) VALUES (5, 'Calories:130, Total Fat:0.8g, Polyunsaturated fat: 0.8g');
-INSERT INTO food (pid,nutrition_facts) VALUES (6, 'Calories:1607, Total Fat:1.2g, Polyunsaturated fat: 0.8g');
-INSERT INTO food (pid,nutrition_facts) VALUES (7, 'Calories:1000, Total Fat:7.2g, Polyunsaturated fat: 0.8g');
-INSERT INTO food (pid,nutrition_facts) VALUES (8, 'Calories:265, Total Fat:0.4g, Polyunsaturated fat: 0.8g');
-INSERT INTO food (pid,nutrition_facts) VALUES (9, 'Calories:706, Total Fat:1.1g, Polyunsaturated fat: 0.8g');
-
-/* Populate Beverage. We don't every need to sort by nutrition info. Just type. So nutrition info can be generic. */
-/*
-INSERT INTO beverage (pid,nutrition_facts) VALUES (10, 'Calories:39, Total Fat:0.2g, Polyunsaturated fat:0g, Total Carbohydrate:9g');
-INSERT INTO beverage (pid,nutrition_facts) VALUES (11, 'Calories:40, Total Fat:1.2g, Polyunsaturated fat:5g, Total Carbohydrate:7g');
-INSERT INTO beverage (pid,nutrition_facts) VALUES (12, 'Calories:130, Total Fat:2.2g, Polyunsaturated fat:0.1g, Total Carbohydrate:9g');
-INSERT INTO beverage (pid,nutrition_facts) VALUES (13, 'Calories:260, Total Fat:3.2g, Polyunsaturated fat:6g, Total Carbohydrate:1g');
-INSERT INTO beverage (pid,nutrition_facts) VALUES (14, 'Calories:30, Total Fat:9.2g, Polyunsaturated fat:3.4g, Total Carbohydrate:2g');
-INSERT INTO beverage (pid,nutrition_facts) VALUES (15, 'Calories:27, Total Fat:7.2g, Polyunsaturated fat:2.3g, Total Carbohydrate:9g');
-INSERT INTO beverage (pid,nutrition_facts) VALUES (16, 'Calories:500, Total Fat:0.3g, Polyunsaturated fat:7g, Total Carbohydrate:10g');
-*/
-
 
 /* Populate Orders */
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (1,1,1,16,2,'2016-11-24','recieved');

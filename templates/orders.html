@@ -31,6 +31,8 @@
             </p>
 
           <p>
+
+        
             <span>Shopping Cart</span><br>
             <table>
                 <thead>
@@ -50,27 +52,7 @@
                  {% endfor %}
                 </tbody>
               </table>
-                <!--<span>Shopping Cart</span><br>
-                <table>
-                    <thead>
-                      <tr>
-                        <th>Product ID</th>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Cost</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for cartitem in shoppingcart(user['id']) %}
-                      <tr>
-                        <th>{{ cartitem['price.pid'] }}</th>
-                        <th>{{ cartitem['name'] }}</th>
-                        <th>{{ cartitem['quantity'] }}</th>
-                        <th>{{ cartitem['price.cost'] }}</th>
-                      </tr>
-                     {% endfor %}
-                    </tbody>
-                  </table>-->
+                
                 <form method="POST">
                     <div class="form-group">
                         <input type="quantity" class="form-control" name="new_quantity" placeholder="Edit quantity">

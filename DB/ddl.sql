@@ -72,22 +72,6 @@ create table stock
 	 primary key (wid, pid),
      foreign key (wid) references warehouse(id)
 	);
-
-
-/*create table food
-	(pid		INT NOT NULL,
-	 nutrition_facts varchar(100),
-	 primary key (pid),
-	 foreign key (pid) references products(pid)
-	);
-
-
-create table beverage
-	(pid	 INT NOT NULL,
-	 nutrition_facts varchar(100),
-	 primary key (pid),
-	 foreign key (pid) references products(pid)
-	);*/
     
 
 create table products
@@ -97,8 +81,6 @@ create table products
      nutrition_facts varchar(100),
      size numeric(7,2),
 	 primary key (id)
-	 /*foreign key (pid) references food(pid),
-	 foreign key (pid) references beverage(pid),*/
 	);
     
 create table price
