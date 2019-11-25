@@ -294,17 +294,23 @@ def add_card(user_id):
 @app.route('/submit_order', methods = ['POST'])
 def submit_order():
     selected_address = request.form.get('selected_address')
-    selected_card = request.form.get('selected_card')
+    selected_card_num = request.form.get('selected_card')
 
     # find the warehouse holding the stock
-    query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user_id)
+    query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
     cursor.execute(query)
     customer_wid = cursor.fetchone()[0]
 
-    # update stock
-    query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(product_quantity, customer_wid, cartitem_id)
-    #query = "update stock set quantity = quantity + \"{}\" where wid = \"{}\" and pid= \"{}\"".format(product_quantity,customer_wid,cartitem_id)
+    #query cart items to dict
+    #query = "SELECT pid, quantity from cart"
+    query = "SELECT * from cart where cart.cid = \"{}\"".format(user['id'])
     cursor.execute(query)
+    cart = todict(cursor.fetchone(),'cart')
+
+    # update stock
+    #query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(product_quantity, customer_wid, cartitem_id)
+    #query = "update stock set quantity = quantity + \"{}\" where wid = \"{}\" and pid= \"{}\"".format(product_quantity,customer_wid,cartitem_id)
+    #cursor.execute(query)
 
     # update orders table
     #address = request.form.get('address')
@@ -316,8 +322,8 @@ def submit_order():
 
     # need query to delete items from cart
 
-    conn.commit()
-    return render_template('order_successful.html', user=user)
+    #conn.commit()
+    return render_template('order_successful.html', user=user,cart=cart)
 
 if __name__ == '__main__':
     app.run(debug=True)
