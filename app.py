@@ -281,11 +281,15 @@ def add_card(user_id):
     cursor.execute(query)
     conn.commit()
     card_id = (cursor.fetchone()[0]) + 1
-    #insert new delivery address
+    #insert new credit card
     query = "insert into credit_card(id, cid, card_num, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(card_id,user['id'], card, street_num, street_name, city, state, zip_code)
     cursor.execute(query)
     conn.commit()
     return render_template('orders.html', user=user)
 
+@app.route('/submit_order', methods = ['POST'])
+def submit_order():
+    return render_template('order_successful.html', user=user)
+    
 if __name__ == '__main__':
     app.run(debug=True)
