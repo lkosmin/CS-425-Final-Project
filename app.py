@@ -301,11 +301,12 @@ def submit_order():
     cursor.execute(query)
     customer_wid = cursor.fetchone()[0]
 
-    #query cart items to dict
+    #query cart items to dict NEED TO FIX
     #query = "SELECT pid, quantity from cart"
     query = "SELECT * from cart where cart.cid = \"{}\"".format(user['id'])
     cursor.execute(query)
-    cart = todict(cursor.fetchone(),'cart')
+    #cart = todict(cursor.fetchone(),'cart')
+    cart=cursor.fetchall()
 
     # update stock
     #query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(product_quantity, customer_wid, cartitem_id)
@@ -313,7 +314,7 @@ def submit_order():
     #cursor.execute(query)
 
     # update orders table
-    #address = request.form.get('address')
+    #query = "insert into orders(cid, oid, pid, ccid, quantity, date, status) values()"
     #what do we do with the delievery address? --> input into delivery tb?
     #card = request.form.get('card')
 

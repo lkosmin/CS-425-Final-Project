@@ -8,16 +8,95 @@
     <header>
       <div class="container">
         <h1 class="logo">Products</h1>
-        <strong><nav>
-          <ul class="menu">
-            <li><a href="{{ url_for('staff') }}">Home</a></li>
-            <li><a href="{{ url_for('warehouse') }}">Warehouses</a></li>
-          </ul>
-        </nav></strong>
       </div>
     </header>
 
-      <h3> will display all products here, need edit buttons </h3>
+    <form action="/request_filtered_list" method="POST">
+      <INPUT TYPE="Checkbox" Name="food" Value ="Food">Food
+      <INPUT TYPE="Checkbox" Name="beverages" Value ="Beverage">Beverage
+      <input type = "submit" value = "submit"/>
+    </form>
+    <!-- filter by state -->
+    <form method="GET" action="/filter_by_state">
+      <select name="state" class="selectpicker form-control">
+        <option value="Test">"test"</option>
+      </select>
+      <input type="submit" value="submit" />
+    </form>
+
+    <form action="/request_product" method="POST">
+        <p>Search for item by name:</p>
+        <input type="text" class="form-control" name="product_name" placeholder="Enter item name">
+        <input type = "submit" value = "submit" />
+    </form>
+  </br>
+  </br>
+    <table>
+        <thead>
+          <tr>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Nutrition Information</th>
+            <th>Cost</th>
+            <th>State</th>
+            <th>Add to Cart</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if not name %}
+
+          <!-- python function that iterates through every single product in product list for your state-->
+
+          {% for product in get_state_products(user['id'], type) %}
+          <tr>
+            <th>{{ product['products.id'] }}</th>
+            <th>{{ product['name'] }}</th>
+            <th>{{ product['nutrition_facts'] }}</th>
+            <th>{{ product['price'] }}</th>
+            <th>{{ getstate(user['id'])[0]['state'] }}</th>
+            <th>
+              <form method="GET" action="/update_cart/{{ product['products.id'] }}">
+                <input type = "submit" value = "edit" />
+              </form>
+            </th>
+
+          </tr>
+         {% endfor %}
+         {% endif %}
+
+
+         <!-- If the request includes a name -->
+         {% if name %}
+
+         {% for product in getproduct(user['id'], name) %}
+         <tr>
+          <th>{{ product['products.id'] }}</th>
+          <th>{{ product['name'] }}</th>
+          <th>{{ product['nutrition_facts'] }}</th>
+          <th>{{ product['price'] }}</th>
+          <th>{{ getstate(user['id'])[0]['state'] }}</th>
+          <th>
+            <form method="GET" action="/update_cart/{{ product['products.id'] }}">
+              <input type="number" class="form-control" name="product_quantity" placeholder="Enter Quantity to add to cart" min ="1">
+              <input type = "submit" value = "submit" />
+            </form>
+          </th>
+
+        </tr>
+
+        {% endfor %}
+
+        {% endif %}
+
+
+        </tbody>
+      </table>
+
+      <!--Navigation to Account and Cart-->
+      <form method="POST" action="/nav">
+        <input type="submit" name="submit_button" value="Go To Account">
+        <input type="submit" name="submit_button" value="Go To Cart">
+      </form>
 
   </body>
 
