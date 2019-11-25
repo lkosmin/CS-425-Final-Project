@@ -299,7 +299,8 @@ def submit_order(cartitem_id, user_id, product_quantity):
     customer_wid = cursor.fetchone()[0]
 
     # update stock
-    query = "update stock set quantity = quantity + \"{}\" where wid = \"{}\" and pid= \"{}\"".format(product_quantity,customer_wid,cartitem_id)
+    query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(product_quantity, customer_wid, cartitem_id)
+    #query = "update stock set quantity = quantity + \"{}\" where wid = \"{}\" and pid= \"{}\"".format(product_quantity,customer_wid,cartitem_id)
     cursor.execute(query)
 
     # update orders table
