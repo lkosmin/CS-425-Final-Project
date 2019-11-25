@@ -303,6 +303,10 @@ def submit_order(cartitem_id, user_id, product_quantity):
     cursor.execute(query)
 
     # update orders table
+    #address = request.form.get('address')
+    #what do we do with the delievery address? --> input into delivery tb?
+    #card = request.form.get('card')
+
     #datetime = datetime.date.today()
     #query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(1, 1, 2, 1, 5, '2019-11-25', 'recieved')"
 
