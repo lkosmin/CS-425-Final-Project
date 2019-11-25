@@ -257,7 +257,6 @@ def add_addr(user_id):
     city = request.form.get('city')
     state = request.form.get('state')
     zip_code = request.form.get('zip_code')
-    #zip_code = 89993;
     #incrementing the delivery id
     query = "select count(*) from delivery"
     cursor.execute(query)
@@ -269,6 +268,24 @@ def add_addr(user_id):
     conn.commit()
     return render_template('orders.html', user=user)
 
+@app.route('/add_card/<user_id>', methods = ['GET', 'POST'])
+def add_card(user_id):
+    card = request.form.get('card')
+    street_num = request.form.get('street_num')
+    street_name = request.form.get('street_name')
+    city = request.form.get('city')
+    state = request.form.get('state')
+    zip_code = request.form.get('zip_code')
+    #incrementing the card id
+    query = "select count(*) from credit_card"
+    cursor.execute(query)
+    conn.commit()
+    card_id = (cursor.fetchone()[0]) + 1
+    #insert new delivery address
+    query = "insert into credit_card(id, cid, card_num, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(card_id,user['id'], card, street_num, street_name, city, state, zip_code)
+    cursor.execute(query)
+    conn.commit()
+    return render_template('orders.html', user=user)
 
 if __name__ == '__main__':
     app.run(debug=True)

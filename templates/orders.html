@@ -95,16 +95,16 @@
                         <option value="{{ card }}">{{ card }}</option>
                         {% endfor %}
                 </select>
-                <form method="POST">
+                <form method="POST" action="/add_card/{{user['id']}}">
                     <div class="form-group">
-                        <input type="card" class="form-control" name="new_card" placeholder="Enter Card Number">
-                        <input type="street_num" class="form-control" name="new_card" placeholder="Enter Street Number">
-                        <input type="stree_name" class="form-control" name="new_card" placeholder="Enter Street Name">
-                        <input type="city" class="form-control" name="new_card" placeholder="Enter City">
-                        <input type="state" class="form-control" name="new_card" placeholder="Enter State">
-                        <input type="zip_code" class="form-control" name="new_card" placeholder="Enter Zip code">
+                        <input type="card" class="form-control" name="card" placeholder="Enter Card Number">
+                        <input type="street_num" class="form-control" name="street_num" placeholder="Enter Street Number">
+                        <input type="street_name" class="form-control" name="street_name" placeholder="Enter Street Name">
+                        <input type="city" class="form-control" name="city" placeholder="Enter City">
+                        <input type="state" class="form-control" name="state" placeholder="Enter State">
+                        <input type="zip_code" class="form-control" name="zip_code" placeholder="Enter Zip code">
                     </div>
-                    <button>add new card</button>
+                    <input type="submit" name="add_card" value="Add card">
                 </form>
 
                 <br>
