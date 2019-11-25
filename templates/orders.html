@@ -100,12 +100,13 @@
                         {% for card in get_customer_cards_tostr(user['id']) %}
                         <option value="{{ card }}">{{ card }}</option>
 						
+						
+						
+                        {% endfor %}
 						<!--confirm card-->
 						<form method="POST" action="/submit_address_or_card">
 							<input type="submit" name="submit_button" value="Confirm Card">
 						</form>
-						
-                        {% endfor %}
                 </select>
                 <form method="POST" action="/add_card/{{user['id']}}">
                     <div class="form-group">
