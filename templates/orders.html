@@ -63,11 +63,10 @@
 
                 <h4> Deliver To: </h4>
                 <select>
-                    <!--python fucntion and sql query call that shows every delivery address on file
-
-                        the select tags is a drop down menu-->
-                        <option value="address1">Address 1</option>
-                        <option value="address2">Address 2</option>
+                    <!--python fucntion and sql query call that shows every delivery address on file-->
+                    {% for address in get_customer_addresses_tostr(user['id']) %}
+                    <option value="{{ address }}">{{ address }}</option>
+                    {% endfor %}
                 </select>
                 <form method="POST">
                     <div class="form-group">
@@ -90,8 +89,9 @@
                     <!--python fucntion and sql query call that shows every card on file
 
                         the select tags is a drop down menu-->
-                        <option value="card1">Card 1</option>
-                        <option value="card2">Card 2</option>
+                        {% for card in get_customer_cards_tostr(user['id']) %}
+                        <option value="{{ card }}">{{ card }}</option>
+                        {% endfor %}
                 </select>
                 <form method="POST">
                     <div class="form-group">
@@ -105,6 +105,7 @@
                     <button>add new card</button>
                 </form>
 
+                <br>
                 <button>submit order</button>
 
           </p>

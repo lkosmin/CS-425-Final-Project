@@ -193,7 +193,7 @@ def update_cart(product_id):
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
     cursor.execute(query)
     customer_wid = cursor.fetchone()[0]
-    #delete from stock
+    #delete from stock (need to modify, this is deleting from stock even if quantity of stock in warehouse > 0, so i think we need to add a quantity comparison if ==0 before delete)
     query = "delete from stock where stock.pid = \"{}\" and stock.wid = \"{}\"".format(product_id, customer_wid)
     cursor.execute(query)
     conn.commit()
