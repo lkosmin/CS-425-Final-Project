@@ -66,6 +66,12 @@
                     <!--python fucntion and sql query call that shows every delivery address on file-->
                     {% for address in get_customer_addresses_tostr(user['id']) %}
                     <option value="{{ address }}">{{ address }}</option>
+					
+					<!--confirm address-->
+					<form method="POST" action="/submit_address_or_card">
+						<input type="submit" name="submit_button" value="Confirm Address">
+					</form>
+					
                     {% endfor %}
                 </select>
                 <form method="POST" action="/add_addr/{{user['id']}}">
@@ -93,6 +99,12 @@
                         the select tags is a drop down menu-->
                         {% for card in get_customer_cards_tostr(user['id']) %}
                         <option value="{{ card }}">{{ card }}</option>
+						
+						<!--confirm card-->
+						<form method="POST" action="/submit_address_or_card">
+							<input type="submit" name="submit_button" value="Confirm Card">
+						</form>
+						
                         {% endfor %}
                 </select>
                 <form method="POST" action="/add_card/{{user['id']}}">
