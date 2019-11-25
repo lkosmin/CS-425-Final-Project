@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <title> Edit Information </title>
+  <!--  Edit functionality -->
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="logo">Edit Information</h1>
+    </div>
+  </header>
+
+  {% if delivery_id %}
+  <!-- show what the delivery id is  -->
+  <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Street Number</th>
+            <th>Street Name</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip Code</th>
+          </tr>
+        </thead>
+        <tbody>      
+          <!--gets addresses to display  -->
+          {% for address in get_one_customer_address_todict(user['id'], delivery_id) %}
+          <tr>
+            <th>{{ address['id'] }}</th>
+            <th>{{ address['street_num'] }}</th>
+            <th>{{ address['street_name'] }}</th>
+            <th>{{ address['city'] }}</th>
+            <th>{{ address['state'] }}</th>
+            <th>{{ address['zip'] }}</th>  
+          </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+
+      <p>Edit Delivery Address</p>
+  <form method="POST" action="/update_address/{{ get_one_customer_address_todict(user['id'], delivery_id)['id'] }}">
+    <div class="form-group">
+      <input type="street_num" class="form-control" name="new_address" placeholder="Enter Street Number">
+      <input type="stree_name" class="form-control" name="new_address" placeholder="Enter Street Name">
+      <input type="city" class="form-control" name="new_address" placeholder="Enter City">
+      <input type="state" class="form-control" name="new_address" placeholder="Enter State">
+      <input type="zip_code" class="form-control" name="new_address" placeholder="Enter Zip code">
+    </div>
+    <input type="submit" value="Update Address" />
+</form>
+
+
+
+
+  {% endif %}
+
+
+  {% if card_id %}
+
+<!-- show what the card id is  -->
+<table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Card Number</th>
+            <th>Street Number</th>
+            <th>Street Name</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip Code</th>
+          </tr>
+        </thead>
+        <tbody>      
+          <!--gets cards to display  -->
+          {% for card in get_one_customer_card_todict(user['id'], card_id) %}
+          <tr>
+            <th>{{ card['id'] }}</th>
+            <th>{{ card['card_num'] }}</th>
+            <th>{{ card['street_num'] }}</th>
+            <th>{{ card['street_name'] }}</th>
+            <th>{{ card['city'] }}</th>
+            <th>{{ card['state'] }}</th>
+            <th>{{ card['zip'] }}</th>  
+          </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+
+      <p>Edit Card Information</p>
+  <form method="POST" action="/update_card/{{ get_one_customer_card_todict(user['id'], card_id)['id'] }}">
+    <div class="form-group">
+      <input type="card_num" class="form-control" name="new_address" placeholder="Enter Card Number">
+      <input type="street_num" class="form-control" name="new_address" placeholder="Enter Street Number">
+      <input type="stree_name" class="form-control" name="new_address" placeholder="Enter Street Name">
+      <input type="city" class="form-control" name="new_address" placeholder="Enter City">
+      <input type="state" class="form-control" name="new_address" placeholder="Enter State">
+      <input type="zip_code" class="form-control" name="new_address" placeholder="Enter Zip code">
+    </div>
+    <input type="submit" value="Update Card" />
+</form>
+
+
+  {% endif %}
+
+    <form method="POST" action="/nav">
+      <input type="submit" name="submit_button" value="Go To Cart">
+      <input type="submit" name="submit_button" value="Go To Store">
+    </form>
+</body>
+
+</html>

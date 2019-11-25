@@ -67,10 +67,14 @@ def sqlcommands():
         return [tostr(tup, address) for tup in cursor.fetchall()]
     
     def get_customer_addresses_todict(id):
-        query = "SELECT street_num, street_name, city, state, zip FROM delivery WHERE cid = \"{}\"".format(id)
+        query = "SELECT * FROM delivery WHERE cid = \"{}\"".format(id)
         cursor.execute(query)
-        address = ['street_num', 'street_name', 'city', 'state', 'zip']
-        return [todict(tup, address) for tup in cursor.fetchall()]
+        return [todict(tup, 'delivery') for tup in cursor.fetchall()]
+
+    def get_one_customer_address_todict(id, delivery_id):
+        query = "SELECT * FROM delivery WHERE cid = \"{}\" and id = \"{}\"".format(id, delivery_id)
+        cursor.execute(query)
+        return [todict(tup, 'delivery') for tup in cursor.fetchall()]
 
     def get_customer_cards_tostr(id):
         query = "SELECT card_num, street_num, street_name, city, state, zip FROM credit_card WHERE cid = \"{}\"".format(id)
@@ -79,10 +83,14 @@ def sqlcommands():
         return [tostr(tup, card) for tup in cursor.fetchall()]
 
     def get_customer_cards_todict(id):
-        query = "SELECT card_num, street_num, street_name, city, state, zip FROM credit_card WHERE cid = \"{}\"".format(id)
+        query = "SELECT * FROM credit_card WHERE cid = \"{}\"".format(id)
         cursor.execute(query)
-        card = ['card_num','street_num', 'street_name', 'city', 'state', 'zip']
-        return [todict(tup, card) for tup in cursor.fetchall()]
+        return [todict(tup, 'credit_card') for tup in cursor.fetchall()]
+
+    def get_one_customer_card_todict(id, card_id):
+        query = "SELECT * FROM credit_card WHERE cid = \"{}\" and id = \"{}\"".format(id,card_id)
+        cursor.execute(query)
+        return [todict(tup, 'credit_card') for tup in cursor.fetchall()]
 
     def get_state_products(id, type):
         state = getstate(id)
@@ -122,7 +130,7 @@ def sqlcommands():
     #def getaddress
 
 
-    return dict(getstate=getstate,get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict,get_customer_addresses_tostr=get_customer_addresses_tostr, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem)
+    return dict(getstate=getstate,get_one_customer_card_todict=get_one_customer_card_todict,get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict,get_customer_addresses_tostr=get_customer_addresses_tostr, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem)
 
 
 ###
@@ -192,6 +200,7 @@ def update_cart(product_id):
     #go to orders.html
     return render_template('orders.html', user = user)
 
+
 #delete product from shopping cart, insert product back into warehouse
 @app.route('/delete_from_cart', methods = ['GET'])
 def delete_from_cart():
@@ -217,6 +226,16 @@ def nav():
             return render_template('customer.html', user=user)
     return render_template('account.html', user=user)
 
+@app.route('/editaddress/<delivery_id>', methods = ['GET', 'POST'])
+def editaddress(delivery_id):
+    card_id=0
+    return render_template('edit.html', user=user,delivery_id=delivery_id, card_id=card_id)
+
+
+@app.route('/editcard/<card_id>', methods = ['GET', 'POST'])
+def editcard(card_id):
+    delivery_id = 0
+    return render_template('edit.html', user=user,delivery_id=delivery_id, card_id=card_id)
 
 
 if __name__ == '__main__':
