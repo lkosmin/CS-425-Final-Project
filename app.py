@@ -311,6 +311,7 @@ def submit_order(cartitem_id, user_id, product_quantity):
     #datetime = datetime.date.today()
     #query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(1, 1, 2, 1, 5, '2019-11-25', 'recieved')"
 
+
     # need query to delete items from cart
 
     conn.commit()
