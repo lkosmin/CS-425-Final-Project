@@ -67,10 +67,6 @@
                     {% for address in get_customer_addresses_tostr(user['id']) %}
                     <option value="{{ address }}">{{ address }}</option>
 					
-					<!--confirm address-->
-					<form method="POST" action="/submit_address_or_card">
-						<input type="submit" name="submit_button" value="Confirm Address">
-					</form>
 					
                     {% endfor %}
                 </select>
@@ -104,10 +100,6 @@
 						
                         {% endfor %}
 						<!--confirm card-->
-						<form method="POST" action="/submit_address_or_card">
-							<input type="submit" name="submit_button" value="Confirm Card">
-							{{card}}
-						</form>
                 </select>
                 <form method="POST" action="/add_card/{{user['id']}}">
                     <div class="form-group">
