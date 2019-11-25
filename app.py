@@ -5,11 +5,9 @@ import re
 
 app = Flask(__name__)
 
-# Intialize MySQL
 mysql = MySQL()
 
 
-# database connection details below
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'pass'
 app.config['MYSQL_DATABASE_DB'] = 'store'
@@ -38,13 +36,21 @@ schemas = {'user': ['username', 'userpass', 'role', 'id'],
            }
 
 
-# Take tuple, create dictionary:
-def todict(tup,schema): #assumes right arguments
-    if isinstance(schema,str): #allows you to give the name of one of the default schemas
-        schema = schemas[schema]    #else, we will just use the schema list that you give us!
-    if not tup or len(tup) != len(schema): #no tuple, or mismatch with schema
+
+def todict(tup,schema): 
+    if isinstance(schema,str): 
+        schema = schemas[schema]    
+    if not tup or len(tup) != len(schema): 
         return None
     return {schema[i]:tup[i] for i in range(len(schema))}
+
+
+# takes a tuple and makes it into a string
+def tostr(tup,schema):
+    string = ""
+    for i in range(len(schema)):
+        string += str(tup[i]) + " "
+    return string
 
 @app.context_processor
 def sqlcommands():
@@ -54,12 +60,29 @@ def sqlcommands():
         state = ['state']
         return [todict(tup, state) for tup in cursor.fetchall()]
 
-    # def shoppingcart(id):
-    #     state = getstate(id)
-    #     query = "SELECT price.pid, name, quantity, price FROM orders JOIN products JOIN price WHERE orders.pid = products.id AND products.id = price.pid AND orders.cid = \"{}\" AND price.state = \"{}\"".format(id, state[0]['state'])
-    #     cursor.execute(query)
-    #     cartitem = ['price.pid','name','quantity','price.cost']
-    #     return [todict(tup, cartitem) for tup in cursor.fetchall()]
+    def get_customer_addresses_tostr(id):
+        query = "SELECT street_num, street_name, city, state, zip FROM delivery WHERE cid = \"{}\"".format(id)
+        cursor.execute(query)
+        address = ['street_num', 'street_name', 'city', 'state', 'zip']
+        return [tostr(tup, address) for tup in cursor.fetchall()]
+    
+    def get_customer_addresses_todict(id):
+        query = "SELECT street_num, street_name, city, state, zip FROM delivery WHERE cid = \"{}\"".format(id)
+        cursor.execute(query)
+        address = ['street_num', 'street_name', 'city', 'state', 'zip']
+        return [todict(tup, address) for tup in cursor.fetchall()]
+
+    def get_customer_cards_tostr(id):
+        query = "SELECT card_num, street_num, street_name, city, state, zip FROM credit_card WHERE cid = \"{}\"".format(id)
+        cursor.execute(query)
+        card = ['card_num','street_num', 'street_name', 'city', 'state', 'zip']
+        return [tostr(tup, card) for tup in cursor.fetchall()]
+
+    def get_customer_cards_todict(id):
+        query = "SELECT card_num, street_num, street_name, city, state, zip FROM credit_card WHERE cid = \"{}\"".format(id)
+        cursor.execute(query)
+        card = ['card_num','street_num', 'street_name', 'city', 'state', 'zip']
+        return [todict(tup, card) for tup in cursor.fetchall()]
 
     def get_state_products(id, type):
         state = getstate(id)
@@ -99,7 +122,7 @@ def sqlcommands():
     #def getaddress
 
 
-    return dict(getstate=getstate, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem)
+    return dict(getstate=getstate,get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict,get_customer_addresses_tostr=get_customer_addresses_tostr, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem)
 
 
 ###
@@ -174,23 +197,6 @@ def update_cart(product_id):
 def delete_from_cart():
     return render_template('orders.html', user=user)
 
-@app.route('/account/', methods = ['GET'])
-def account():
-    return render_template('account.html', user=user)
-
-# @app.route('/orders/', methods = ['GET'])
-# def orders():
-#     if request.method == 'GET':
-#         #if request.form.get('submit') == 'submit':
-#             product_id = request.args.get("product_id",0)
-#             product_quantity = request.args.get("product_quantity", 0)
-#             user_id=user['id']
-#             #query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
-#             query = "INSERT into cart (cid, pid, quantity) VALUES (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user_id, product_id,product_quantity, product_quantity)
-#             cursor.execute(query)
-
-#     return render_template('orders.html', user=user, product_id=product_id, product_quantity=product_quantity )
-
 #test
 @app.route('/staff/', methods = ['GET'])
 def staff():
@@ -204,12 +210,12 @@ def warehouse():
 def nav():
     if request.method == 'POST':
         if request.form.get('submit_button') == 'Go To Account':
-            return render_template('account.html')
+            return render_template('account.html', user=user)
         elif request.form.get('submit_button') == 'Go To Cart':
             return render_template('orders.html', user=user)
         elif request.form.get('submit_button') == 'Go To Store':
             return render_template('customer.html', user=user)
-    return render_template('account.html')
+    return render_template('account.html', user=user)
 
 
 

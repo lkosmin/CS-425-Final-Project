@@ -1,24 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title> Account Information </title>
-  </head>
-  <body>
-    <header>
-      <div class="container">
-        <h1 class="logo">Account Information</h1>
-      </div>
-    </header>
 
-      <h1> Account Information </h1>
-      <h1>{{user}}</h1>
-      <h3> need attributes from customer, delivery, and credit card </h3>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <title> Account Information </title>
+  <!--  Displays account information
+          Display account balance
+          Displays current address
+          Displays current card
+          Go to shopping page button
+          Go to Orders button
+          Edit card button
+          Edit address button -->
+
+
+
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h1 class="logo">Account Information</h1>
+    </div>
+  </header>
+
+  <h1> Account Information </h1>
+<!-- current addresses -->
+
+<table>
+    <thead>
+      <tr>
+        <th>Street Number</th>
+        <th>Street Name</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip Code</th>
+        <th>Edit address</th>
+      </tr>
+    </thead>
+    <tbody>      
+      <!-- python function that iterates through every single address for the customer-->
       
-      <form method="POST" action="/nav">
-        <input type="submit" name="submit_button" value="Go To Cart">
-        <input type="submit" name="submit_button" value="Go To Store">
-      </form>
-  </body>
+      {% for address in get_customer_addresses_todict(user['id']) %}
+      <tr>
+        <th>{{ address['street_num'] }}</th>
+        <th>{{ address['street_name'] }}</th>
+        <th>{{ address['city'] }}</th>
+        <th>{{ address['state'] }}</th>
+        <th>{{ address['zip'] }}</th>
+        <th>
+          <form method="GET" action="/edit_address">
+            <input type = "submit" value = "Edit Address" />
+          </form>
+        </th>
+        
+      </tr>
+     {% endfor %}
+    </tbody>
+  </table>
+
+
+
+
+  <!-- add address field-->
+  <p>Add Delivery Address</p>
+  <form method="POST" action="/add_address">
+    <div class="form-group">
+      <input type="street_num" class="form-control" name="new_address" placeholder="Enter Street Number">
+      <input type="stree_name" class="form-control" name="new_address" placeholder="Enter Street Name">
+      <input type="city" class="form-control" name="new_address" placeholder="Enter City">
+      <input type="state" class="form-control" name="new_address" placeholder="Enter State">
+      <input type="zip_code" class="form-control" name="new_address" placeholder="Enter Zip code">
+    </div>
+    <input type="submit" value="Add Address" />
+  </br>
+  </br>
+  
+  <p>Delete Address:</p>
+    <!-- delete address field-->
+    <form method="GET" action="/delete_address">
+      <select name="address" class="selectpicker form-control">
+        {% for address in get_customer_addresses_tostr(user['id']) %}
+        <option value="{{ address }}">{{ address }}</option>
+        {% endfor %}
+      </select> 
+      <input type="submit" value="submit" />
+    </form>
+  </br>
+  <table>
+      <thead>
+        <tr>
+          <th>Card Number</th>
+          <th>Street Number</th>
+          <th>Street Name</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Zip Code</th>
+          <th>Edit address</th>
+        </tr>
+      </thead>
+      <tbody>      
+        <!-- python function that iterates through every single address for the customer-->
+        
+        {% for card in get_customer_cards_todict(user['id']) %}
+        <tr>
+          <th>{{ card['card_num'] }}</th>
+          <th>{{ card['street_num'] }}</th>
+          <th>{{ card['street_name'] }}</th>
+          <th>{{ card['city'] }}</th>
+          <th>{{ card['state'] }}</th>
+          <th>{{ card['zip'] }}</th>
+          <th>
+            <form method="GET" action="/edit_card">
+              <input type = "submit" value = "Edit card" />
+            </form>
+          </th>
+          
+        </tr>
+       {% endfor %}
+      </tbody>
+    </table>
+
+  <!-- add card field-->
+  <p>Add Card</p>
+  <form method="POST" action="/add_card">
+      <div class="form-group">
+        <input type="street_num" class="form-control" name="new_card" placeholder="Enter Card Number">
+        <p>Billing Address</p>
+        <input type="stree_name" class="form-control" name="new_card" placeholder="Enter Street Number">
+        <input type="stree_name" class="form-control" name="new_card" placeholder="Enter Street Name">
+        <input type="city" class="form-control" name="new_card" placeholder="Enter City">
+        <input type="state" class="form-control" name="new_card" placeholder="Enter State">
+        <input type="zip_code" class="form-control" name="new_card" placeholder="Enter Zip code">
+      </div>
+      <input type="submit" value="Add Card" />
+  </form>
+    </br>
+    </br>
+
+    <p>Delete Card:</p>
+    <!-- delete card field-->
+    <form method="GET" action="/delete_card">
+      <select name="address" class="selectpicker form-control">
+        {% for card in get_customer_cards_tostr(user['id']) %}
+        <option value="{{ card }}">{{ card }}</option>
+        {% endfor %}
+      </select> 
+      <input type="submit" value="Delete Card" />
+    </form>
+  </br>
+
+
+
+    <form method="POST" action="/nav">
+      <input type="submit" name="submit_button" value="Go To Cart">
+      <input type="submit" name="submit_button" value="Go To Store">
+    </form>
+</body>
 
 </html>
