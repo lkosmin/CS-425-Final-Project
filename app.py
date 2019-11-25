@@ -189,6 +189,7 @@ def update_cart(product_id):
     query = "insert into cart(cid, pid, quantity) values (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user['id'], product_id, product_quantity, product_quantity)
     cursor.execute(query)
     conn.commit()
+    '''
     #retrieve warehouse id
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
     cursor.execute(query)
@@ -197,17 +198,18 @@ def update_cart(product_id):
     query = "delete from stock where stock.pid = \"{}\" and stock.wid = \"{}\"".format(product_id, customer_wid)
     cursor.execute(query)
     conn.commit()
-    #go to orders.html
+    #go to orders.html'''
     return render_template('orders.html', user = user)
 
 
-#delete product from shopping cart, insert product back into warehouse
+#delete product from shopping cart
 @app.route('/delete_from_cart/<cartitem_id>/<user_id>/<product_quantity>', methods = ['GET'])
 def delete_from_cart(cartitem_id, user_id, product_quantity):
     #delete from cart. This removed the selected item from cart entirely, need to re-add item if want to change quantity
     query = "delete from cart where cart.pid = \"{}\"".format(cartitem_id)
     cursor.execute(query)
     conn.commit()
+    '''
     #we don't need the next 2 queries if we only update when submitting order
     #retrieve id from warehouse
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
@@ -216,8 +218,10 @@ def delete_from_cart(cartitem_id, user_id, product_quantity):
     #update stock
     query = "update stock set quantity = quantity + \"{}\" where wid = \"{}\" and pid= \"{}\"".format(product_quantity, customer_wid, cartitem_id)
     cursor.execute(query)
-    conn.commit()
+    conn.commit()'''
     return render_template('orders.html', user=user)
+
+
 
 #test
 @app.route('/staff/', methods = ['GET'])
