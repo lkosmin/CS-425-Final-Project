@@ -47,7 +47,7 @@
                     <th>{{ cartitem['cart.quantity'] }}</th>
                     <th>{{ cartitem['price.price'] }}</th>
                     <th>
-                      <form method="GET" action="/delete_from_cart">
+                      <form method="GET" action="/delete_from_cart/{{ cartitem['products.id'] }}/{{user['id']}}/ {{cartitem['cart.quantity']}} ">
                         <input type = "submit" value = "Remove" />
                       </form>
                     </th>
@@ -61,7 +61,7 @@
                 <!--Select Delivery Address for Order-->
 
 
-                <h4> Deliver To: </h4> 
+                <h4> Deliver To: </h4>
                 <select>
                     <!--python fucntion and sql query call that shows every delivery address on file
 

@@ -37,10 +37,10 @@ schemas = {'user': ['username', 'userpass', 'role', 'id'],
 
 
 
-def todict(tup,schema): 
-    if isinstance(schema,str): 
-        schema = schemas[schema]    
-    if not tup or len(tup) != len(schema): 
+def todict(tup,schema):
+    if isinstance(schema,str):
+        schema = schemas[schema]
+    if not tup or len(tup) != len(schema):
         return None
     return {schema[i]:tup[i] for i in range(len(schema))}
 
@@ -65,7 +65,7 @@ def sqlcommands():
         cursor.execute(query)
         address = ['street_num', 'street_name', 'city', 'state', 'zip']
         return [tostr(tup, address) for tup in cursor.fetchall()]
-    
+
     def get_customer_addresses_todict(id):
         query = "SELECT * FROM delivery WHERE cid = \"{}\"".format(id)
         cursor.execute(query)
@@ -202,8 +202,20 @@ def update_cart(product_id):
 
 
 #delete product from shopping cart, insert product back into warehouse
-@app.route('/delete_from_cart', methods = ['GET'])
-def delete_from_cart():
+@app.route('/delete_from_cart/<cartitem_id>/<user_id>/<product_quantity>', methods = ['GET'])
+def delete_from_cart(cartitem_id, user_id, product_quantity):
+    #delete from cart. This removed the selected item from cart entirely, need to re-add item if want to change quantity
+    query = "delete from cart where cart.pid = \"{}\"".format(cartitem_id)
+    cursor.execute(query)
+    conn.commit()
+    #retrieve id from warehouse
+    query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
+    cursor.execute(query)
+    customer_wid = cursor.fetchone()[0]
+    #update stock
+    query = "update stock set quantity = quantity + \"{}\" where wid = \"{}\" and pid= \"{}\"".format(product_quantity, customer_wid, cartitem_id)
+    cursor.execute(query)
+    conn.commit()
     return render_template('orders.html', user=user)
 
 #test
