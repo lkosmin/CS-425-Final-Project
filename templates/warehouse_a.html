@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title> Warehouses </title>
+    <title> Selected Warehouse </title>
   </head>
   <body>
     <header>
       <div class="container">
-        <h1 class="logo">Warehouses</h1>
+        <h1 class="logo">Warehouse {{warehouse['id']}}</h1>
       </div>
     </header>
 
@@ -21,13 +21,12 @@
             <th>state</th>
             <th>zip</th>
             <th>storage_capacity</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
 
 
-          {% for product in get_warehouses() %}
+          {% for product in get_warehouse_a(warehouse['id']) %}
           <tr>
             <th>{{ warehouse['warehouse.id'] }}</th>
             <th>{{ warehouse['street_num'] }}</th>
@@ -38,7 +37,7 @@
             <th>{{ warehouse['storage_capacity'] }}</th>
             <th>
               <form method="GET" action="/goto_warehouse/{{ warehouse['warehouse.id'] }}">
-                <input type = "submit" value = "Go To Warehouse" />
+                <input type = "submit" value = "Display Stock" />
               </form>
             </th>
 
