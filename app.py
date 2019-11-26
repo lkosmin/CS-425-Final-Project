@@ -65,8 +65,8 @@ def sqlcommands():
         query = "SELECT street_num, street_name, city, state, zip FROM delivery WHERE cid = \"{}\" and id = \"{}\"".format(id,delivery_id)
         cursor.execute(query)
         address = ['street_num', 'street_name', 'city', 'state', 'zip']
-        return tostr(tup, address) for tup in cursor.fetchall()
-
+        return tostr(cursor.fetchone(), address)
+        
     def get_customer_addresses_todict(id):
         query = "SELECT * FROM delivery WHERE cid = \"{}\"".format(id)
         cursor.execute(query)
@@ -215,14 +215,22 @@ def update_cart(product_id):
     return render_template('orders.html', user = user)
 
 
-@app.route('/update_card/', methods = ['GET'])
-def update_card():
-    return render_template('orders.html', user = user)
+@app.route('/delete_card/<card>/', methods = ['POST'])
+def delete_card(card):
+    query = "update orders set ccid = NULL where orders.ccid = \"{}\"".format(card)
+    cursor.execute(query)
+    conn.commit()
+    query = "delete from credit_card where id = \"{}\"".format(card)
+    cursor.execute(query)
+    conn.commit()
+    return render_template('account.html', user = user)
 
-@app.route('/update_address/', methods = ['GET'])
-def update_address():
-    return render_template('orders.html', user = user)
-
+@app.route('/delete_address/<delivery_id>/', methods = ['POST'])
+def delete_address(delivery_id):
+    query = 'delete from delivery where id = \"{}\"'.format(delivery_id)
+    cursor.execute(query)
+    conn.commit()
+    return render_template('account.html', user = user)
 
 #delete product from shopping cart
 @app.route('/delete_from_cart/<cartitem_id>/<user_id>/<product_quantity>', methods = ['GET'])
@@ -278,7 +286,7 @@ def add_addr(user_id):
     state = request.form.get('state')
     zip_code = request.form.get('zip_code')
     #incrementing the delivery id
-    query = "select count(*) from delivery"
+    query = "select max(id) from delivery"
     cursor.execute(query)
     conn.commit()
     delivery_id = (cursor.fetchone()[0]) + 1
