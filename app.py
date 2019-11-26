@@ -322,7 +322,7 @@ def submit_order():
     selected_address = request.form.get('selected_address')
     selected_card_num = request.form.get('selected_card')
     datetime = datetime.date.today()
-'''
+
     # find the warehouse holding the stock
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
     cursor.execute(query)
@@ -375,16 +375,17 @@ def submit_order():
     '''
 
 
-    #update customer table --> once
-    query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total, user['id'])
-    cursor.execute(query)
+     #update customer table --> once
+     query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total, user['id'])
+     cursor.execute(query)
 
-    # need query to delete items from cart --> once
-    query = "delete from cart where cid = \"{}\"".format(user['id'])
-    cursor.execute(query)
-'''
-    #conn.commit()
+     # need query to delete items from cart --> once
+     query = "delete from cart where cid = \"{}\"".format(user['id'])
+     cursor.execute(query)
+
+     conn.commit()
     #return render_template('order_successful.html', user=user)
+    #return 1
 
 if __name__ == '__main__':
     app.run(debug=True)
