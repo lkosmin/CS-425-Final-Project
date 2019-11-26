@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <title> Edit Product </title>
+  <!--  Edit functionality -->
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="logo">Edit Product</h1>
+    </div>
+  </header>
+
+
+  <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Nutrition Information</th>
+            <th>Price</th>
+            <th>State</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!--display selected product  -->
+          {% for product in get_one_product(user['id']) %}
+          <tr>
+            <th>{{ product['product.id'] }}</th>
+            <th>{{ product['name'] }}</th>
+            <th>{{ product['nutrition_facts'] }}</th>
+            <th>{{ product['price'] }}</th>
+            <th>{{ getstate(user['id'])[0]['state'] }}</th>
+          </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+
+
+
+</body>
+
+</html>

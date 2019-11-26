@@ -39,7 +39,7 @@
             <th>Nutrition Information</th>
             <th>Cost</th>
             <th>State</th>
-            <th>Add to Cart</th>
+            <th>Edit Product</th>
           </tr>
         </thead>
         <tbody>
@@ -47,7 +47,7 @@
 
           <!-- python function that iterates through every single product in product list for your state-->
 
-          {% for product in get_state_products(user['id'], type) %}
+          {% for product in getallproduct(user['id']) %}
           <tr>
             <th>{{ product['products.id'] }}</th>
             <th>{{ product['name'] }}</th>
@@ -55,7 +55,7 @@
             <th>{{ product['price'] }}</th>
             <th>{{ getstate(user['id'])[0]['state'] }}</th>
             <th>
-              <form method="GET" action="/edit_product/{{user['id']}}">
+              <form method="GET" action="/edit_product/product">
                 <input type = "submit" value = "edit" />
               </form>
             </th>
