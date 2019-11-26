@@ -122,7 +122,7 @@ INSERT INTO price (id,pid,state,price) VALUES (20, 5, 'IL', 1.00);
 INSERT INTO price (id,pid,state,price) VALUES (21, 6, 'IL', 1.00);
 INSERT INTO price (id,pid,state,price) VALUES (22, 7, 'IL', 1.00);
 INSERT INTO price (id,pid,state,price) VALUES (23, 8, 'IL', 1.00);
-INSERT INTO price (id,pid,state,price) VALUES (24, 8, 'IL', 1.00);
+INSERT INTO price (id,pid,state,price) VALUES (24, 9, 'IL', 1.00);
 INSERT INTO price (id,pid,state,price) VALUES (25, 10, 'IL', 1.00);
 INSERT INTO price (id,pid,state,price) VALUES (26, 11, 'IL', 1.00);
 INSERT INTO price (id,pid,state,price) VALUES (27, 12, 'IL', 1.00);

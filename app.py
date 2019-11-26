@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flaskext.mysql import MySQL
 from datetime import date, timedelta
 import re
+import sys
 import datetime
 
 app = Flask(__name__)
@@ -22,6 +23,8 @@ app = Flask(__name__)
 
 user = None
 
+def print_debug(s):
+    print(s, file=sys.stderr)
 
 schemas = {'user': ['username', 'userpass', 'role', 'id'],
            'customer': ['id', 'first_name', 'last_name', 'balance'],
@@ -302,6 +305,11 @@ def warehouse():
 
 @app.route('/nav', methods=['GET', 'POST'])
 def nav():
+    # refresh user since user data might have been updated (such as balance).
+    global user
+    query = "SELECT * FROM customer WHERE id = {}".format(user['id'])
+    cursor.execute(query)
+    user = todict(cursor.fetchone(), 'customer')
     if request.method == 'POST':
         if request.form.get('submit_button') == 'Go To Account':
             return render_template('account.html', user=user)
@@ -423,14 +431,17 @@ def submit_order():
         conn.commit()
 
         # fetch price. multiple by quantity and add to cart_total --> fetchone()[]
-        query = "select price from cart natural join price where price.pid = cart.pid and cid = \"{}\" and price.pid = \"{}\" and price.state = \"{}\"".format(
-            user['id'], pid, state)
+        #query = "select price from cart natural join price where price.pid = cart.pid and cid = \"{}\" and price.pid = \"{}\" and price.state = \"{}\"".format(
+        #    user['id'], pid, state)
+        query = "select price from price where pid = \"{}\" and state = \"{}\"".format(pid, state)
         cursor.execute(query)
-        price = ['price']
-        product_price = [todict(tup, price) for tup in cursor.fetchall()]
-        for price in product_price:
-            cart_total += price['price']*quantity
+        cart_total += cursor.fetchone()[0] * quantity
+        # price = ['price']
+        # product_price = [todict(tup, price) for tup in cursor.fetchall()]
+        # for price in product_price:
+        #     cart_total += price['price']*quantity
 
+    print_debug(cart_total)
     # update customer table --> once
     query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(
         cart_total, user['id'])
