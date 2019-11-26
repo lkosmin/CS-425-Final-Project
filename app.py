@@ -420,6 +420,7 @@ def add_product(warehouse_id):
     state=(cursor.fetchone()[0])
     query = "insert into price(id, pid, state, price) values(\"{}\",\"{}\",\"{}\",\"{}\")".format(price_id, products_id, state, cost)
     conn.commit()
+
     return render_template('warehouse_a_stock.html', user=user, warehouse_id=warehouse_id)
 
 @app.route('/submit_order/', methods=['POST'])
