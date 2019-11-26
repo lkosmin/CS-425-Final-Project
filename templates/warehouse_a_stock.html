@@ -27,10 +27,10 @@
           <tr>
             <th>{{ warehouse_a_stock['stock.pid'] }}</th>
             <th>{{ warehouse_a_stock['products.name'] }}</th>
-            <th>{{ warehouse_a_stock['stock.quantity'] }}</th>
+            <!--<th>{{ warehouse_a_stock['stock.quantity'] }}</th>-->
             <th>
-                <form method="GET" action="/change_quantity/{{warehouse_a_stock['pid']}}/{{warehouse_id}}">
-                  <input type="number" class="form-control" name="product_quantity" min ="1" value="{{warehouse_a_stock['quantity']}}">
+                <form method="POST" action="/change_quantity/{{warehouse_a_stock['stock.pid']}}/{{warehouse_id}}">
+                  <input type="number" class="form-control" name="product_quantity" min ="1" value="{{warehouse_a_stock['stock.quantity']}}">
                   <input type = "submit" value = "change quantity" />
                 </form>
             </th>

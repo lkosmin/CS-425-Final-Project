@@ -169,8 +169,8 @@ def sqlcommands():
         return [todict(tup, warehouse_a) for tup in cursor.fetchall()]
 
     def get_warehouse_a_stock(warehouse_id):
-        query = "select stock.pid, products.name, stock.quantity from warehouse join stock join products where stock.pid = products.id and stock.wid=\"{}\"".format(
-            warehouse_id)
+        query = "select stock.pid, products.name, stock.quantity from warehouse join stock join products where stock.pid = products.id and stock.wid=\"{}\" and warehouse.id=\"{}\"".format(
+            warehouse_id, warehouse_id)
         cursor.execute(query)
         warehouse_a_stock = ['stock.pid', 'products.name', 'stock.quantity']
         return [todict(tup, warehouse_a_stock) for tup in cursor.fetchall()]
@@ -494,11 +494,10 @@ def delete_warehouse_stock(product_id,wid):
     return render_template('warehouse_a_stock.html', user=user)
 
 
-@app.route('/change_quantity/<product_id>/<wid>', methods=['GET'])
-def change_quantity(product_id,wid):
-    product_quantity = request.form.get('product_quantity')
-    query = "update stock set quantity = \"{}\" where stock.pid = \"{}\" and stock.wid = \"{}\"". format(
-        product_quantity, product_id, wid)
+@app.route('/change_quantity/<product_id>/<warehouse_id>', methods=['GET', 'POST'])
+def change_quantity(product_id,warehouse_id):
+    product_quantity = request.form.get("product_quantity", 0)
+    query = "update stock set quantity = \"{}\" where stock.pid = \"{}\" and stock.wid = \"{}\"". format(product_quantity, product_id, warehouse_id)
     cursor.execute(query)
     return render_template('warehouse_a_stock.html', user=user)
 
