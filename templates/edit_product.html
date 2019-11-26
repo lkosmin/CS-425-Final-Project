@@ -19,10 +19,10 @@
        <form method="POST" action="/staff_update_product">
           <div class="form-group">
               <!-- <input type="product_id" class="form-control" name="product_id" value="{{product['product.id']}}"> -->
-              <input value="{{product[0][0]}}" readonly name="product_id">
-              <input value="{{product[0][1]}}" readonly name="name">
-              <input type="nutrition_facts" class="form-control" name="nutrition_facts" value="{{product[0][2]}}">
-              <input type="price" class="form-control" name="price" value="{{product[0][3]}}">
+              <input value="{{product[0][0]}}" readonly name="product_id"><br>
+              <input value="{{product[0][1]}}" readonly name="name"><br>
+              <input type="nutrition_facts" class="form-control" name="nutrition_facts" value="{{product[0][2]}}"><br>
+              <input type="price" class="form-control" name="price" value="{{product[0][3]}}"><br>
               <input value="{{product[0][4]}}" readonly name="state"">
           </div>
           <input type="submit" name="submit_change" value="Submit Change">
