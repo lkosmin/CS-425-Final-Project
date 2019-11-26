@@ -61,8 +61,8 @@ def sqlcommands():
         state = ['state']
         return [todict(tup, state) for tup in cursor.fetchall()]
 
-    def get_customer_addresses_tostr(id):
-        query = "SELECT street_num, street_name, city, state, zip FROM delivery WHERE cid = \"{}\"".format(id)
+    def address_dict_to_str(id, delivery_id):
+        query = "SELECT street_num, street_name, city, state, zip FROM delivery WHERE cid = \"{}\" and id = \"{}\"".format(id,delivery_id)
         cursor.execute(query)
         address = ['street_num', 'street_name', 'city', 'state', 'zip']
         return [tostr(tup, address) for tup in cursor.fetchall()]
@@ -138,7 +138,7 @@ def sqlcommands():
     #def getaddress
 
 
-    return dict(getstate=getstate,get_one_customer_card_todict=get_one_customer_card_todict,get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict,get_customer_addresses_tostr=get_customer_addresses_tostr, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem, getallproduct=getallproduct)
+    return dict(address_dict_to_str=address_dict_to_str,getstate=getstate,get_one_customer_card_todict=get_one_customer_card_todict,get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem, getallproduct=getallproduct)
 
 
 ###
@@ -242,16 +242,6 @@ def delete_from_cart(cartitem_id, user_id, product_quantity):
     query = "delete from cart where cart.pid = \"{}\"".format(cartitem_id)
     cursor.execute(query)
     conn.commit()
-    '''
-    #we don't need the next 2 queries if we only update when submitting order
-    #retrieve id from warehouse
-    query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
-    cursor.execute(query)
-    customer_wid = cursor.fetchone()[0]
-    #update stock
-    query = "update stock set quantity = quantity + \"{}\" where wid = \"{}\" and pid= \"{}\"".format(product_quantity, customer_wid, cartitem_id)
-    cursor.execute(query)
-    conn.commit()'''
     return render_template('orders.html', user=user)
 
 
@@ -328,11 +318,11 @@ def add_card(user_id):
     conn.commit()
     return render_template('account.html', user=user)
 
-@app.route('/submit_order', methods = ['POST'])
+@app.route('/submit_order/', methods = ['POST'])
 def submit_order():
     selected_address = request.form.get('selected_address')
     selected_card_num = request.form.get('selected_card')
-    dt = datetime.data.today()
+    dt = datetime.date.today()
 
     #find warehouse holding the stock
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
@@ -343,9 +333,6 @@ def submit_order():
     query = "select count(*) from cart where cid = \"{}\"".format(user['id'])
     num_of_products = cursor.execute(query)
 
-    # grab state from user
-    #query = "select state from customer where cid = \"{}\"".format(user['id'])
-    #state = cursor.execute(query)
 
     # calculate oid
     query = "select count(*) from orders where cid = \"{}\"".format(user['id'])
@@ -369,7 +356,10 @@ def submit_order():
         cursor.execute(query)
 
         # fetch price. multiple by quantity and add to cart_total --> fetchone()[]
-        query = "select * from cart natural join price where price.pid = cart.pid and cid = \"{}\" and price.state = 'CA'".format(user['id'])
+        query = "select price from cart natural join price where price.pid = cart.pid and cid = \"{}\" and price.pid = \"{}\" and price.state = \"{}\"".format(user['id'],pid,selected_address['state'])
+        product_price = cursor.execute(query)
+        cart_total += product_price*quantity
+
 
     # update customer table --> once
     query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total,user['id'])
