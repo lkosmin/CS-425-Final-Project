@@ -314,7 +314,10 @@ def nav():
 
 @app.route('/nav_staff', methods=['POST'])
 def nav_staff():
-    return render_template('warehouse.html', user=user)
+    if request.form.get('submit_button') == 'Go To Warehouses':
+        return render_template('warehouse.html', user=user)
+
+    return render_template('staff.html', user=user)
 
 
 @app.route('/editaddress/<delivery_id>', methods=['GET', 'POST'])
