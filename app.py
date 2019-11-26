@@ -394,7 +394,7 @@ def add_card(user_id):
 
 @app.route('/add_product/<warehouse_id>', methods=['GET', 'POST'])
 def add_product(warehouse_id):
-    
+
     name = request.form.get('name')
     type = request.form.get('type')
     nutrition_facts = request.form.get('nutrition_facts')
@@ -403,7 +403,7 @@ def add_product(warehouse_id):
     quantity = request.form.get('quantity')
 
     # incrementing the card id
-    query = "select count(*) from products"
+    query = "select max(id) from products"
     cursor.execute(query)
     conn.commit()
     products_id = (cursor.fetchone()[0]) + 1
@@ -413,7 +413,7 @@ def add_product(warehouse_id):
     cursor.execute(query)
     conn.commit()
     #increment price id
-    query = "select count(*) from price"
+    query = "select max(id) from price"
     cursor.execute(query)
     conn.commit()
     price_id=(cursor.fetchone()[0]) + 1
