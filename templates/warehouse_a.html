@@ -16,7 +16,7 @@
           <tr>
             <th>Warehouse ID</th>
             <th>street_num</th>
-            <th>Nstreet_name</th>
+            <th>street_name</th>
             <th>city</th>
             <th>state</th>
             <th>zip</th>
@@ -28,7 +28,7 @@
 
           {% for product in get_warehouse_a(warehouse['id']) %}
           <tr>
-            <th>{{ warehouse['warehouse.id'] }}</th>
+            <th>{{ warehouse['id'] }}</th>
             <th>{{ warehouse['street_num'] }}</th>
             <th>{{ warehouse['street_name'] }}</th>
             <th>{{ warehouse['city'] }}</th>
@@ -36,7 +36,7 @@
             <th>{{ warehouse['zip'] }}</th>
             <th>{{ warehouse['storage_capacity'] }}</th>
             <th>
-              <form method="GET" action="/goto_warehouse/{{ warehouse['warehouse.id'] }}">
+              <form method="GET" action="/goto_warehouse_stock/{{ warehouse['id'] }}">
                 <input type = "submit" value = "Display Stock" />
               </form>
             </th>

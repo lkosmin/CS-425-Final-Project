@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title> Selected Warehouse stock </title>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1 class="logo">Warehouse {{warehouse['id']}} stock</h1>
+      </div>
+    </header>
+
+    <table>
+        <thead>
+          <tr>
+            <th>Product ID</th>
+            <th>name</th>
+            <th>quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+
+
+          {% for warehouse_a_stock in get_warehouse_a_stock(warehouse['id']) %}
+          <tr>
+            <th>{{ warehouse['products.id'] }}</th>
+            <th>{{ warehouse['name'] }}</th>
+            <th>{{ warehouse['quantity'] }}</th>
+            <th>
+              <form method="GET" action="/delete_warehouse_stock/{{products.id}}/{{warehouse['id']}}">
+                <input type = "submit" value = "Delete Item" />
+              </form>
+            </th>
+
+          </tr>
+         {% endfor %}
+
+  </body>
+
+</html>
