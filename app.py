@@ -322,6 +322,7 @@ def submit_order():
     selected_address = request.form.get('selected_address')
     selected_card_num = request.form.get('selected_card')
     dt = datetime.date.today()
+    state = selected_address['state']
 
     #find warehouse holding the stock
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
@@ -329,9 +330,12 @@ def submit_order():
     customer_wid = cursor.fetchone()[0]
 
     # retrieves count of cart items
-    query = "select count(*) from cart where cid = \"{}\"".format(user['id'])
-    num_of_products = cursor.execute(query)
+    #query = "select count(*) from cart where cid = \"{}\"".format(user['id'])
+    #num_of_products = cursor.execute(query)
 
+    # retrieve ccid
+    query = "select id from credit_card where card_num = \"{}\"".format(selected_card_num)
+    ccid = cursor.execute(query)
 
     # calculate oid
     query = "select count(*) from orders where cid = \"{}\"".format(user['id'])
@@ -351,14 +355,13 @@ def submit_order():
         cursor.execute(query)
 
         # update orders
-        query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(1, 1, 2, 1, 5, '2019-11-25', 'received')"
+        query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(\"{}\",\"{}\", \"{}\", \"{}\", \"{}\",\"{}\", 'received')".format(ccid,user['id'],oid,pid,quantity,dt)
         cursor.execute(query)
 
         # fetch price. multiple by quantity and add to cart_total --> fetchone()[]
-        query = "select price from cart natural join price where price.pid = cart.pid and cid = \"{}\" and price.pid = \"{}\" and price.state = \"{}\"".format(user['id'],pid,selected_address['state'])
+        query = "select price from cart natural join price where price.pid = cart.pid and cid = \"{}\" and price.pid = \"{}\" and price.state = \"{}\"".format(user['id'],pid,state)
         product_price = cursor.execute(query)
         cart_total += product_price*quantity
-
 
     # update customer table --> once
     query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total,user['id'])
