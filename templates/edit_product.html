@@ -12,31 +12,8 @@
       <h1 class="logo">Edit Product</h1>
     </div>
   </header>
-
-
-  <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Product Name</th>
-            <th>Nutrition Information</th>
-            <th>Price</th>
-            <th>State</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!--display selected product  -->
-          {% for product in get_one_product(user['id']) %}
-          <tr>
-            <th>{{ product['product.id'] }}</th>
-            <th>{{ product['name'] }}</th>
-            <th>{{ product['nutrition_facts'] }}</th>
-            <th>{{ product['price'] }}</th>
-            <th>{{ product['state'] }}</th>
-          </tr>
-         {% endfor %}
-        </tbody>
-      </table>
+<h1> {{product}} </h1>
+<h1> {{product_name}} </h1>
 
       <p>Selected Product</p>
        <form method="POST" action="/staff_update_product">
@@ -48,7 +25,7 @@
               <input type="price" class="form-control" name="price" value="{{product['price']}}">
               <input type="state" class="form-control" name="state" value="{{product['state']}}">
           </div>
-          <input type="submit" name="submit_change" value="Add card">
+          <input type="submit" name="submit_change" value="Submit Change">
       </form>
 
 
