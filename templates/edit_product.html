@@ -32,11 +32,24 @@
             <th>{{ product['name'] }}</th>
             <th>{{ product['nutrition_facts'] }}</th>
             <th>{{ product['price'] }}</th>
-            <th>{{ getstate(user['id'])[0]['state'] }}</th>
+            <th>{{ product['state'] }}</th>
           </tr>
          {% endfor %}
         </tbody>
       </table>
+
+      <p>Selected Product</p>
+       <form method="POST" action="/staff_update_product">
+          <div class="form-group">
+              <!-- <input type="product_id" class="form-control" name="product_id" value="{{product['product.id']}}"> -->
+              <input value="{{product['name']}}" readonly>
+              <input type="name" class="form-control" name="name" value="{{product['name']}}">
+              <input type="nutrition_facts" class="form-control" name="nutrition_facts" value="{{product['nutrition_facts']}}">
+              <input type="price" class="form-control" name="price" value="{{product['price']}}">
+              <input type="state" class="form-control" name="state" value="{{product['state']}}">
+          </div>
+          <input type="submit" name="submit_change" value="Add card">
+      </form>
 
 
 
