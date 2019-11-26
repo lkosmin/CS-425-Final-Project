@@ -404,11 +404,7 @@ def submit_order():
         user['id'])
     cursor.execute(query)
     customer_wid = cursor.fetchone()[0]
-
-    # retrieves count of cart items
-    #query = "select count(*) from cart where cid = \"{}\"".format(user['id'])
-    #num_of_products = cursor.execute(query)
-
+    
     # retrieve ccid
     query = "select id from credit_card where card_num = \"{}\"".format(
         selected_card_num)
@@ -434,7 +430,6 @@ def submit_order():
             quantity, customer_wid, pid)
         cursor.execute(query)
         conn.commit()
-
         # update orders
         query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(\"{}\",\"{}\", \"{}\"," \
                 " \"{}\", \"{}\",\"{}\", \"{}\")".format(
@@ -442,18 +437,11 @@ def submit_order():
         cursor.execute(query)
         conn.commit()
 
-        # fetch price. multiple by quantity and add to cart_total --> fetchone()[]
-        #query = "select price from cart natural join price where price.pid = cart.pid and cid = \"{}\" and price.pid = \"{}\" and price.state = \"{}\"".format(
-        #    user['id'], pid, state)
+        # fetch price. multiple by quantity and add to cart_total
         query = "select price from price where pid = \"{}\" and state = \"{}\"".format(pid, state)
         cursor.execute(query)
         cart_total += cursor.fetchone()[0] * quantity
-        # price = ['price']
-        # product_price = [todict(tup, price) for tup in cursor.fetchall()]
-        # for price in product_price:
-        #     cart_total += price['price']*quantity
 
-    print_debug(cart_total)
     # update customer table --> once
     query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(
         cart_total, user['id'])
