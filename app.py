@@ -215,24 +215,22 @@ def update_cart(product_id):
     return render_template('orders.html', user = user)
 
 
-@app.route('/update_card/<product_id>', methods = ['GET'])
-def update_card(product_id):
-    product_quantity = request.args.get("product_quantity", 0)
-    #insert to cart
-    query = "insert into cart(cid, pid, quantity) values (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user['id'], product_id, product_quantity, product_quantity)
+@app.route('/delete_card/<card>/', methods = ['POST'])
+def delete_card(card):
+    query = "update orders set ccid = NULL where orders.ccid = \"{}\"".format(card)
     cursor.execute(query)
     conn.commit()
-    return render_template('orders.html', user = user)
-
-@app.route('/update_address/<product_id>', methods = ['GET'])
-def update_address(product_id):
-    product_quantity = request.args.get("product_quantity", 0)
-    #insert to cart
-    query = "insert into cart(cid, pid, quantity) values (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user['id'], product_id, product_quantity, product_quantity)
+    query = "delete from credit_card where id = \"{}\"".format(card)
     cursor.execute(query)
     conn.commit()
-    return render_template('orders.html', user = user)
+    return render_template('account.html', user = user)
 
+@app.route('/delete_address/<delivery_id>/', methods = ['POST'])
+def delete_address(delivery_id):
+    query = 'delete from delivery where id = \"{}\"'.format(delivery_id)
+    cursor.execute(query)
+    conn.commit()
+    return render_template('account.html', user = user)
 
 #delete product from shopping cart
 @app.route('/delete_from_cart/<cartitem_id>/<user_id>/<product_quantity>', methods = ['GET'])
@@ -288,7 +286,7 @@ def add_addr(user_id):
     state = request.form.get('state')
     zip_code = request.form.get('zip_code')
     #incrementing the delivery id
-    query = "select count(*) from delivery"
+    query = "select max(id) from delivery"
     cursor.execute(query)
     conn.commit()
     delivery_id = (cursor.fetchone()[0]) + 1

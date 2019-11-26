@@ -36,6 +36,7 @@
         <th>State</th>
         <th>Zip Code</th>
         <th>Edit address</th>
+		<th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -49,11 +50,15 @@
         <th>{{ address['state'] }}</th>
         <th>{{ address['zip'] }}</th>
         <th>
-          <form method="GET" action="/editaddress/{{ address['id'] }}">
+          <form method="GET" action="/editaddress/{{ address['id'] }}/">
             <input type = "submit" value = "Edit Address" />
           </form>
         </th>
-
+		<th>
+          <form method="POST" action="/delete_address/{{ address['id'] }}/">
+            <input type = "submit" value = "Delete Address" />
+          </form>
+        </th>
       </tr>
      {% endfor %}
     </tbody>
@@ -77,17 +82,16 @@
   </form>
   </br>
   </br>
-
+ <!--
   <p>Delete Address:</p>
-    <!-- delete address field-->
-    <form method="GET" action="/delete_address">
-      <select name="address" class="selectpicker form-control">
+    <form method="POST" action="/delete_address">
+      <select id="address" class="selectpicker form-control">
         {% for address in get_customer_addresses_todict(user['id']) %}
-        <option value="{{ address }}">{{ address_dict_to_str(user['id'],address['id']) }}</option>
+        <option value="{{ address['id'] }}">{{ address_dict_to_str(user['id'],address['id']) }}</option>
         {% endfor %}
       </select>
       <input type="submit" value="submit" />
-    </form>
+    </form> -->
   </br>
   <table>
       <thead>
@@ -99,6 +103,7 @@
           <th>State</th>
           <th>Zip Code</th>
           <th>Edit address</th>
+		  <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -113,8 +118,11 @@
           <th>{{ card['state'] }}</th>
           <th>{{ card['zip'] }}</th>
           <th>
-            <form method="GET" action="/editcard/{{ card['id'] }}">
+            <form method="GET" action="/editcard/{{ card['id'] }}/">
               <input type = "submit" value = "Edit card" />
+            </form>
+			<form method="POST" action="/delete_card/{{ card['id'] }}/">
+              <input type = "submit" value = "Delete card" />
             </form>
           </th>
 
@@ -139,18 +147,17 @@
     </br>
     </br>
 
-    <p>Delete Card:</p>
-    <!-- delete card field-->
-    <form method="GET" action="/delete_card">
-      <select name="address" class="selectpicker form-control">
+   <!-- <p>Delete Card:</p>
+    <form method="POST" action="/delete_card">
+      <select id="card" class="selectpicker form-control">
         {% for card in get_customer_cards_tostr(user['id']) %}
-        <option value="{{ card }}">{{ card }}</option>
+        <option value="{{ card['id'] }}">{{ card }}</option>
         {% endfor %}
       </select>
       <input type="submit" value="Delete Card" />
-    </form>
+    </form> -->
   </br>
-
+{{ delivery_id }}
 
 
     <form method="POST" action="/nav">
