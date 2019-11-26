@@ -394,11 +394,13 @@ def add_card(user_id):
 
 @app.route('/add_product/<warehouse_id>', methods=['GET', 'POST'])
 def add_product(warehouse_id):
+    
     name = request.form.get('name')
     type = request.form.get('type')
     nutrition_facts = request.form.get('nutrition_facts')
     size = request.form.get('size')
     cost = request.form.get('cost')
+    quantity = request.form.get('quantity')
 
     # incrementing the card id
     query = "select count(*) from products"
@@ -409,17 +411,30 @@ def add_product(warehouse_id):
     query = "insert into products(id, name, type, nutrition_facts, size) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(
         products_id, name, type, nutrition_facts, size)
     cursor.execute(query)
+    conn.commit()
     #increment price id
     query = "select count(*) from price"
     cursor.execute(query)
     conn.commit()
     price_id=(cursor.fetchone()[0]) + 1
-    #get warehouse statement
+    #get warehouse state
     query="select state from warehouse where id=\"{}\"".format(warehouse_id)
     cursor.execute(query)
     state=(cursor.fetchone()[0])
+    #insert to price table
     query = "insert into price(id, pid, state, price) values(\"{}\",\"{}\",\"{}\",\"{}\")".format(price_id, products_id, state, cost)
+    cursor.execute(query)
     conn.commit()
+    #insert to stock table
+    query = "insert into stock(wid, pid, quantity) values(\"{}\",\"{}\",\"{}\")".format(warehouse_id, products_id, quantity)
+    cursor.execute(query)
+    conn.commit()
+
+    # refresh user since user data might have been updated (such as balance).
+    global user
+    query = "SELECT * FROM staff WHERE id = {}".format(user['id'])
+    cursor.execute(query)
+    user = todict(cursor.fetchone(), 'staff')
 
     return render_template('warehouse_a_stock.html', user=user, warehouse_id=warehouse_id)
 
