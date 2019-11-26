@@ -357,24 +357,32 @@ def submit_order():
         # update stock --> for each product
         query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(quantity,customer_wid,pid)
         cursor.execute(query)
+        conn.commit()
 
         # update orders
         query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(\"{}\",\"{}\", \"{}\"," \
                 " \"{}\", \"{}\",\"{}\", \"{}\")".format(ccid,user['id'],oid,pid,quantity,dt,"recieved")
         cursor.execute(query)
+        conn.commit()
 
         # fetch price. multiple by quantity and add to cart_total --> fetchone()[]
         query = "select price from cart natural join price where price.pid = cart.pid and cid = \"{}\" and price.pid = \"{}\" and price.state = \"{}\"".format(user['id'],pid,state)
-        product_price = cursor.execute(query)
-        cart_total += product_price*quantity
+        cursor.execute(query)
+        price = ['price']
+        product_price = [todict(tup, price) for tup in cursor.fetchall()]
+        for price in product_price:
+            cart_total += price['price']*quantity
+
 
     # update customer table --> once
-    query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total,user['id'])
+    query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total, user['id'])
     cursor.execute(query)
+    conn.commit()
 
     # need query to delete items from cart --> once
     query = "delete from cart where cid = \"{}\"".format(user['id'])
     cursor.execute(query)
+    conn.commit()
 
     return render_template('order_successful.html', user=user, cart_total=cart_total)
 
