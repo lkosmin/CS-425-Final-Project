@@ -157,7 +157,7 @@ def sqlcommands():
         query = "select * from warehouse"
         cursor.execute(query)
         warehouse = ['id', 'street_num', 'street_name',
-                     'city', 'state', 'zip', 'storage capacity']
+                     'city', 'state', 'zip', 'storage_capacity']
         return [todict(tup, warehouse) for tup in cursor.fetchall()]
 
     def get_warehouse_a(warehouse_id):
@@ -165,15 +165,15 @@ def sqlcommands():
             warehouse_id)
         cursor.execute(query)
         warehouse_a = ['id', 'street_num', 'street_name',
-                       'city', 'state', 'zip', 'storage capacity']
+                       'city', 'state', 'zip', 'storage_capacity']
         return [todict(tup, warehouse_a) for tup in cursor.fetchall()]
 
     def get_warehouse_a_stock(warehouse_id):
         query = "select * from warehouse join stock where stock.wid=\"{}\"".format(
-            warehouse.id)
+            warehouse_id)
         cursor.execute(query)
         warehouse_a_stock = ['products.id', 'name', 'quantity']
-        return [todict(tup, warehouse_a) for tup in cursor.fetchall()]
+        return [todict(tup, warehouse_a_stock) for tup in cursor.fetchall()]
 
     return dict(get_warehouses=get_warehouses, get_warehouse_a=get_warehouse_a, get_warehouse_a_stock=get_warehouse_a_stock, get_cart_total=get_cart_total, getstate=getstate, get_one_customer_card_todict=get_one_customer_card_todict, get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict, get_customer_cards_tostr=get_customer_cards_tostr, get_customer_addresses_todict=get_customer_addresses_todict, address_dict_to_str=address_dict_to_str, getproduct=getproduct, get_state_products=get_state_products, getcartitem=getcartitem, getallproduct=getallproduct)
 
@@ -478,12 +478,12 @@ def staff_update_price():
 
 @app.route('/goto_warehouse/<warehouse_id>', methods=['GET'])
 def goto_warehouse(warehouse_id):
-    return render_template('warehouse_a.html', user=user)
+    return render_template('warehouse_a.html', user=user, warehouse_id=warehouse_id)
 
 
 @app.route('/goto_warehouse_stock/<warehouse_id>', methods=['GET'])
 def goto_warehouse_stock(warehouse_id):
-    return render_template('warehouse_a_stock.html', user=user)
+    return render_template('warehouse_a_stock.html', user=user,warehouse_id=warehouse_id)
 
 
 @app.route('/delete_warehouse_stock/<product_id>/<wid>', methods=['GET'])
