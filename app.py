@@ -114,6 +114,12 @@ def sqlcommands():
         product = ['products.id', 'name', 'nutrition_facts', 'price']
         return [todict(tup, product) for tup in cursor.fetchall()]
 
+    def getallproduct():
+        query = "select * from products"
+        cursor.execute(query)
+        product = ['products.id', 'name', 'nutrition_facts', 'price']
+        return [todict(tup, product) for tup in cursor.fetchall()]
+
     def getcart(id):
         query = "SELECT * from cart"
         #query = "SELECT * from cart JOIN products where products.id = cart.pid AND cart.cid = \"{}\"".format(id)
@@ -130,7 +136,7 @@ def sqlcommands():
     #def getaddress
 
 
-    return dict(getstate=getstate,get_one_customer_card_todict=get_one_customer_card_todict,get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict,get_customer_addresses_tostr=get_customer_addresses_tostr, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem)
+    return dict(getstate=getstate,get_one_customer_card_todict=get_one_customer_card_todict,get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict,get_customer_addresses_tostr=get_customer_addresses_tostr, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem, getallproduct=getallproduct)
 
 
 ###
@@ -177,10 +183,26 @@ def request_filtered_list():
     else:
         return render_template('customer.html', user=user, type=1)
 
+@app.route("/request_filtered_list_staff", methods = ['GET', 'POST'])
+def request_filtered_list_staff():
+    food = request.form.get('food', 0)
+    beverages = request.form.get('beverages', 0)
+    if food and beverages:
+        return render_template('staff.html', user=user, type=2)
+    if food and not beverages:
+        return render_template('staff.html', user=user, type=0)
+    else:
+        return render_template('staff.html', user=user, type=1)
+
 @app.route("/request_product", methods = ['GET', 'POST'])
 def request_product():
     name = request.form.get('product_name', 0)
     return render_template('customer.html', user=user, name=name)
+
+@app.route("/request_product_staff", methods = ['GET', 'POST'])
+def request_product_staff():
+    name = request.form.get('product_name', 0)
+    return render_template('staff.html', user=user, name=name)
 
 @app.route('/update_cart/<product_id>', methods = ['GET'])
 def update_cart(product_id):
@@ -243,6 +265,10 @@ def nav():
             return render_template('customer.html', user=user)
     return render_template('account.html', user=user)
 
+@app.route('/nav_staff', methods =['POST'])
+def nav_staff():
+    return render_template('warehouse.html', user=user)
+
 @app.route('/editaddress/<delivery_id>', methods = ['GET', 'POST'])
 def editaddress(delivery_id):
     card_id=0
@@ -303,10 +329,10 @@ def submit_order():
 
     #query cart items to dict NEED TO FIX
     #query = "SELECT pid, quantity from cart"
-    query = "SELECT * from cart where cart.cid = \"{}\"".format(user['id'])
+    query = "SELECT cid, pid, quantity from cart where cart.cid = \"{}\"".format(user['id'])
     cursor.execute(query)
     #cart = todict(cursor.fetchone(),'cart')
-    cart=cursor.fetchall()
+    cart=cursor.fetchall()[i][2]
 
     # update stock
     #query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(product_quantity, customer_wid, cartitem_id)
