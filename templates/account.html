@@ -82,8 +82,8 @@
     <!-- delete address field-->
     <form method="GET" action="/delete_address">
       <select name="address" class="selectpicker form-control">
-        {% for address in get_customer_addresses_tostr(user['id']) %}
-        <option value="{{ address }}">{{ address }}</option>
+        {% for address in get_customer_addresses_todict(user['id']) %}
+        <option value="{{ address }}">{{ address_dict_to_str(user['id'],address['id']) }}</option>
         {% endfor %}
       </select>
       <input type="submit" value="submit" />
