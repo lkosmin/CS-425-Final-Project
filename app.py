@@ -377,7 +377,7 @@ def submit_order():
 def edit_product(product_id, state):
     query = "select products.id, name, nutrition_facts, price, state from products join price where products.id = price.pid and products.id= \"{}\" and state = \"{}\"".format(product_id, state)
     cursor.execute(query)
-    product = (cursor.fetchall())
+    product = cursor.fetchall()
     return render_template('edit_product.html', user=user, product=product)
 
 @app.route('/staff_update_product/<product_id>/<state>')

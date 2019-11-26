@@ -13,17 +13,17 @@
     </div>
   </header>
 <h1> {{product}} </h1>
-<h1> {{product_name}} </h1>
+<h1> {{product[0][2]}} </h1>
 
       <p>Selected Product</p>
        <form method="POST" action="/staff_update_product">
           <div class="form-group">
               <!-- <input type="product_id" class="form-control" name="product_id" value="{{product['product.id']}}"> -->
-              <input value="{{product['name']}}" readonly>
-              <input type="name" class="form-control" name="name" value="{{product['name']}}">
-              <input type="nutrition_facts" class="form-control" name="nutrition_facts" value="{{product['nutrition_facts']}}">
-              <input type="price" class="form-control" name="price" value="{{product['price']}}">
-              <input type="state" class="form-control" name="state" value="{{product['state']}}">
+              <input value="{{product[0][0]}}" readonly name="product_id">
+              <input value="{{product[0][1]}}" readonly name="name">
+              <input type="nutrition_facts" class="form-control" name="nutrition_facts" value="{{product[0][2]}}">
+              <input type="price" class="form-control" name="price" value="{{product[0][3]}}">
+              <input value="{{product[0][4]}}" readonly name="state"">
           </div>
           <input type="submit" name="submit_change" value="Submit Change">
       </form>
