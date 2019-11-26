@@ -453,26 +453,28 @@ def edit_product(product_id, state):
     return render_template('edit_product.html', user=user, product=product)
 
 
-@app.route('/staff_update_product/')
+@app.route('/staff_update_product/', methods = ['GET', 'POST'])
 def staff_update_product():
     product_id = request.form.get('product_id')
     name = request.form.get('name')
     nutrition_facts = request.form.get('nutrition_facts')
     product_type = request.form.get('type')
     size = request.form.get('size')
-    query = "update".format(
-        product_id, name, nutrition_facts, product_type, size)
+    query = "update products set id = \"{}\", name = \"{}\", type = \"{}\", nutrition_facts =\"{}\", size=\"{}\" where id = \"{}\"".format(product_id, name, product_type, nutrition_facts, size, product_id)
     cursor.execute(query)
     conn.commit()
     return render_template('staff.html', user=user)
 
 
-@app.route('/staff_update_price/')
+@app.route('/staff_update_price/', methods = ['GET', 'POST'])
 def staff_update_price():
     product_id = request.form.get('product_id')
     price_id = request.form.get('price_id')
     price = request.form.get('price')
     state = request.form.get('state')
+    query = "update price set price.id = \"{}\", price.pid = \"{}\", state = \"{}\", price=\"{}\" where price.id=\"{}\"".format(price_id, product_id, state, price, price_id)
+    cursor.execute(query)
+    conn.commit()
     return render_template('staff.html', user=user)
 
 
@@ -499,7 +501,7 @@ def change_quantity(product_id,warehouse_id):
     product_quantity = request.form.get("product_quantity", 0)
     query = "update stock set quantity = \"{}\" where stock.pid = \"{}\" and stock.wid = \"{}\"". format(product_quantity, product_id, warehouse_id)
     cursor.execute(query)
-    return render_template('warehouse_a_stock.html', user=user)
+    return render_template('warehouse_a_stock.html', user=user, warehouse_id=warehouse_id)
 
 
 if __name__ == '__main__':
