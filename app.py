@@ -310,18 +310,24 @@ def submit_order():
 
     # update stock
     #query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(product_quantity, customer_wid, cartitem_id)
-    #query = "update stock set quantity = quantity + \"{}\" where wid = \"{}\" and pid= \"{}\"".format(product_quantity,customer_wid,cartitem_id)
     #cursor.execute(query)
 
     # update orders table
     #query = "insert into orders(cid, oid, pid, ccid, quantity, date, status) values()"
-    #what do we do with the delievery address? --> input into delivery tb?
+    #cursor.execute(query)
     #card = request.form.get('card')
+
+    #update customer table
+    # query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total, user['id']
+    #cursor.execute(query)
 
     #datetime = datetime.date.today()
     #query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(1, 1, 2, 1, 5, '2019-11-25', 'recieved')"
+    #cursor.execute(query)
 
     # need query to delete items from cart
+    # query = "delete from cart where cid = \"{}\"".format(user['id'])
+    # cursor.execute(query)
 
     #conn.commit()
     return render_template('order_successful.html', user=user,cart=cart)
