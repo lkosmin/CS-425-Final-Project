@@ -93,10 +93,10 @@ create table price
 	);
 
 create table orders
-	(cid INT NOT NULL,
+	(ccid INT NOT NULL,
+	 cid INT NOT NULL,
 	 oid INT NOT NULL,
 	 pid INT NOT NULL,
-     ccid INT NOT NULL,
 	 quantity numeric(7,0),
 	 date varchar(30),
 	 status ENUM ('issued', 'sent', 'recieved'),

@@ -116,10 +116,9 @@ def sqlcommands():
         return [todict(tup, product) for tup in cursor.fetchall()]
 
     def getallproduct(id):
-        state = getstate(id)
-        query = "select products.id, name, nutrition_facts, price, state from price join products where products.id = price.pid"
+        query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from price join products where products.id = price.pid"
         cursor.execute(query)
-        product = ['products.id', 'name', 'nutrition_facts', 'price', 'state']
+        product = ['products.id','name','type', 'nutrition_facts','size','price.id','pid','state','price']
         return [todict(tup, product) for tup in cursor.fetchall()]
 
     def getcart(id):
@@ -134,6 +133,7 @@ def sqlcommands():
         cursor.execute(query)
         cartitem = ['products.id', 'products.name', 'cart.quantity', 'price.price']
         return [todict(tup, cartitem) for tup in cursor.fetchall()]
+
 
     #def getaddress
 
@@ -322,7 +322,8 @@ def submit_order():
     selected_address = request.form.get('selected_address')
     selected_card_num = request.form.get('selected_card')
     dt = datetime.date.today()
-    state = selected_address['state']
+    #state = selected_address['state']
+    state = 'CA'
 
     #find warehouse holding the stock
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
@@ -338,8 +339,10 @@ def submit_order():
     ccid = cursor.execute(query)
 
     # calculate oid
-    query = "select count(*) from orders where cid = \"{}\"".format(user['id'])
-    oid = cursor.execute(query) + 1
+    query = "select max(oid) from orders"
+    cursor.execute(query)
+    oid = (cursor.fetchone()[0] + 1)
+
 
     query = "SELECT cid, pid, quantity from cart where cart.cid = \"{}\"".format(user['id'])
     cursor.execute(query)
@@ -355,7 +358,8 @@ def submit_order():
         cursor.execute(query)
 
         # update orders
-        query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(\"{}\",\"{}\", \"{}\", \"{}\", \"{}\",\"{}\", 'received')".format(ccid,user['id'],oid,pid,quantity,dt)
+        query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(\"{}\",\"{}\", \"{}\"," \
+                " \"{}\", \"{}\",\"{}\", \"{}\")".format(ccid,user['id'],oid,pid,quantity,dt,"recieved")
         cursor.execute(query)
 
         # fetch price. multiple by quantity and add to cart_total --> fetchone()[]
@@ -371,11 +375,11 @@ def submit_order():
     query = "delete from cart where cid = \"{}\"".format(user['id'])
     cursor.execute(query)
 
-    return render_template('order_successful.html', user=user)
+    return render_template('order_successful.html', user=user, selected_address=selected_address)
 
 @app.route('/edit_product/<product_id>/<state>', methods = ['GET'])
 def edit_product(product_id, state):
-    query = "select products.id, name, nutrition_facts, price, state from products join price where products.id = price.pid and products.id= \"{}\" and state = \"{}\"".format(product_id, state)
+    query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from products join price where products.id = price.pid and products.id= \"{}\" and state = \"{}\"".format(product_id, state)
     cursor.execute(query)
     product = cursor.fetchall()
     return render_template('edit_product.html', user=user, product=product)
@@ -385,6 +389,18 @@ def staff_update_product():
     product_id = request.form.get('product_id')
     name = request.form.get('name')
     nutrition_facts = request.form.get('nutrition_facts')
+    product_type = request.form.get('type')
+    size = request.form.get('size')
+    query = "update".format(product_id,name,nutrition_facts,product_type,size)
+    cursor.execute(query)
+    conn.commit()
+    return render_template('staff.html',user=user)
+
+
+@app.route('/staff_update_price/')
+def staff_update_price():
+    product_id = request.form.get('product_id')
+    price_id = request.form.get('price_id')
     price = request.form.get('price')
     state = request.form.get('state')
     return render_template('staff.html',user=user)

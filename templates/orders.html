@@ -30,7 +30,6 @@
 
           <p>
 
-
               <span>Shopping Cart</span><br>
               <table>
                   <thead>
@@ -62,7 +61,7 @@
 
 
                   <h4> Deliver To: </h4>
-                  <form method="POST" action="/submit_order/">
+                  <form method="POST" action="/submit_order/{{state}}">
                   <select name="selected_address" class="selectpicker form-control">
                       <!--python fucntion and sql query call that shows every delivery address on file-->
                       {% for address in get_customer_addresses_todict(user['id']) %}

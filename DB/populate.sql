@@ -90,12 +90,12 @@ INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (1,1,1,7,3,'20
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (3,3,2,4,10,'2019-09-24','issued');
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (3,3,2,7,1,'2019-09-24','issued');
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (5,4,3,10,5,'2013-09-24','sent');
-INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (6,6,4,1,4,'2019-01-12','recieved');
+/*INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (6,6,4,1,4,'2019-01-12','recieved');
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (6,5,4,15,2,'2019-01-13','recieved');
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (6,5,6,1,5,'2019-01-13','recieved');
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (9,7,3,5,7,'2019-05-05','issued');
 INSERT INTO orders (ccid,cid,oid,pid,quantity,date,status) VALUES (10,7,2,2,1,'2019-05-05','issued');
-
+*/
 
 /*Populate prices */
 INSERT INTO price (id,pid,state,price) VALUES (1, 1, 'OH', 0.50);
