@@ -11,20 +11,20 @@
       </div>
     </header>
 
-    <form action="/request_filtered_list" method="POST">
+    <form action="/request_filtered_list_staff" method="POST">
       <INPUT TYPE="Checkbox" Name="food" Value ="Food">Food
       <INPUT TYPE="Checkbox" Name="beverages" Value ="Beverage">Beverage
       <input type = "submit" value = "submit"/>
     </form>
     <!-- filter by state -->
-    <form method="GET" action="/filter_by_state">
+    <!--<form method="GET" action="/filter_by_state">
       <select name="state" class="selectpicker form-control">
         <option value="Test">"test"</option>
       </select>
       <input type="submit" value="submit" />
-    </form>
+    </form>-->
 
-    <form action="/request_product" method="POST">
+    <form action="/request_product_staff" method="POST">
         <p>Search for item by name:</p>
         <input type="text" class="form-control" name="product_name" placeholder="Enter item name">
         <input type = "submit" value = "submit" />
@@ -55,7 +55,7 @@
             <th>{{ product['price'] }}</th>
             <th>{{ getstate(user['id'])[0]['state'] }}</th>
             <th>
-              <form method="GET" action="/update_cart/{{ product['products.id'] }}">
+              <form method="GET" action="/edit_product/{{user['id']}}">
                 <input type = "submit" value = "edit" />
               </form>
             </th>
@@ -76,10 +76,6 @@
           <th>{{ product['price'] }}</th>
           <th>{{ getstate(user['id'])[0]['state'] }}</th>
           <th>
-            <form method="GET" action="/update_cart/{{ product['products.id'] }}">
-              <input type="number" class="form-control" name="product_quantity" placeholder="Enter Quantity to add to cart" min ="1">
-              <input type = "submit" value = "submit" />
-            </form>
           </th>
 
         </tr>
@@ -93,9 +89,8 @@
       </table>
 
       <!--Navigation to Account and Cart-->
-      <form method="POST" action="/nav">
-        <input type="submit" name="submit_button" value="Go To Account">
-        <input type="submit" name="submit_button" value="Go To Cart">
+      <form method="POST" action="/nav_staff">
+        <input type="submit" name="submit_button" value="Warehouses">
       </form>
 
   </body>
