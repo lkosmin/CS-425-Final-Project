@@ -132,7 +132,7 @@ def sqlcommands():
             query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from price join products where products.id = price.pid and products.type='food'"
         elif type ==1:
             query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from price join products where products.id = price.pid and products.type='beverage'"
-        else: 
+        else:
             query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from price join products where products.id = price.pid"
         cursor.execute(query)
         product = ['products.id', 'name', 'type', 'nutrition_facts',
@@ -392,6 +392,35 @@ def add_card(user_id):
     conn.commit()
     return render_template('account.html', user=user)
 
+@app.route('/add_product/<warehouse_id>', methods=['GET', 'POST'])
+def add_product(warehouse_id):
+    name = request.form.get('name')
+    type = request.form.get('type')
+    nutrition_facts = request.form.get('nutrition_facts')
+    size = request.form.get('size')
+    cost = request.form.get('cost')
+
+    # incrementing the card id
+    query = "select count(*) from products"
+    cursor.execute(query)
+    conn.commit()
+    products_id = (cursor.fetchone()[0]) + 1
+    # insert new credit card
+    query = "insert into products(id, name, type, nutrition_facts, size) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(
+        products_id, name, type, nutrition_facts, size)
+    cursor.execute(query)
+    #increment price id
+    query = "select count(*) from price"
+    cursor.execute(query)
+    conn.commit()
+    price_id=(cursor.fetchone()[0]) + 1
+    #get warehouse statement
+    query="select state from warehouse where id=\"{}\"".format(warehouse_id)
+    cursor.execute(query)
+    state=(cursor.fetchone()[0])
+    query = "insert into price(id, pid, state, price) values(\"{}\",\"{}\",\"{}\",\"{}\")".format(price_id, products_id, state, cost)
+    conn.commit()
+    return render_template('warehouse_a_stock.html', user=user, warehouse_id=warehouse_id)
 
 @app.route('/submit_order/', methods=['POST'])
 def submit_order():
@@ -404,7 +433,7 @@ def submit_order():
         user['id'])
     cursor.execute(query)
     customer_wid = cursor.fetchone()[0]
-    
+
     # retrieve ccid
     query = "select id from credit_card where card_num = \"{}\"".format(
         selected_card_num)
