@@ -48,6 +48,19 @@
            <input type="submit" name="go_home" value="Home">
          </form>
 
+         <!-- add product to stock field-->
+         <p>Add Product</p>
+          <form method="POST" action="/add_product/{{warehouse_id}}">
+             <div class="form-group">
+                 <input type="name" class="form-control" name="name" placeholder="Product name">
+                 <input type="type" class="form-control" name="type" placeholder="Product type">
+                 <input type="nutrition_facts" class="form-control" name="nutrition_facts" placeholder="Nutritional Facts">
+                 <input type="size" class="form-control" name="size" placeholder="Product Size">
+                 <input type="cost" class="form-control" name="cost" placeholder="Product Cost">
+             </div>
+             <input type="submit" name="add_card" value="Add card">
+         </form>
+
 
   </body>
 
