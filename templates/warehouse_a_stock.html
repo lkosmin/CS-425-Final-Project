@@ -11,6 +11,7 @@
       </div>
     </header>
 
+
     <table>
         <thead>
           <tr>
@@ -22,18 +23,19 @@
         <tbody>
 
 <!-- lol -->
-          {% for warehouse in get_warehouse_a_stock(warehouse_id) %}
+          {% for warehouse_a_stock in get_warehouse_a_stock(warehouse_id) %}
           <tr>
-            <th>{{ warehouse['products.id'] }}</th>
-            <th>{{ warehouse['name'] }}</th>
+            <th>{{ warehouse_a_stock['stock.pid'] }}</th>
+            <th>{{ warehouse_a_stock['products.name'] }}</th>
+            <th>{{ warehouse_a_stock['stock.quantity'] }}</th>
             <th>
-                <form method="GET" action="/change_quantity/{{warehouse['products.id']}}/{{warehouse_id}}">
-                  <input type="number" class="form-control" name="product_quantity" min ="1" value="{{warehouse['quantity']}}">
-                  <input type = "submit" value = "change_quantity" /></th>
+                <form method="GET" action="/change_quantity/{{warehouse_a_stock['pid']}}/{{warehouse_id}}">
+                  <input type="number" class="form-control" name="product_quantity" min ="1" value="{{warehouse_a_stock['quantity']}}">
+                  <input type = "submit" value = "change quantity" />
                 </form>
-            <!-- <th>{{ warehouse['quantity'] }}</th> -->
+            </th>
             <th>
-              <form method="GET" action="/delete_warehouse_stock/{{warehouse['products.id']}}/{{ warehouse_id }}">
+              <form method="GET" action="/delete_warehouse_stock/{{warehouse_a_stock['pid']}}/{{ warehouse_id }}">
                 <input type = "submit" value = "Delete Item" />
               </form>
             </th>

@@ -169,10 +169,10 @@ def sqlcommands():
         return [todict(tup, warehouse_a) for tup in cursor.fetchall()]
 
     def get_warehouse_a_stock(warehouse_id):
-        query = "select * from warehouse join stock where stock.wid=\"{}\"".format(
+        query = "select stock.pid, products.name, stock.quantity from warehouse join stock join products where stock.pid = products.id and stock.wid=\"{}\"".format(
             warehouse_id)
         cursor.execute(query)
-        warehouse_a_stock = ['products.id', 'name', 'quantity']
+        warehouse_a_stock = ['stock.pid', 'products.name', 'stock.quantity']
         return [todict(tup, warehouse_a_stock) for tup in cursor.fetchall()]
 
     return dict(get_warehouses=get_warehouses, get_warehouse_a=get_warehouse_a, get_warehouse_a_stock=get_warehouse_a_stock, get_cart_total=get_cart_total, getstate=getstate, get_one_customer_card_todict=get_one_customer_card_todict, get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict, get_customer_cards_tostr=get_customer_cards_tostr, get_customer_addresses_todict=get_customer_addresses_todict, address_dict_to_str=address_dict_to_str, getproduct=getproduct, get_state_products=get_state_products, getcartitem=getcartitem, getallproduct=getallproduct)
