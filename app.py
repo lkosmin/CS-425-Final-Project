@@ -137,8 +137,7 @@ def sqlcommands():
 
     #def getaddress
 
-
-    return dict(address_dict_to_str=address_dict_to_str,getstate=getstate,get_one_customer_card_todict=get_one_customer_card_todict,get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem, getallproduct=getallproduct)
+    return dict(getstate=getstate,get_one_customer_card_todict=get_one_customer_card_todict,get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict,address_dict_to_str=address_dict_to_str, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem, getallproduct=getallproduct)
 
 
 ###
@@ -370,7 +369,22 @@ def submit_order():
     cursor.execute(query)
 
     return render_template('order_successful.html', user=user)
-   
+
+@app.route('/edit_product/<product_id>/<state>', methods = ['GET'])
+def edit_product(product_id, state):
+    query = "select products.id, name, nutrition_facts, price, state from products join price where products.id = price.pid and products.id= \"{}\" and state = \"{}\"".format(product_id, state)
+    cursor.execute(query)
+    product = cursor.fetchall()
+    return render_template('edit_product.html', user=user, product=product)
+
+@app.route('/staff_update_product/<product_id>/<state>')
+def staff_update_product(id, state):
+    name = request.form.get('name')
+    nutrition_facts = request.form.get('nutrition_facts')
+    price = request.form.get('price')
+    state = request.form.get('state')
+    return render_template('staff.html',user=user)
+
 
 
 if __name__ == '__main__':

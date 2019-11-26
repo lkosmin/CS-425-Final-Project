@@ -55,7 +55,7 @@
             <th>{{ product['price'] }}</th>
             <th>{{ product['state'] }}</th>
             <th>
-              <form method="GET" action="/edit_product/product">
+              <form method="GET" action="/edit_product/{{user['id']}}/{{product['state']}}">
                 <input type = "submit" value = "edit" />
               </form>
             </th>
