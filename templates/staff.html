@@ -42,9 +42,8 @@
           </tr>
         </thead>
         <tbody>
-
-
-          {% for product in getallproduct(user['id']) %}
+          {% if not name %}
+          {% for product in getallproduct(user['id'], type) %}
           <tr>
             <th>{{ product['products.id'] }}</th>
             <th>{{ product['name'] }}</th>
@@ -59,6 +58,25 @@
 
           </tr>
          {% endfor %}
+         {% endif %}
+
+         {% if name %}
+         {% for product in getproduct_staff(user['id'], name) %}
+         <tr>
+           <th>{{ product['products.id'] }}</th>
+           <th>{{ product['name'] }}</th>
+           <th>{{ product['nutrition_facts'] }}</th>
+           <th>{{ product['price'] }}</th>
+           <th>{{ product['state'] }}</th>
+           <th>
+             <form method="GET" action="/edit_product/{{product['products.id']}}/{{product['state']}}">
+               <input type = "submit" value = "edit" />
+             </form>
+           </th>
+
+         </tr>
+        {% endfor %}
+        {% endif %}
 
 
         </tbody>
