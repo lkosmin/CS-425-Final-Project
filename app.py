@@ -377,8 +377,9 @@ def edit_product(product_id, state):
     product = cursor.fetchall()
     return render_template('edit_product.html', user=user, product=product)
 
-@app.route('/staff_update_product/<product_id>/<state>')
-def staff_update_product(id, state):
+@app.route('/staff_update_product/')
+def staff_update_product():
+    product_id = request.form.get('product_id')
     name = request.form.get('name')
     nutrition_facts = request.form.get('nutrition_facts')
     price = request.form.get('price')
