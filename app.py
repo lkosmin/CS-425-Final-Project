@@ -65,8 +65,8 @@ def sqlcommands():
         query = "SELECT street_num, street_name, city, state, zip FROM delivery WHERE cid = \"{}\" and id = \"{}\"".format(id,delivery_id)
         cursor.execute(query)
         address = ['street_num', 'street_name', 'city', 'state', 'zip']
-        return [tostr(tup, address) for tup in cursor.fetchall()]
-
+        return tostr(cursor.fetchone(), address)
+        
     def get_customer_addresses_todict(id):
         query = "SELECT * FROM delivery WHERE cid = \"{}\"".format(id)
         cursor.execute(query)
@@ -377,7 +377,8 @@ def submit_order():
 def edit_product(product_id, state):
     query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from products join price where products.id = price.pid and products.id= \"{}\" and state = \"{}\"".format(product_id, state)
     cursor.execute(query)
-    product = cursor.fetchall()
+    product_schema = ['products.id','name','type', 'nutrition_facts','size','price.id','pid','state','price']
+    product = [todict(tup, product_schema) for tup in cursor.fetchall()]
     return render_template('edit_product.html', user=user, product=product)
 
 @app.route('/staff_update_product/')
