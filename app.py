@@ -212,16 +212,25 @@ def update_cart(product_id):
     query = "insert into cart(cid, pid, quantity) values (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user['id'], product_id, product_quantity, product_quantity)
     cursor.execute(query)
     conn.commit()
-    '''
-    #retrieve warehouse id
-    query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
-    cursor.execute(query)
-    customer_wid = cursor.fetchone()[0]
-    #delete from stock (need to modify, this is deleting from stock even if quantity of stock in warehouse > 0, so i think we need to add a quantity comparison if ==0 before delete)
-    query = "delete from stock where stock.pid = \"{}\" and stock.wid = \"{}\"".format(product_id, customer_wid)
+    return render_template('orders.html', user = user)
+
+
+@app.route('/update_card/<product_id>', methods = ['GET'])
+def update_card(product_id):
+    product_quantity = request.args.get("product_quantity", 0)
+    #insert to cart
+    query = "insert into cart(cid, pid, quantity) values (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user['id'], product_id, product_quantity, product_quantity)
     cursor.execute(query)
     conn.commit()
-    #go to orders.html'''
+    return render_template('orders.html', user = user)
+
+@app.route('/update_address/<product_id>', methods = ['GET'])
+def update_address(product_id):
+    product_quantity = request.args.get("product_quantity", 0)
+    #insert to cart
+    query = "insert into cart(cid, pid, quantity) values (\"{}\",\"{}\",\"{}\") on duplicate key update quantity = \"{}\"".format(user['id'], product_id, product_quantity, product_quantity)
+    cursor.execute(query)
+    conn.commit()
     return render_template('orders.html', user = user)
 
 

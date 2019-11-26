@@ -62,14 +62,13 @@
 
 
                   <h4> Deliver To: </h4>
-                  <form method="POST" action="/submit_order">
+                  <form method="POST" action="/submit_order/{{ address['state'] }}">
                   <select name="selected_address" class="selectpicker form-control">
                       <!--python fucntion and sql query call that shows every delivery address on file-->
                       {% for address in get_customer_addresses_tostr(user['id']) %}
                       <option value="{{ address }}">{{ address }}</option>
                       {% endfor %}
                   </select>
-
 
 
 
