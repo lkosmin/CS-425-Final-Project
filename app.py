@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flaskext.mysql import MySQL
 from datetime import date,timedelta
 import re
+import datetime
 
 app = Flask(__name__)
 
@@ -329,6 +330,55 @@ def add_card(user_id):
 
 @app.route('/submit_order', methods = ['POST'])
 def submit_order():
+    selected_address = request.form.get('selected_address')
+    selected_card_num = request.form.get('selected_card')
+    dt = datetime.data.today()
+
+    #find warehouse holding the stock
+    query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
+    cursor.execute(query)
+    customer_wid = cursor.fetchone()[0]
+
+    # retrieves count of cart items
+    query = "select count(*) from cart where cid = \"{}\"".format(user['id'])
+    num_of_products = cursor.execute(query)
+
+    # grab state from user
+    #query = "select state from customer where cid = \"{}\"".format(user['id'])
+    #state = cursor.execute(query)
+
+    # calculate oid
+    query = "select count(*) from orders where cid = \"{}\"".format(user['id'])
+    oid = cursor.execute(query) + 1
+
+    query = "SELECT cid, pid, quantity from cart where cart.cid = \"{}\"".format(user['id'])
+    cursor.execute(query)
+    rows = cursor.fetchall()
+
+    # grabs the product ids in shopping cart and puts into list
+    cart_total = 0
+    for row in rows:
+        pid = row[1]  # grabs the product id
+        quantity = row[2]  # if statement for stock quantity
+        # update stock --> for each product
+        query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(quantity,customer_wid,pid)
+        cursor.execute(query)
+
+        # update orders
+        query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(1, 1, 2, 1, 5, '2019-11-25', 'received')"
+        cursor.execute(query)
+
+        # fetch price. multiple by quantity and add to cart_total --> fetchone()[]
+        query = "select * from cart natural join price where price.pid = cart.pid and cid = \"{}\" and price.state = 'CA'".format(user['id'])
+
+    # update customer table --> once
+    query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total,user['id'])
+    cursor.execute(query)
+
+    # need query to delete items from cart --> once
+    query = "delete from cart where cid = \"{}\"".format(user['id'])
+    cursor.execute(query)
+
     return render_template('order_successful.html', user=user)
    
 
