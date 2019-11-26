@@ -89,7 +89,8 @@ create table price
 	 state varchar(2) NOT NULL,
 	 price numeric(7,2) NOT NULL,
 	 primary key (id),
-     foreign key (pid) references products(id)
+     foreign key (pid) references products(id),
+     constraint unique_in_state unique(pid, state)
 	);
 
 create table orders
