@@ -66,7 +66,7 @@ def sqlcommands():
         cursor.execute(query)
         address = ['street_num', 'street_name', 'city', 'state', 'zip']
         return tostr(cursor.fetchone(), address)
-        
+
     def get_customer_addresses_todict(id):
         query = "SELECT * FROM delivery WHERE cid = \"{}\"".format(id)
         cursor.execute(query)
@@ -121,15 +121,20 @@ def sqlcommands():
         product = ['products.id','name','type', 'nutrition_facts','size','price.id','pid','state','price']
         return [todict(tup, product) for tup in cursor.fetchall()]
 
-    def getcart(id):
-        query = "SELECT * from cart"
-        #query = "SELECT * from cart JOIN products where products.id = cart.pid AND cart.cid = \"{}\"".format(id)
-        #query = "select pid,quantity from cart where cart.cid = \"{}\"".format(id)
+    def get_cart_total(id):
+        state = getstate(id)
+        query = "select products.id, products.name, cart.quantity, price.price from cart join products join price where products.id = cart.pid and products.id = price.pid and products.id = cart.pid AND cart.cid = \"{}\" and price.state = \"{}\"".format(id,state[0]['state'])
         cursor.execute(query)
-        cart = ['cid', 'pid', 'quantity']
-        return [todict(tup, cart) for tup in cursor.fetchall()]
+        cartitem = ['products.id', 'products.name', 'cart.quantity', 'price.price']
+        cart = [todict(tup, cartitem) for tup in cursor.fetchall()]
+        cart_total = 0
+        for cartitem in cart:
+            cart_total += cartitem['cart.quantity']*cartitem['price.price']
+        return cart_total    
+
     def getcartitem(id):
-        query = "select products.id, products.name, cart.quantity, price.price from cart join products join price where products.id = cart.pid and products.id = price.id AND cart.cid = \"{}\"".format(id)
+        state = getstate(id)
+        query = "select products.id, products.name, cart.quantity, price.price from cart join products join price where products.id = cart.pid and products.id = price.pid and products.id = cart.pid AND cart.cid = \"{}\" and price.state = \"{}\"".format(id,state[0]['state'])
         cursor.execute(query)
         cartitem = ['products.id', 'products.name', 'cart.quantity', 'price.price']
         return [todict(tup, cartitem) for tup in cursor.fetchall()]
@@ -137,7 +142,7 @@ def sqlcommands():
 
     #def getaddress
 
-    return dict(getstate=getstate,get_one_customer_card_todict=get_one_customer_card_todict,get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict,address_dict_to_str=address_dict_to_str, getproduct=getproduct, get_state_products=get_state_products, getcart=getcart, getcartitem=getcartitem, getallproduct=getallproduct)
+    return dict(get_cart_total=get_cart_total,getstate=getstate,get_one_customer_card_todict=get_one_customer_card_todict,get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict,get_customer_cards_tostr=get_customer_cards_tostr,get_customer_addresses_todict=get_customer_addresses_todict,address_dict_to_str=address_dict_to_str, getproduct=getproduct, get_state_products=get_state_products, getcartitem=getcartitem, getallproduct=getallproduct)
 
 
 ###
@@ -371,7 +376,7 @@ def submit_order():
     query = "delete from cart where cid = \"{}\"".format(user['id'])
     cursor.execute(query)
 
-    return render_template('order_successful.html', user=user)
+    return render_template('order_successful.html', user=user, cart_total=cart_total)
 
 @app.route('/edit_product/<product_id>/<state>', methods = ['GET'])
 def edit_product(product_id, state):
