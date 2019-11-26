@@ -319,11 +319,9 @@ def add_card(user_id):
 
 @app.route('/submit_order/', methods = ['POST'])
 def submit_order():
-    selected_address = request.form.get('selected_address')
+    state= request.form.get('selected_address_state')
     selected_card_num = request.form.get('selected_card')
     dt = datetime.date.today()
-    #state = selected_address['state']
-    state = 'CA'
 
     #find warehouse holding the stock
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
@@ -375,7 +373,7 @@ def submit_order():
     query = "delete from cart where cid = \"{}\"".format(user['id'])
     cursor.execute(query)
 
-    return render_template('order_successful.html', user=user, selected_address=selected_address)
+    return render_template('order_successful.html', user=user)
 
 @app.route('/edit_product/<product_id>/<state>', methods = ['GET'])
 def edit_product(product_id, state):

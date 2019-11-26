@@ -61,11 +61,11 @@
 
 
                   <h4> Deliver To: </h4>
-                  <form method="POST" action="/submit_order/{{state}}">
-                  <select name="selected_address" class="selectpicker form-control">
+                  <form method="POST" action="/submit_order/">
+                  <select name="selected_address_state">
                       <!--python fucntion and sql query call that shows every delivery address on file-->
                       {% for address in get_customer_addresses_todict(user['id']) %}
-                      <option value="{{ address }}">{{ address_dict_to_str(user['id'],address['id']) }}</option>
+                      <option value="{{ address['state'] }}">{{ address_dict_to_str(user['id'],address['id']) }}</option>
                       {% endfor %}
                   </select>
 
@@ -75,7 +75,7 @@
 
                   <h4> Pay With: </h4>
 
-                  <select name="selected_card" class="selectpicker form-control">
+                  <select name="selected_card">
                       <!--python fucntion and sql query call that shows every card on file
                           the select tags is a drop down menu-->
                           {% for card in get_customer_cards_tostr(user['id']) %}
