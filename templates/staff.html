@@ -53,7 +53,7 @@
             <th>{{ product['name'] }}</th>
             <th>{{ product['nutrition_facts'] }}</th>
             <th>{{ product['price'] }}</th>
-            <th>{{ getstate(user['id'])[0]['state'] }}</th>
+            <th>{{ product['state'] }}</th>
             <th>
               <form method="GET" action="/edit_product/product">
                 <input type = "submit" value = "edit" />

@@ -114,10 +114,11 @@ def sqlcommands():
         product = ['products.id', 'name', 'nutrition_facts', 'price']
         return [todict(tup, product) for tup in cursor.fetchall()]
 
-    def getallproduct():
-        query = "select * from products"
+    def getallproduct(id):
+        state = getstate(id)
+        query = "select products.id, name, nutrition_facts, price, state from price join products where products.id = price.pid"
         cursor.execute(query)
-        product = ['products.id', 'name', 'nutrition_facts', 'price']
+        product = ['products.id', 'name', 'nutrition_facts', 'price', 'state']
         return [todict(tup, product) for tup in cursor.fetchall()]
 
     def getcart(id):
@@ -320,6 +321,8 @@ def add_card(user_id):
 @app.route('/submit_order', methods = ['POST'])
 def submit_order():
     return render_template('order_successful.html', user=user)
+   
+
 
 if __name__ == '__main__':
     app.run(debug=True)
