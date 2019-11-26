@@ -321,42 +321,70 @@ def add_card(user_id):
 def submit_order():
     selected_address = request.form.get('selected_address')
     selected_card_num = request.form.get('selected_card')
-
+    datetime = datetime.date.today()
+'''
     # find the warehouse holding the stock
     query = "select warehouse.id as WID from warehouse join customer join delivery where warehouse.state = delivery.state and customer.id = delivery.cid and customer.id = \"{}\"".format(user['id'])
     cursor.execute(query)
     customer_wid = cursor.fetchone()[0]
 
-    #query cart items to dict NEED TO FIX
     #query = "SELECT pid, quantity from cart"
+    #query = "SELECT cid, pid, quantity from cart where cart.cid = \"{}\"".format(user['id'])
+    #cursor.execute(query)
+    #cart = todict(cursor.fetchone(),'cart')
+
+    #retrieves count of cart items
+    query = "select count(*) from cart where cid = \"{}\"".format(user['id'])
+    num_of_products = cursor.execute(query)
+
+    ##query = "SELECT cid, pid, quantity from cart where cart.cid = \"{}\"".format(user['id'])
+    #cursor.execute(query)
+    #cart = cursor.fetchall()[i][2]
+
     query = "SELECT cid, pid, quantity from cart where cart.cid = \"{}\"".format(user['id'])
     cursor.execute(query)
-    #cart = todict(cursor.fetchone(),'cart')
-    cart=cursor.fetchall()[i][2]
+    rows = cursor.fetchall()
 
-    # update stock
-    #query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(product_quantity, customer_wid, cartitem_id)
-    #cursor.execute(query)
+    #calculate oid
 
-    # update orders table
-    #query = "insert into orders(cid, oid, pid, ccid, quantity, date, status) values()"
-    #cursor.execute(query)
-    #card = request.form.get('card')
+    #grabs the product ids in shopping cart and puts into list
+    cart_total = 0
+    for row in rows:
+        pid = row[1]   #grabs the product id
+        quantity = row[2]   #if statement for stock quantity
+        #update stock --> for each product
+        query = "update stock set quantity = quantity - \"{}\" where wid = \"{}\" and pid = \"{}\"".format(quantity, customer_wid, pid)
+        cursor.execute(query)
 
-    #update customer table
-    # query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total, user['id']
-    #cursor.execute(query)
+        #update orders
+        query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(1, 1, 2, 1, 5, '2019-11-25', 'received')"
+        cursor.execute(query)
 
-    #datetime = datetime.date.today()
-    #query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(1, 1, 2, 1, 5, '2019-11-25', 'recieved')"
-    #cursor.execute(query)
+        #fetch price. multiple by quantity and add to cart_total --> fetchone()[]
 
-    # need query to delete items from cart
-    # query = "delete from cart where cid = \"{}\"".format(user['id'])
-    # cursor.execute(query)
+    #grabs the product name and puts into a list
+  ''' 
+    product_li = []
+    for pid in pid_li:
+        query = "select name from products where id = \"{}\"".format(pid)
+        cursor.execute(query)
+        product = cursor.fetchone()[0]
+        product_li.append(product)
 
+    for product in product_li:
+    '''
+
+
+    #update customer table --> once
+    query = "update customer set balance = balance + \"{}\" where customer.id = \"{}\"".format(cart_total, user['id'])
+    cursor.execute(query)
+
+    # need query to delete items from cart --> once
+    query = "delete from cart where cid = \"{}\"".format(user['id'])
+    cursor.execute(query)
+'''
     #conn.commit()
-    return render_template('order_successful.html', user=user,cart=cart)
+    #return render_template('order_successful.html', user=user)
 
 if __name__ == '__main__':
     app.run(debug=True)
