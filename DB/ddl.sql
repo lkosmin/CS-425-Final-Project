@@ -93,7 +93,7 @@ create table price
 	);
 
 create table orders
-	(ccid INT NOT NULL,
+	(ccid INT,
 	 cid INT NOT NULL,
 	 oid INT NOT NULL,
 	 pid INT NOT NULL,
