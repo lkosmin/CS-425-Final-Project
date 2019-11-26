@@ -125,7 +125,12 @@ def sqlcommands():
         return [todict(tup, product) for tup in cursor.fetchall()]
 
     def getallproduct(id, type):
-        query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from price join products where products.id = price.pid"
+        if type ==0:
+            query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from price join products where products.id = price.pid and products.type='food'"
+        elif type ==1:
+            query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from price join products where products.id = price.pid and products.type='beverage'"
+        else: 
+            query = "select products.id, name, type, nutrition_facts, size, price.id, pid, state, price from price join products where products.id = price.pid"
         cursor.execute(query)
         product = ['products.id', 'name', 'type', 'nutrition_facts',
                    'size', 'price.id', 'pid', 'state', 'price']
