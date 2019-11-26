@@ -26,7 +26,12 @@
           <tr>
             <th>{{ warehouse['products.id'] }}</th>
             <th>{{ warehouse['name'] }}</th>
-            <th>{{ warehouse['quantity'] }}</th>
+            <th>
+                <form method="GET" action="/change_quantity/{{warehouse['products.id']}}/{{warehouse['id']}}">
+                  <input type="number" class="form-control" name="product_quantity" min ="1" value="{{warehouse['quantity']}}">
+                  <input type = "submit" value = "change_quantity" /></th>
+                </form>
+            <!-- <th>{{ warehouse['quantity'] }}</th> -->
             <th>
               <form method="GET" action="/delete_warehouse_stock/{{products.id}}/{{warehouse['id']}}">
                 <input type = "submit" value = "Delete Item" />
