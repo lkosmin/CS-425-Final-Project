@@ -488,12 +488,12 @@ def goto_warehouse_stock(warehouse_id):
     return render_template('warehouse_a_stock.html', user=user,warehouse_id=warehouse_id)
 
 
-@app.route('/delete_warehouse_stock/<product_id>/<wid>', methods=['GET'])
-def delete_warehouse_stock(product_id,wid):
+@app.route('/delete_warehouse_stock/<product_id>/<warehouse_id>', methods=['GET'])
+def delete_warehouse_stock(product_id,warehouse_id):
     query = "delete from stock where stock.wid=\"{}\" and stock.pid=\"{}\"".format(
-        wid, product_id)
+        warehouse_id, product_id)
     cursor.execute(query)
-    return render_template('warehouse_a_stock.html', user=user)
+    return render_template('warehouse_a_stock.html', user=user, warehouse_id=warehouse_id)
 
 
 @app.route('/change_quantity/<product_id>/<warehouse_id>', methods=['GET', 'POST'])

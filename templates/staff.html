@@ -10,7 +10,6 @@
         <h1 class="logo">Products</h1>
       </div>
     </header>
-
     <form action="/request_filtered_list_staff" method="POST">
       <INPUT TYPE="Checkbox" Name="food" Value ="Food">Food
       <INPUT TYPE="Checkbox" Name="beverages" Value ="Beverage">Beverage
@@ -65,10 +64,13 @@
         </tbody>
       </table>
 
-      <!--Navigation to Account and Cart-->
-      <form method="POST" action="/nav_staff">
-        <input type="submit" name="submit_button" value="Warehouses">
-      </form>
+
+        <!--Navigation to warehouse-->
+        <form method="POST" action="/nav_staff">
+          <input type="submit" name="submit_button" value="Go To Warehouses">
+        </form>
+
+
 
   </body>
 
