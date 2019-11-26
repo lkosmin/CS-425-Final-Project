@@ -295,13 +295,24 @@ def delete_address(delivery_id):
 # delete product from shopping cart
 
 
-@app.route('/delete_from_cart/<cartitem_id>/<user_id>/<product_quantity>', methods=['GET'])
-def delete_from_cart(cartitem_id, user_id, product_quantity):
+@app.route('/delete_from_cart/<cartitem_id>/', methods=['GET'])
+def delete_from_cart(cartitem_id):
     # delete from cart. This removed the selected item from cart entirely, need to re-add item if want to change quantity
     query = "delete from cart where cart.pid = \"{}\"".format(cartitem_id)
     cursor.execute(query)
     conn.commit()
     return render_template('orders.html', user=user)
+
+#update cart quantity
+
+@app.route('/change_cart_quantity/<cartitem_id>/', methods=['POST'])
+def change_cart_quantity(cartitem_id):
+    quantity = request.form.get('product_quantity')
+    query = "update cart set quantity = \"{}\" where cart.pid = \"{}\"".format(quantity,cartitem_id)
+    cursor.execute(query)
+    conn.commit()
+    return render_template('orders.html', user=user)
+
 
 
 # test
@@ -360,13 +371,15 @@ def add_addr(user_id):
     state = request.form.get('state')
     zip_code = request.form.get('zip_code')
     # incrementing the delivery id
-    query = "select max(id) from delivery"
-    cursor.execute(query)
-    conn.commit()
-    delivery_id = (cursor.fetchone()[0]) + 1
+    # query = "select max(id) from delivery"
+    # cursor.execute(query)
+    # conn.commit()
+    # delivery_id = (cursor.fetchone()[0]) + 1
     # insert new delivery address
-    query = "insert into delivery(id, cid, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(
-        delivery_id, user['id'], street_num, street_name, city, state, zip_code)
+    # query = "insert into delivery(id, cid, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(
+    #     delivery_id, user['id'], street_num, street_name, city, state, zip_code)
+    query = "insert into delivery(cid, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(
+        user['id'], street_num, street_name, city, state, zip_code)
     cursor.execute(query)
     conn.commit()
     return render_template('account.html', user=user)
@@ -381,13 +394,13 @@ def add_card(user_id):
     state = request.form.get('state')
     zip_code = request.form.get('zip_code')
     # incrementing the card id
-    query = "select count(*) from credit_card"
-    cursor.execute(query)
-    conn.commit()
-    card_id = (cursor.fetchone()[0]) + 1
+    # query = "select count(*) from credit_card"
+    # cursor.execute(query)
+    # conn.commit()
+    # card_id = (cursor.fetchone()[0]) + 1
     # insert new credit card
-    query = "insert into credit_card(id, cid, card_num, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(
-        card_id, user['id'], card, street_num, street_name, city, state, zip_code)
+    query = "insert into credit_card(cid, card_num, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(
+        user['id'], card, street_num, street_name, city, state, zip_code)
     cursor.execute(query)
     conn.commit()
     return render_template('account.html', user=user)
@@ -403,26 +416,31 @@ def add_product(warehouse_id):
     quantity = request.form.get('quantity')
 
     # incrementing the card id
-    query = "select max(id) from products"
-    cursor.execute(query)
-    conn.commit()
-    products_id = (cursor.fetchone()[0]) + 1
+    # query = "select max(id) from products"
+    # cursor.execute(query)
+    # conn.commit()
+    # products_id = (cursor.fetchone()[0]) + 1
     # insert new credit card
-    query = "insert into products(id, name, type, nutrition_facts, size) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(
-        products_id, name, type, nutrition_facts, size)
+    query = "insert into products(name, type, nutrition_facts, size) values(\"{}\",\"{}\",\"{}\",\"{}\")".format(
+        name, type, nutrition_facts, size)
     cursor.execute(query)
     conn.commit()
     #increment price id
-    query = "select max(id) from price"
+    # query = "select max(id) from price"
+    # cursor.execute(query)
+    # conn.commit()
+    # price_id=(cursor.fetchone()[0]) + 1
+    query = "select id from products where name = \"{}\" and type= \"{}\" and nutrition_facts=\"{}\" and size=\"{}\"".format(
+        name, type, nutrition_facts, size)
     cursor.execute(query)
-    conn.commit()
-    price_id=(cursor.fetchone()[0]) + 1
+    products_id = cursor.fetchone()[0]
+
     #get warehouse state
     query="select state from warehouse where id=\"{}\"".format(warehouse_id)
     cursor.execute(query)
     state=(cursor.fetchone()[0])
     #insert to price table
-    query = "insert into price(id, pid, state, price) values(\"{}\",\"{}\",\"{}\",\"{}\")".format(price_id, products_id, state, cost)
+    query = "insert into price(pid, state, price) values(\"{}\",\"{}\",\"{}\")".format(products_id, state, cost)
     cursor.execute(query)
     conn.commit()
     #insert to stock table
@@ -476,9 +494,9 @@ def submit_order():
         cursor.execute(query)
         conn.commit()
         # update orders
-        query = "insert into orders(ccid, cid, oid, pid, quantity, date, status) VALUES(\"{}\",\"{}\", \"{}\"," \
-                " \"{}\", \"{}\",\"{}\", \"{}\")".format(
-                    ccid, user['id'], oid, pid, quantity, dt, "recieved")
+        query = "insert into orders(ccid, cid, pid, quantity, date, status) VALUES(\"{}\",\"{}\", \"{}\"," \
+                " \"{}\", \"{}\",\"{}\")".format(
+                    ccid, user['id'], pid, quantity, dt, "recieved")
         cursor.execute(query)
         conn.commit()
 
@@ -519,7 +537,7 @@ def staff_update_product():
     nutrition_facts = request.form.get('nutrition_facts')
     product_type = request.form.get('type')
     size = request.form.get('size')
-    query = "update products set id = \"{}\", name = \"{}\", type = \"{}\", nutrition_facts =\"{}\", size=\"{}\" where id = \"{}\"".format(product_id, name, product_type, nutrition_facts, size, product_id)
+    query = "update products set name = \"{}\", type = \"{}\", nutrition_facts =\"{}\", size=\"{}\" where id = \"{}\"".format(name, product_type, nutrition_facts, size, product_id)
     cursor.execute(query)
     conn.commit()
     return render_template('staff.html', user=user)
@@ -531,7 +549,7 @@ def staff_update_price():
     price_id = request.form.get('price_id')
     price = request.form.get('price')
     state = request.form.get('state')
-    query = "update price set price.id = \"{}\", price.pid = \"{}\", state = \"{}\", price=\"{}\" where price.id=\"{}\"".format(price_id, product_id, state, price, price_id)
+    query = "update price set price.pid = \"{}\", state = \"{}\", price=\"{}\" where price.id=\"{}\"".format(product_id, state, price, price_id)
     cursor.execute(query)
     conn.commit()
     return render_template('staff.html', user=user)

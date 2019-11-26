@@ -6,7 +6,7 @@ create table user
 	(username varchar(20) NOT NULL,
 	 userpass varchar(20) NOT NULL,
 	 role ENUM('customer','staff') NOT NULL,
-	 id int NOT NULL,
+	 id INT NOT NULL,
 	 primary key (username)
 	);
 
@@ -19,7 +19,7 @@ create table customer
   );
 
   create table delivery
-  ( id INT NOT NULL,
+  ( id INT NOT NULL AUTO_INCREMENT,
 	cid INT NOT NULL,
     street_num varchar(20),
     street_name varchar(50),
@@ -42,7 +42,7 @@ create table staff
 
 
 create table credit_card
-  ( id INT NOT NULL,
+  ( id INT NOT NULL AUTO_INCREMENT,
     cid INT NOT NULL,
     card_num numeric (20,0),
     street_num varchar(20),
@@ -55,7 +55,7 @@ create table credit_card
   );
 
 create table warehouse
-	(id		INT NOT NULL,
+	(id		INT NOT NULL AUTO_INCREMENT,
 	 street_num varchar(20),
      street_name varchar(50),
      city varchar(20),
@@ -75,7 +75,7 @@ create table stock
 
 
 create table products
-	(id INT NOT NULL,
+	(id INT NOT NULL AUTO_INCREMENT,
 	 name varchar(20) NOT NULL,
 	 type ENUM('food', 'beverage'),
      nutrition_facts varchar(100),
@@ -84,7 +84,7 @@ create table products
 	);
 
 create table price
-	(id INT NOT NULL,
+	(id INT NOT NULL AUTO_INCREMENT,
      pid INT NOT NULL,
 	 state varchar(2) NOT NULL,
 	 price numeric(7,2) NOT NULL,
@@ -96,7 +96,7 @@ create table price
 create table orders
 	(ccid INT,
 	 cid INT NOT NULL,
-	 oid INT NOT NULL,
+	 oid INT NOT NULL AUTO_INCREMENT,
 	 pid INT NOT NULL,
 	 quantity numeric(7,0),
 	 date varchar(30),
