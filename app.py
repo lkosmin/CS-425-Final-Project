@@ -480,9 +480,9 @@ def submit_order():
     ccid = cursor.execute(query)
 
     # calculate oid
-    #query = "select max(oid) from orders"
-    #cursor.execute(query)
-    #oid = (cursor.fetchone()[0] + 1)
+    query = "select max(oid) from orders"
+    cursor.execute(query)
+    oid = (cursor.fetchone()[0] + 1)
 
     query = "SELECT cid, pid, quantity from cart where cart.cid = \"{}\"".format(
         user['id'])
@@ -500,9 +500,9 @@ def submit_order():
         cursor.execute(query)
         conn.commit()
         # update orders
-        query = "insert into orders(ccid, cid, pid, quantity, date, status) VALUES(\"{}\",\"{}\", \"{}\"," \
-                " \"{}\", \"{}\",\"{}\")".format(
-                    ccid, user['id'], pid, quantity, dt, "recieved")
+        query = "insert into orders(ccid, cid,oid, pid, quantity, date, status) VALUES(\"{}\",\"{}\", \"{}\"," \
+                " \"{}\", \"{}\",\"{}\",\"{}\")".format(
+                    ccid, user['id'],oid, pid, quantity, dt, "recieved")
         cursor.execute(query)
         conn.commit()
 

@@ -68,7 +68,7 @@ create table warehouse
 create table stock
 	(wid		INT NOT NULL,
 	 pid		INT NOT NULL,
-	 quantity  numeric(7,0),
+	 quantity  numeric(7,0) check(quantity >= 0),
 	 primary key (wid, pid),
      foreign key (wid) references warehouse(id)
 	);
@@ -96,7 +96,7 @@ create table price
 create table orders
 	(ccid INT,
 	 cid INT NOT NULL,
-	 oid INT NOT NULL AUTO_INCREMENT,
+	 oid INT NOT NULL,
 	 pid INT NOT NULL,
 	 quantity numeric(7,0),
 	 date varchar(30),
