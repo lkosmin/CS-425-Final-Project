@@ -184,10 +184,10 @@ def sqlcommands():
         return [todict(tup, warehouse_a) for tup in cursor.fetchall()]
 
     def get_warehouse_a_stock(warehouse_id):
-        query = "select stock.pid, products.name, stock.quantity from warehouse join stock join products where stock.pid = products.id and stock.wid=\"{}\" and warehouse.id=\"{}\"".format(
+        query = "select stock.pid, products.name, stock.quantity, warehouse.state from warehouse join stock join products where stock.pid = products.id and stock.wid=\"{}\" and warehouse.id=\"{}\"".format(
             warehouse_id, warehouse_id)
         cursor.execute(query)
-        warehouse_a_stock = ['stock.pid', 'products.name', 'stock.quantity']
+        warehouse_a_stock = ['stock.pid', 'products.name', 'stock.quantity', 'warehouse.state']
         return [todict(tup, warehouse_a_stock) for tup in cursor.fetchall()]
 
     return dict(get_warehouses=get_warehouses, get_warehouse_a=get_warehouse_a, get_warehouse_a_stock=get_warehouse_a_stock, get_cart_total=get_cart_total, getstate=getstate, get_one_customer_card_todict=get_one_customer_card_todict, get_one_customer_address_todict=get_one_customer_address_todict, get_customer_cards_todict=get_customer_cards_todict, get_customer_cards_tostr=get_customer_cards_tostr, get_customer_addresses_todict=get_customer_addresses_todict, address_dict_to_str=address_dict_to_str, getproduct=getproduct, get_state_products=get_state_products, getcartitem=getcartitem, getallproduct=getallproduct, getproduct_staff=getproduct_staff)
@@ -595,10 +595,12 @@ def goto_warehouse_stock(warehouse_id):
     return render_template('warehouse_a_stock.html', user=user,warehouse_id=warehouse_id)
 
 
-@app.route('/delete_warehouse_stock/<product_id>/<warehouse_id>', methods=['GET'])
-def delete_warehouse_stock(product_id,warehouse_id):
+@app.route('/delete_warehouse_stock/<product_id>/<warehouse_id>/<warehouse_state>', methods=['GET'])
+def delete_warehouse_stock(product_id,warehouse_id,warehouse_state):
     query = "delete from stock where stock.wid=\"{}\" and stock.pid=\"{}\"".format(
         warehouse_id, product_id)
+    cursor.execute(query)
+    query = "delete from price where pid = \"{}\" and state=\"{}\"".format(product_id, warehouse_state)
     cursor.execute(query)
     return render_template('warehouse_a_stock.html', user=user, warehouse_id=warehouse_id)
 

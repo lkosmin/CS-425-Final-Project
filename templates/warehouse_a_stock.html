@@ -40,7 +40,7 @@
                 </form>
             </th>
             <th>
-              <form method="GET" action="/delete_warehouse_stock/{{warehouse_a_stock['stock.pid']}}/{{ warehouse_id }}">
+              <form method="GET" action="/delete_warehouse_stock/{{warehouse_a_stock['stock.pid']}}/{{ warehouse_id }}/{{warehouse_a_stock['warehouse.state']}}">
                 <input type = "submit" value = "Delete Item" />
               </form>
             </th>
