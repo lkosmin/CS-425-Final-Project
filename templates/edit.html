@@ -75,6 +75,7 @@
   {% if card_id %}
 
 <!-- show what the card id is  -->
+<h4><u> Selected Card: </h4></u>
 <table>
         <thead>
           <tr>
@@ -103,18 +104,20 @@
         </tbody>
       </table>
 
-      <p>Edit Card Information</p>
-  <form method="POST" action="/update_card/{{ get_one_customer_card_todict(user['id'], card_id)['id'] }}">
-    <div class="form-group">
-      <input type="card_num" class="form-control" name="new_address" placeholder="Enter Card Number">
-      <input type="street_num" class="form-control" name="new_address" placeholder="Enter Street Number">
-      <input type="stree_name" class="form-control" name="new_address" placeholder="Enter Street Name">
-      <input type="city" class="form-control" name="new_address" placeholder="Enter City">
-      <input type="state" class="form-control" name="new_address" placeholder="Enter State">
-      <input type="zip_code" class="form-control" name="new_address" placeholder="Enter Zip code">
-    </div>
-    <input type="submit" value="Update Card" />
-</form>
+      <h4><u> Edit Card: </h4></u>
+      {% for card in get_one_customer_card_todict(user['id'], card_id) %}
+        <form method="POST" action="/update_card/{{card_id}}">
+           <div class="form-group">
+               <p>Card Number<input value="{{ card['card_num'] }}" name="card_num"></p><br>
+               <p>Street Number<input value="{{ card['street_num'] }}" name="street_num"></p><br>
+               <p>Street Name<input value="{{ card['street_name'] }}" name="street_name"></p><br>
+               <p>City<input value="{{ card['city'] }}" name="city"></p><br>
+               <p>State<input value="{{ card['state'] }}" name="state"></p><br>
+               <p>Zip<input value="{{ card['zip'] }}" name="zip"></p><br>
+           </div>
+           <input type="submit" name="submit_change_card" value="Submit Change">
+        </form><br>
+      {% endfor %}
 
 
   {% endif %}

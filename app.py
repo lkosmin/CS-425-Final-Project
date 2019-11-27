@@ -296,7 +296,9 @@ def delete_address(delivery_id):
 def edit_address(delivery_id):
     return render_template('edit.html', user=user, delivery_id=delivery_id)
 
-# delete product from shopping cart
+@app.route('/edit_card/<card_id>/', methods=['GET'])
+def edit_card(card_id):
+    return render_template('edit.html', user=user, card_id=card_id)
 
 
 @app.route('/delete_from_cart/<cartitem_id>/', methods=['GET'])
@@ -554,6 +556,19 @@ def update_address(delivery_id):
     state = request.form.get('state')
     zip = request.form.get('zip')
     query = "update delivery set street_num = \"{}\", street_name = \"{}\", city =\"{}\", state=\"{}\", zip=\"{}\" where id = \"{}\"".format(street_num, street_name, city, state, zip, delivery_id)
+    cursor.execute(query)
+    conn.commit()
+    return render_template('account.html', user=user)
+
+@app.route('/update_card/<card_id>', methods = ['GET', 'POST'])
+def update_card(card_id):
+    card_num = request.form.get('card_num')
+    street_num = request.form.get('street_num')
+    street_name = request.form.get('street_name')
+    city = request.form.get('city')
+    state = request.form.get('state')
+    zip = request.form.get('zip')
+    query = "update credit_card set card_num=\"{}\", street_num = \"{}\", street_name = \"{}\", city =\"{}\", state=\"{}\", zip=\"{}\" where id = \"{}\"".format(card_num, street_num, street_name, city, state, zip, card_id)
     cursor.execute(query)
     conn.commit()
     return render_template('account.html', user=user)
