@@ -51,7 +51,7 @@
         <th>{{ address['state'] }}</th>
         <th>{{ address['zip'] }}</th>
         <th>
-          <form method="GET" action="/editaddress/{{ address['id'] }}/">
+          <form method="GET" action="/edit_address/{{ address['id'] }}/">
             <input type = "submit" value = "Edit Address" />
           </form>
         </th>
@@ -122,7 +122,7 @@
             <form method="GET" action="/editcard/{{ card['id'] }}/">
               <input type = "submit" value = "Edit card" />
             </form>
-          <th>  
+          <th>
             <form method="POST" action="/delete_card/{{ card['id'] }}/">
               <input type = "submit" value = "Delete card" />
             </form>
@@ -145,7 +145,7 @@
           <input type="zip_code" class="form-control" name="zip_code" placeholder="Enter Zip code">
       </div>
       <input type="submit" name="add_card" value="Add card">
-  </form> 
+  </form>
     </br>
     </br>
 
@@ -165,8 +165,8 @@
       <input type="submit" name="submit_button" value="Go To Cart">
       <input type="submit" name="submit_button" value="Go To Store">
     </form>
-	
-	
+
+
 </body>
 
 </html>

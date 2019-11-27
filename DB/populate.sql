@@ -75,13 +75,13 @@ INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (8,'broccoli','
 INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (9,'tomato','food', 'Calories:706, Total Fat:1.1g, Polyunsaturated fat: 0.8g',6);
 
 
-INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (10,'wine','beverage', 'Calories:39, Total Fat:0.2g, Polyunsaturated fat:0g, Total Carbohydrate:9g',6);
+INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (10,'wine','beverage', 'Alcohol Content: 11.7%',6);
 INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (11,'pepsi','beverage', 'Calories:40, Total Fat:1.2g, Polyunsaturated fat:5g, Total Carbohydrate:7g',3);
 INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (12,'orange juice','beverage', 'Calories:130, Total Fat:2.2g, Polyunsaturated fat:0.1g, Total Carbohydrate:9g',12);
 INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (13,'water','beverage', 'Calories:260, Total Fat:3.2g, Polyunsaturated fat:6g, Total Carbohydrate:1g',5);
 INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (14,'vitamin water','beverage', 'Calories:30, Total Fat:9.2g, Polyunsaturated fat:3.4g, Total Carbohydrate:2g',9);
-INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (15,'beer','beverage', 'Calories:27, Total Fat:7.2g, Polyunsaturated fat:2.3g, Total Carbohydrate:9g',54);
-INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (16,'craberry juice','beverage', 'Calories:500, Total Fat:0.3g, Polyunsaturated fat:7g, Total Carbohydrate:10g',6);
+INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (15,'beer','beverage', 'Alcohol Content: 6.7%',54);
+INSERT INTO products (id,name,type, nutrition_facts,size) VALUES (16,'cranberry juice','beverage', 'Calories:500, Total Fat:0.3g, Polyunsaturated fat:7g, Total Carbohydrate:10g',6);
 
 
 /* Populate Orders */
@@ -403,8 +403,3 @@ INSERT INTO stock (wid,pid,quantity) VALUES (8,12,600);
 INSERT INTO stock (wid,pid,quantity) VALUES (8,13,600);
 INSERT INTO stock (wid,pid,quantity) VALUES (8,14,600);
 INSERT INTO stock (wid,pid,quantity) VALUES (8,16,600);
-
-
-
-
-

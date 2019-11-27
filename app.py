@@ -292,6 +292,10 @@ def delete_address(delivery_id):
     conn.commit()
     return render_template('account.html', user=user)
 
+@app.route('/edit_address/<delivery_id>/', methods=['GET'])
+def edit_address(delivery_id):
+    return render_template('edit.html', user=user, delivery_id=delivery_id)
+
 # delete product from shopping cart
 
 
@@ -542,6 +546,17 @@ def staff_update_product():
     conn.commit()
     return render_template('staff.html', user=user)
 
+@app.route('/update_address/<delivery_id>', methods = ['GET', 'POST'])
+def update_address(delivery_id):
+    street_num = request.form.get('street_num')
+    street_name = request.form.get('street_name')
+    city = request.form.get('city')
+    state = request.form.get('state')
+    zip = request.form.get('zip')
+    query = "update delivery set street_num = \"{}\", street_name = \"{}\", city =\"{}\", state=\"{}\", zip=\"{}\" where id = \"{}\"".format(street_num, street_name, city, state, zip, delivery_id)
+    cursor.execute(query)
+    conn.commit()
+    return render_template('account.html', user=user)
 
 @app.route('/staff_update_price/', methods = ['GET', 'POST'])
 def staff_update_price():

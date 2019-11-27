@@ -15,6 +15,7 @@
 
   {% if delivery_id %}
   <!-- show what the delivery id is  -->
+  <h4><u> Selected Address: </h4></u>
   <table>
         <thead>
           <tr>
@@ -26,23 +27,23 @@
             <th>Zip Code</th>
           </tr>
         </thead>
-        <tbody>      
+        <tbody>
           <!--gets addresses to display  -->
           {% for address in get_one_customer_address_todict(user['id'], delivery_id) %}
           <tr>
-            <th>{{ address['id'] }}</th>
+            <th>{{ delivery_id }}</th>
             <th>{{ address['street_num'] }}</th>
             <th>{{ address['street_name'] }}</th>
             <th>{{ address['city'] }}</th>
             <th>{{ address['state'] }}</th>
-            <th>{{ address['zip'] }}</th>  
+            <th>{{ address['zip'] }}</th>
           </tr>
          {% endfor %}
         </tbody>
       </table>
 
-      <p>Edit Delivery Address</p>
-  <form method="POST" action="/update_address/{{ get_one_customer_address_todict(user['id'], delivery_id)['id'] }}">
+      <h4><u>Edit Delivery Address</h4></u>
+  <!--<form method="POST" action="/update_address/{{ get_one_customer_address_todict(user['id'], delivery_id)['id'] }}">
     <div class="form-group">
       <input type="street_num" class="form-control" name="new_address" placeholder="Enter Street Number">
       <input type="stree_name" class="form-control" name="new_address" placeholder="Enter Street Name">
@@ -51,9 +52,21 @@
       <input type="zip_code" class="form-control" name="new_address" placeholder="Enter Zip code">
     </div>
     <input type="submit" value="Update Address" />
-</form>
+</form>-->
 
+  {% for address in get_one_customer_address_todict(user['id'], delivery_id) %}
 
+      <form method="POST" action="/update_address/{{delivery_id}}">
+         <div class="form-group">
+             <p>Street Number<input value="{{ address['street_num'] }}" name="street_num"></p><br>
+             <p>Street Name<input value="{{ address['street_name'] }}" name="street_name"></p><br>
+             <p>City<input value="{{ address['city'] }}" name="city"></p><br>
+             <p>State<input value="{{ address['state'] }}" name="state"></p><br>
+             <p>Zip<input value="{{ address['zip'] }}" name="zip"></p><br>
+         </div>
+         <input type="submit" name="submit_change_address" value="Submit Change">
+      </form><br>
+    {% endfor %}
 
 
   {% endif %}
@@ -74,7 +87,7 @@
             <th>Zip Code</th>
           </tr>
         </thead>
-        <tbody>      
+        <tbody>
           <!--gets cards to display  -->
           {% for card in get_one_customer_card_todict(user['id'], card_id) %}
           <tr>
@@ -84,7 +97,7 @@
             <th>{{ card['street_name'] }}</th>
             <th>{{ card['city'] }}</th>
             <th>{{ card['state'] }}</th>
-            <th>{{ card['zip'] }}</th>  
+            <th>{{ card['zip'] }}</th>
           </tr>
          {% endfor %}
         </tbody>
