@@ -99,6 +99,6 @@ form.searchProd::after {
   clear: both;
   display: table;
 }
-.cart th, td{
+th, td{
   border: 1px solid black;
 }
