@@ -201,7 +201,7 @@ def index():
     return render_template('login.html')
 
 
-@app.route('/home', methods=['POST'])
+@app.route('/home', methods=['POST', 'GET'])
 def login():
     username = request.form['username']
     password = request.form['password']

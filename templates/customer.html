@@ -18,6 +18,11 @@
     <header>
       <div class="container">
         <h1 class="logo">Shopping</h1>
+        <strong><nav>
+            <ul class="menu"> <!-- logout to bring back to login page -->
+              <li><a href="/">Logout</a></li>
+            </ul>
+          </nav></strong>
       </div>
     </header>
         <h1><center>Products</center></h1>
@@ -51,9 +56,9 @@
             </thead>
             <tbody>
               {% if not name %}
-              
+
               <!-- python function that iterates through every single product in product list for your state-->
-              
+
               {% for product in get_state_products(user['id'], type) %}
               <tr>
                 <th>{{ product['products.id'] }}</th>
@@ -67,7 +72,7 @@
                     <input type = "submit" value = "submit" />
                   </form>
                 </th>
-                
+
               </tr>
              {% endfor %}
              {% endif %}
@@ -89,7 +94,7 @@
                   <input type = "submit" value = "submit" />
                 </form>
               </th>
-              
+
             </tr>
 
             {% endfor %}
