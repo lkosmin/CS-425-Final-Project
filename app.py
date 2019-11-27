@@ -393,7 +393,7 @@ def add_addr(user_id):
 
 @app.route('/add_card/<user_id>', methods=['GET', 'POST'])
 def add_card(user_id):
-    card = request.form.get('card')
+    card_num = request.form.get('card_num')
     street_num = request.form.get('street_num')
     street_name = request.form.get('street_name')
     city = request.form.get('city')
@@ -406,7 +406,7 @@ def add_card(user_id):
     # card_id = (cursor.fetchone()[0]) + 1
     # insert new credit card
     query = "insert into credit_card(cid, card_num, street_num, street_name, city, state, zip) values(\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\")".format(
-        user['id'], card, street_num, street_name, city, state, zip_code)
+        user['id'], card_num, street_num, street_name, city, state, zip_code)
     cursor.execute(query)
     conn.commit()
     return render_template('account.html', user=user)
