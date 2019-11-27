@@ -292,14 +292,14 @@ INSERT INTO price (id,pid,state,price) VALUES (140, 16, 'FL', 6.04);
 
 
 /*Populate warehouse*/
-INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (1, 7924, 'Wintergreen Rd.', 'Medford', 'CA', 02155, 560);
-INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (2, 467, 'Winding Way Rd.', 'Jonesborough', 'TN', 37659, 200);
-INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (3, 8091, 'Brickell Court', 'Wilson', 'FL', 27893, 145);
-INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (4, 590, 'Orchard St.','Elizabeth City', 'NY', 27909, 435);
-INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (5, 19, 'Ridgeview Ave.','Bloomington', 'IN', 47401, 45);
-INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (6, 8390, 'Center Road','Minot', 'IL', 58701, 160);
-INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (7, 8442, 'Vernon Street','Twin Falls', 'ID', 83301, 99);
-INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (8, 346, 'Bridgeton Dr.','Milford', 'OH',01757, 300);
+INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (1, 7924, 'Wintergreen Rd.', 'Medford', 'CA', 02155, 5600000);
+INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (2, 467, 'Winding Way Rd.', 'Jonesborough', 'TN', 37659, 7000000);
+INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (3, 8091, 'Brickell Court', 'Wilson', 'FL', 27893, 90000000);
+INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (4, 590, 'Orchard St.','Elizabeth City', 'NY', 27909, 400000000);
+INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (5, 19, 'Ridgeview Ave.','Bloomington', 'IN', 47401, 100000000);
+INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (6, 8390, 'Center Road','Minot', 'IL', 58701, 16000000);
+INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (7, 8442, 'Vernon Street','Twin Falls', 'ID', 83301, 9900000);
+INSERT INTO warehouse (id,street_num,street_name,city,state,zip,storage_capacity) VALUES (8, 346, 'Bridgeton Dr.','Milford', 'OH',01757, 300000000);
 
 
 /*populate stock*/
